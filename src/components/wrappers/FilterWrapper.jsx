@@ -1,0 +1,203 @@
+"use client";
+import React, { useState } from "react";
+import {
+  Box,
+  Typography,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
+  Slider,
+  Button,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import GenericBtns from "../buttons/GenericBtns";
+import FilterSizeComponent from "./generics/filterSizeComponent";
+import Chip from "@mui/material/Chip";
+import FilterColorComponent from "./generics/filterColorComponent";
+const FilterWrapperComponent = styled(Box)(({ theme }) => ({
+  minWidth: theme.typography.pxToRem(260),
+  maxWidth: theme.typography.pxToRem(350),
+  minHeight: "91vh",
+  maxHeight: "90vh",
+  overflow: "auto",
+  padding: theme.spacing(2),
+  display: "flex",
+  flexDirection: "column",
+
+  [theme.breakpoints.down("md")]: {
+    minWidth: "40vw",
+    maxWidth: "90vw",
+    minHeight: "80vh",
+    maxHeight: "80vh",
+    padding: theme.spacing(1),
+  },
+}));
+
+const FilterHeader = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  paddingBottom: theme.spacing(2),
+  borderBottom: `solid ${theme.typography.pxToRem(1)} ${
+    theme.palette.secondary.main
+  }`,
+}));
+
+const FilterContent = styled(Box)(({ theme }) => ({
+  flexGrow: 1,
+  overflowY: "auto",
+  padding: theme.spacing(1),
+
+  "&::-webkit-scrollbar": { width: theme.typography.pxToRem(6) },
+  "&::-webkit-scrollbar-track": { background: "transparent" },
+  "&::-webkit-scrollbar-thumb": {
+    background: "rgba(0, 0, 0, 0.3)",
+    borderRadius: theme.typography.pxToRem(10),
+  },
+  "&::-webkit-scrollbar-thumb:hover": { background: "rgba(0, 0, 0, 0.5)" },
+}));
+
+const FilterFooter = styled(Box)(({ theme }) => ({
+  paddingTop: theme.spacing(2),
+  borderTop: `solid ${theme.typography.pxToRem(1)} ${
+    theme.palette.secondary.main
+  }`,
+}));
+
+const FilterTitle = styled(Typography)(({ theme }) => ({
+  fontWeight: "bold",
+  textTransform: "uppercase",
+  fontSize: theme.typography.pxToRem(16),
+}));
+
+const FilterSection = styled(Box)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+  padding: theme.spacing(2),
+}));
+
+function FilterWrapper({onApplyFilters,onClearFilters,selectedFilters, setSelectedFilters}) {
+  const theme = useTheme();
+
+
+
+
+  const handleCheckboxChange = (category, value) => {
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [category]: prev[category].includes(value)
+        ? prev[category].filter((item) => item !== value)
+        : [...prev[category], value],
+    }));
+  };
+
+  const handleRadioChange = (category, value) => {
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [category]: value,
+    }));
+  };
+
+  const handlePriceChange = (_, newValue) => {
+    console.log("handlePriceChange",_);
+    setSelectedFilters((prev) => ({ ...prev, price: newValue }));
+  };
+
+
+  return (
+    <FilterWrapperComponent>
+      {/* ✅ Fixed Header */}
+      <FilterHeader>
+        <FilterTitle>Filters</FilterTitle>
+        <GenericBtns
+          type="secondary"
+          btnText={"Clear Filters"}
+          executableFunction={() =>onClearFilters()}
+          minWidth="5vw"
+        />
+      </FilterHeader>
+
+      {/* ✅ Scrollable Filters Section */}
+      <FilterContent>
+        {/* Gender Filter (Radio Buttons) */}
+        <FilterSection>
+          <FilterTitle>Gender</FilterTitle>
+          <RadioGroup
+            value={selectedFilters?.gender}
+            onChange={(e) => handleRadioChange("gender", e.target.value)}
+          >
+            {["Male", "Female"].map((gender) => (
+              <FormControlLabel
+                key={gender}
+                value={gender}
+                control={
+                  <Radio
+                    sx={{
+                      color: theme.palette.ascentColor.main,
+                      "&.Mui-checked": {
+                        color: theme.palette.ascentColor.main,
+                      },
+                    }}
+                  />
+                }
+                label={gender}
+              />
+            ))}
+          </RadioGroup>
+        </FilterSection>
+
+        {/* Size Filter (Checkbox - Multiple Selections) */}
+        <FilterSection>
+          <FilterSizeComponent
+            sizeArr={[]}
+            sizeLoading={false}
+            selectedFilters={selectedFilters}
+            handleCheckboxChange={handleCheckboxChange}
+          />
+        </FilterSection>
+
+        <FilterSection>
+          <FilterColorComponent
+            colorArr={[]}
+            colorLoading={false}
+            selectedFilters={selectedFilters}
+            handleCheckboxChange={handleCheckboxChange}
+          />
+        </FilterSection>
+
+        {/* Price Filter */}
+        <FilterSection>
+          <FilterTitle>Price</FilterTitle>
+          <Slider
+            value={selectedFilters?.price}
+            onChange={handlePriceChange}
+            valueLabelDisplay="auto"
+            min={0}
+            max={1000000}
+            sx={{
+              color: theme.palette.ascentColor.main,
+              maxWidth: "90%",
+            }}
+          />
+          <Typography>
+            ₹{selectedFilters?.price[0]} - ₹{selectedFilters?.price[1]}
+          </Typography>
+        </FilterSection>
+      </FilterContent>
+
+      {/* ✅ Fixed Footer */}
+      <FilterFooter>
+        <Button
+          variant="contained"
+          fullWidth
+          onClick={() => onApplyFilters(selectedFilters)}
+        >
+          Apply Filters
+        </Button>
+      </FilterFooter>
+    </FilterWrapperComponent>
+  );
+}
+
+export default FilterWrapper;
