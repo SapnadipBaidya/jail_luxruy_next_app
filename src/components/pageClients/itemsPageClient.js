@@ -50,8 +50,11 @@ console.log("itemsArr",itemsArr)
 
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%", flexGrow: 1 }}>
           {isMobileOrTablet ? <SortFilterComponentMobile setShowFilters={setShowFilters} /> : <SortFilterComponent setShowFilters={setShowFilters} />}
-          <GridWrapper itemsArr={itemsArr} type="Product" loading={ItemsData?.loading}/>
-          <PaginationComponent page={page} setPage={handlePageChange} />
+        
+         <GridWrapper itemsArr={itemsArr} type="Product" loading={ItemsData?.loading}/>
+         <PaginationComponent page={page} setPage={handlePageChange} />
+        
+        
         </div>
       </div>
     </div>

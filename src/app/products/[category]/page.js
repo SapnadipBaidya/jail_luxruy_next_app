@@ -4,7 +4,7 @@ import { makeGetAPIcall, makePostAPIcall } from "@/utils/API_vendor";
 async function fetchItemsFromAPI(category, page) {
   try {
     // Construct API URL dynamically
-    const apiUrl = `http://localhost:8080/api/products/findProductsByCategoryName?categoryName=${category}&sortBy=product_price_local&sortOrder=ASC&page=${page}&limit=20`;
+    const apiUrl = `http://localhost:8080/api/products/findProductsByCategoryName?categoryName=${category}&sortBy=product_price_local&sortOrder=ASC&page=${page}&limit=12`;
 
     // Make API call
     const response = await makeGetAPIcall(apiUrl);

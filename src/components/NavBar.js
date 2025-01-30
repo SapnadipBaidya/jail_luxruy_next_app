@@ -57,6 +57,13 @@ const SearchBox = styled(Box)(({ theme }) => ({
     borderTop: 1,
     borderColor: "divider",
   }));
+
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  backgroundColor: theme.palette.background.default,
+  borderBottom: 1,
+  borderColor: "divider",
+  }));
+
 export default function Navbar() {
   const theme = useTheme();
   const router = useRouter();
@@ -73,13 +80,8 @@ export default function Navbar() {
   return (
     <>
       {/* ✅ Top AppBar */}
-      <AppBar
+      <StyledAppBar
         position="sticky"
-        sx={{
-          backgroundColor: "background.paper",
-          borderBottom: 1,
-          borderColor: "divider",
-        }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           {/* ✅ Mobile Menu Button */}
@@ -212,7 +214,7 @@ export default function Navbar() {
             />
           </SearchBox>
         )}
-      </AppBar>
+      </StyledAppBar>
 
       {/* ✅ Mobile Drawer Navigation */}
       <MobileNav anchor="left" open={mobileOpen} onClose={toggleMobileNav}>

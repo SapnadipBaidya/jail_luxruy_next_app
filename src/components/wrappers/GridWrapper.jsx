@@ -9,10 +9,6 @@ import NoDataComponent from "./noDataComponent";
 const GridWrapperComponent = styled("div")(({ theme }) => ({
   minWidth: "70vw",
   maxWidth: "70vw",
-  minHeight: "70vh", // ✅ Ensure it takes full height of parent
-  maxHeight: "70vh",
-  overflowY: "auto", // ✅ Enable vertical scrolling
-  overflowX: "hidden",
   padding: "1rem",
   display: "flex",
   flexDirection: "column",

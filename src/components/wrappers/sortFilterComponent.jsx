@@ -10,7 +10,13 @@ const SortFilterWrapper = styled('div')(({ theme }) => ({
   padding: "1rem",
   display: "flex",
   justifyContent: "flex-end",
-  alignItems: "center"
+  alignItems: "center",
+  position: "sticky",
+  top: 0,  // Ensures it sticks at the top
+  backgroundColor: theme.palette.background.paper, // Ensures visibility over content
+  zIndex: 1000, // Keeps it above other elements
+  boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)" // Optional: adds slight shadow to differentiate from content
+
 }));
 
 function SortFilterComponent({ setShowFilters, showFilters }) {
