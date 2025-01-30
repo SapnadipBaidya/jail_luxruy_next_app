@@ -11,12 +11,13 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import WishListButton from "../buttons/wishListBtn.jsx";
 import CartBtn from "../buttons/cartBtn.jsx";
 
 
 import TruncatedText from "./TruncatedText.jsx";
+import removeWhiteSpaceFromMiddle from "@/utils/attachProperNavName.js";
 
 // ✅ Responsive Styled Card
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -99,7 +100,8 @@ const CardFooter = styled(Box)(({ theme }) => ({
 }));
 
 const StyledCardWrapper = React.memo(({ type, item }) => {
-
+   const pathname = usePathname();
+   console.log("StyledCardWrapper pathname",pathname,item)
   const mainImgUrl =
     item?.product_data?.gallery?.images?.[0] || "/placeholder.jpg";
 
@@ -123,7 +125,7 @@ const StyledCardWrapper = React.memo(({ type, item }) => {
               e.preventDefault();
               e.stopPropagation();
              
-              router.push("/Product"); // ✅ Next.js Routing
+              router.push(`${pathname}`+"/"+removeWhiteSpaceFromMiddle(item?.product_name)+"?pid="+item?.product_id+"&pdid="+item?.product_detail_id);
             }}
           />
         </Fade>
