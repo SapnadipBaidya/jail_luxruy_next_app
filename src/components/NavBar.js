@@ -41,9 +41,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.custom.primaryButtonFontColor,
 }));
 
-const HomeLogoWrapper = styled('div')(({ theme }) => ({
-    
-  }));
+const HomeLogoWrapper = styled("div")(({ theme }) => ({}));
 
 const MobileNav = styled(Drawer)(({ theme }) => ({
   "& .MuiDrawer-paper": {
@@ -53,16 +51,16 @@ const MobileNav = styled(Drawer)(({ theme }) => ({
 }));
 
 const SearchBox = styled(Box)(({ theme }) => ({
-    padding: 2,
-    borderTop: 1,
-    borderColor: "divider",
-  }));
+  padding: 2,
+  borderTop: 1,
+  borderColor: "divider",
+}));
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   borderBottom: 1,
   borderColor: "divider",
-  }));
+}));
 
 export default function Navbar() {
   const theme = useTheme();
@@ -80,9 +78,7 @@ export default function Navbar() {
   return (
     <>
       {/* ✅ Top AppBar */}
-      <StyledAppBar
-        position="sticky"
-      >
+      <StyledAppBar position="sticky">
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           {/* ✅ Mobile Menu Button */}
           <IconButton
@@ -121,18 +117,17 @@ export default function Navbar() {
                 </MenuItem>
               ) : (
                 <>
-                  {/* <MenuItem onClick={handleProfileMenuClose}>Orders</MenuItem> */}
                   <MenuItem
+                    key="profile"
                     onClick={(e) => {
-                      // handleProfileMenuClose(e);
                       router.push("userContact");
                     }}
                   >
-                    profile
+                    Profile
                   </MenuItem>
                   <MenuItem
+                    key="logout"
                     onClick={(e) => {
-                      // handleProfileMenuClose(e);
                       // logout();
                     }}
                   >
@@ -150,26 +145,26 @@ export default function Navbar() {
           </Box>
 
           {/* ✅ Logo */}
-          <HomeLogoWrapper onClick={()=>router.push("/")}>
-          {theme.palette.mode == "light" ? (
-            <img
-              src="http://localhost:3000/webps/homePageLogoLight.webp"
-              alt="Jail Logo"
-              width={200}
-              height={50}
-              priority
-            />
-          ) : (
-            <img
-              src="http://localhost:3000/webps/homePageLogoDark.webp"
-              alt="Jail Logo"
-              width={200}
-              height={50}
-              priority
-            />
-          )}
+          <HomeLogoWrapper onClick={() => router.push("/")}>
+            {theme.palette.mode == "light" ? (
+              <img
+                src="http://localhost:3000/webps/homePageLogoLight.webp"
+                alt="Jail Logo"
+                width={200}
+                height={50}
+                priority
+              />
+            ) : (
+              <img
+                src="http://localhost:3000/webps/homePageLogoDark.webp"
+                alt="Jail Logo"
+                width={200}
+                height={50}
+                priority
+              />
+            )}
           </HomeLogoWrapper>
-        
+
           {/* ✅ Right Side Icons */}
           <Box sx={{ display: "flex", gap: 1 }}>
             <StyledButton

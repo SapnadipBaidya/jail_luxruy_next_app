@@ -3,6 +3,7 @@
 import { useThemeContext } from "@/context/themeContext"; // Import theme context
 import Navbar from "@/components/NavBar";
 import { ThemeProviderWrapper } from "@/context/themeContext";
+import { StyledEngineProvider } from "@mui/material";
 
 
 
@@ -28,12 +29,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+      <StyledEngineProvider injectFirst>
         <ThemeProviderWrapper>
           <ThemeBackgroundWrapper> {/* Apply background color here */}
             <Navbar />
             {children}
           </ThemeBackgroundWrapper>
         </ThemeProviderWrapper>
+        </StyledEngineProvider>
       </body>
     </html>
   );
