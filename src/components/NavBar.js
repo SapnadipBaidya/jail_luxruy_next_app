@@ -52,6 +52,11 @@ const MobileNav = styled(Drawer)(({ theme }) => ({
   },
 }));
 
+const SearchBox = styled(Box)(({ theme }) => ({
+    padding: 2,
+    borderTop: 1,
+    borderColor: "divider",
+  }));
 export default function Navbar() {
   const theme = useTheme();
   const router = useRouter();
@@ -197,7 +202,7 @@ export default function Navbar() {
 
         {/* ✅ Search Bar */}
         {isSearchOpen && (
-          <Box sx={{ padding: 2, borderTop: 1, borderColor: "divider" }}>
+          <SearchBox>
             <TextField
               fullWidth
               variant="outlined"
@@ -205,7 +210,7 @@ export default function Navbar() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-          </Box>
+          </SearchBox>
         )}
       </AppBar>
 

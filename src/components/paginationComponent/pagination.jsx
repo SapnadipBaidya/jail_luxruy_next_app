@@ -1,9 +1,11 @@
-import  { useState } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { Card, TextField, styled } from "@mui/material";
 
-// ✅ Neumorphic Styled Pagination Container (No Borders)
+// ✅ Styled Pagination Container (Neumorphic UI)
 const StyledPaginationContainer = styled(Card)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
@@ -11,7 +13,7 @@ const StyledPaginationContainer = styled(Card)(({ theme }) => ({
   minHeight: "8vh",
   padding: theme.spacing(2),
   gap: theme.spacing(2),
-  margin:theme.spacing(1),
+  margin: theme.spacing(1),
   flexDirection: "row",
   borderRadius: "50px",
   background: theme.palette.mode === "dark" ? "#252525" : "#f0f0f0",
@@ -19,7 +21,7 @@ const StyledPaginationContainer = styled(Card)(({ theme }) => ({
     ? "15px 15px 30px #1a1a1a, -15px -15px 30px #3a3a3a"
     : "20px 20px 60px #c8c8c8, -20px -20px 60px #ffffff",
   transition: "all 0.3s ease-in-out",
-  border: "none", // ✅ Removed border
+  border: "none",
 
   "&:hover": {
     boxShadow: theme.palette.mode === "dark"
@@ -33,10 +35,10 @@ const StyledPaginationContainer = styled(Card)(({ theme }) => ({
   },
 }));
 
-// ✅ Styled Input Box (No Borders, Seamless)
+// ✅ Styled Input Box for Page Number
 const StyledTextField = styled(TextField)(({ theme }) => ({
-  minWidth: "5vw",
-  maxWidth: "10vw",
+  minWidth: "4rem",
+  maxWidth: "5rem",
   textAlign: "center",
   borderRadius: "10px",
   fontWeight: "bold",
@@ -45,7 +47,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     ? "inset 4px 4px 8px #1a1a1a, inset -4px -4px 8px #3d3d3d"
     : "inset 6px 6px 12px #dcdcdc, inset -6px -6px 12px #ffffff",
   border: "none",
-  outline: "none", 
+  outline: "none",
 
   "& input": {
     textAlign: "center",
@@ -60,7 +62,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-// ✅ Custom Pagination Styling (No Borders, Soft Look)
+// ✅ Styled Pagination with Smooth Interactions
 const StyledPagination = styled(Pagination)(({ theme }) => ({
   "& .MuiPaginationItem-root": {
     fontSize: "1rem",
@@ -69,8 +71,9 @@ const StyledPagination = styled(Pagination)(({ theme }) => ({
     padding: "0.6rem",
     transition: "all 0.3s ease-in-out",
     background: "transparent",
-    boxShadow: "none", // ✅ Removed border & shadow
-    color:theme.custom.primaryButtonFontColor,
+    boxShadow: "none",
+    color: theme.palette.text.primary,
+
     "&:hover": {
       background: theme.palette.primary.main,
       color: "#fff",
@@ -89,27 +92,28 @@ const StyledPagination = styled(Pagination)(({ theme }) => ({
 export default function PaginationComponent({ page, setPage, count = 10 }) {
   const [inputValue, setInputValue] = useState(page);
 
-  // ✅ Handle Page Change from Pagination Clicks
+  useEffect(() => {
+    setInputValue(page); // Sync input with current page
+  }, [page]);
+
+  // ✅ Handle Page Change from Click
   const handleChange = (event, value) => {
-    event.stopPropagation();
     setPage(value);
     setInputValue(value);
   };
 
-  // ✅ Update Input Value but Don't Change Page Immediately
+  // ✅ Validate and Update Input
   const handleInputChange = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    let value = event.target.value.replace(/[^0-9]/g, "");
+    let value = event.target.value.replace(/[^0-9]/g, ""); // Allow only numbers
     setInputValue(value);
   };
 
-  // ✅ Change Page Only When Enter is Pressed
+  // ✅ Change Page Only on Enter Key Press
   const handleKeyDown = (event) => {
-    event.stopPropagation();
     if (event.key === "Enter") {
-      let value = inputValue ? Math.min(Math.max(parseInt(inputValue, 10), 1), count) : 1;
-      setPage(value);
+      let newPage = Math.min(Math.max(parseInt(inputValue, 10) || 1, 1), count);
+      setPage(newPage);
+      setInputValue(newPage);
     }
   };
 
@@ -118,13 +122,13 @@ export default function PaginationComponent({ page, setPage, count = 10 }) {
       <Stack spacing={2} direction="row" alignItems="center">
         {/* ✅ Page Input Box */}
         <StyledTextField
-          variant="standard" // ✅ Removes MUI border
+          variant="standard"
           size="small"
           value={inputValue}
-          onChange={(e)=>handleInputChange(e)}
+          onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           InputProps={{
-            disableUnderline: true, // ✅ Removes underline border
+            disableUnderline: true,
           }}
         />
 

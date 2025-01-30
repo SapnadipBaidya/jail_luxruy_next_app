@@ -1,141 +1,39 @@
-"use client"
-import React, { useEffect, useState, useCallback } from "react";
-import { Grid, useMediaQuery, useTheme } from "@mui/material";
-import GridWrapper from "@/components/wrappers/GridWrapper";
-import SortFilterComponent from "@/components/wrappers/sortFilterComponent";
-import SortFilterComponentMobile from "@/components/wrappers/SortFilterComponentMobile";
-import FilterWrapper from "@/components/wrappers/FilterWrapper";
-import FilterDrawerMobile from "@/components/wrappers/FilterDrawerMobile";
-import PaginationComponent from "@/components/paginationComponent/pagination";
+import ItemsPageClient from "@/components/pageClients/itemsPageClient";
+import { makeGetAPIcall } from "@/utils/API_vendor";
 
-function ItemsPage({ initialItems, initialFilters }) {
-  const user  = {id:"111",name:"sapnadip"}
-  const theme = useTheme();
+async function fetchItemsFromAPI(category, page) {
+  // Construct API URL dynamically based on category
+  const apiUrl = `http://localhost:8080/api/products/findProductsByCategoryName?categoryName=${category}&sortBy=product_price_local&sortOrder=ASC&page=${page}&limit=20`;
 
-  const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
+  const res = makeGetAPIcall(apiUrl);
+  const response = await res;
+  console.log("Data", response.data);
+  return response.data;
+}
 
-  const [showFilters, setShowFilters] = useState(false);
-  const [page, setPage] = useState(1);
-  const [currentFilterData, setCurrentFilterData] = useState(initialFilters);
-  const [selectedFilters, setSelectedFilters] = useState(initialFilters);
-  const [itemsArr, setItemsArr] = useState(initialItems);
+export default async function ItemsPage({ params, searchParams }) {
+  const category = params?.category || "default-category"; // Extract category from URL
+  const page = parseInt(searchParams?.page) || 1; // Extract page from query params
 
-  const onClearFilters = () => {
-    const defaultFilters = {
-      gender: "",
-      size: [],
-      color: [],
-      price: [0, 1000000],
-    };
-    setSelectedFilters(defaultFilters);
-    setCurrentFilterData(defaultFilters);
+  console.log("Category:", category);
+  console.log("searchParams:", searchParams);
 
-    const payload = {
-      productFilters: {
-        fk_category_id: categoryId,
-        priceStart: 0,
-        priceEnd: 1000000,
-        sizes: [],
-        colors: [],
-      },
-      defaultFlag: 1,
-      page,
-      userId: user?.id,
-    };
+  const initialItems = await fetchItemsFromAPI(category, page);
+  console.log("initialItems", initialItems);
 
-    // Fetch items with default filters
-    fetchItems(defaultFilters);
-  };
-
-  const onApplyFilters = (filters) => {
-    setCurrentFilterData(filters);
-    fetchItems(filters);
-  };
-
-  const fetchItems = async (filters) => {
-    // Fetch items based on filters
-    // This function should make an API call to get the filtered items
-    // and update the `itemsArr` state.
-  };
-
-  const containerStyle = {
-    display: "flex",
-    flexDirection: "column",
-    maxWidth: "100vw",
-    maxHeight: "100vh",
-    overflow: "hidden"
+  const initialFilters = {
+    gender: "",
+    size: [],
+    color: [],
+    price: [0, 1000000],
   };
 
   return (
-    <div style={containerStyle}>
-      {/* 🔄 Main Content Container */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: isMobileOrTablet ? "column" : "row",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          width: "100%",
-          maxWidth: "99%",
-          flexGrow: 1,
-          overflow: "auto"
-        }}
-      >
-        {/* 🔹 Desktop View: Show Both Filter & Grid */}
-
-        {isMobileOrTablet ? (
-          <FilterDrawerMobile
-            onApplyFilters={onApplyFilters}
-            onClearFilters={onClearFilters}
-            selectedFilters={selectedFilters}
-            setSelectedFilters={setSelectedFilters}
-            setShowFilters={setShowFilters}
-            showFilters={showFilters}
-          />
-        ) : (
-          <FilterWrapper
-            onApplyFilters={onApplyFilters}
-            onClearFilters={onClearFilters}
-            selectedFilters={selectedFilters}
-            setSelectedFilters={setSelectedFilters}
-          />
-        )}
-
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: "100%",
-            flexGrow: 1
-          }}
-        >
-          {isMobileOrTablet ? (
-            <SortFilterComponentMobile
-              setShowFilters={setShowFilters}
-              showFilters={showFilters}
-            />
-          ) : (
-            <SortFilterComponent
-              setShowFilters={setShowFilters}
-              showFilters={showFilters}
-            />
-          )}
-          <GridWrapper
-            itemsArr={itemsArr}
-            type="Product"
-            setShowFilters={setShowFilters}
-            showFilters={showFilters}
-            page={page}
-            setPage={setPage}
-          />
-
-          {/* 🔹 Pagination Always Under GridWrapper */}
-          <PaginationComponent page={page} setPage={setPage} />
-        </div>
-      </div>
-    </div>
+    <ItemsPageClient
+      initialItems={initialItems}
+      initialFilters={initialFilters}
+      initialPage={page}
+      category={category}
+    />
   );
 }
-
-export default ItemsPage;

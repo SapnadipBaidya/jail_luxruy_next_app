@@ -33,12 +33,12 @@ function GridWrapper({ itemsArr, type }) {
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
   console.log("loading", itemsArr?.loading);
   
-  const data = Array.isArray(itemsArr?.data) ? itemsArr.data : [];
+  const data = Array.isArray(itemsArr) ? itemsArr : [];
 
   return (
     <GridWrapperComponent>
       <Grid container spacing={3} justifyContent="space-between" alignItems="stretch">
-        {itemsArr?.loading ? (
+        {itemsArr?.length < 1 ? (
           // ✅ Render 8 skeleton placeholders in Grid layout
           <>
             {Array.from({ length: 8 }).map((_, index) => (

@@ -26,7 +26,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   backgroundColor: theme.custom?.cardBg || "#fff",
   boxShadow: "0 4px 8px rgba(164, 180, 112, 0.1)",
   borderRadius: theme.shape.borderRadius,
-  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out !important",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-around",
@@ -35,7 +35,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   maxHeight: theme.typography.pxToRem(350),
 
   "&:hover": {
-    transform: "scale(1.02)",
+    transform: "scale(1.02) !important",
     boxShadow:
       "rgba(0, 0, 0, 0.25) 0px 13px 47px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
   },
@@ -56,7 +56,7 @@ const ProductImage = styled("img")(({ theme }) => ({
   objectFit: "cover",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: theme.custom?.cardBg || "#fff",
-  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out !important",
 
   minWidth: theme.typography.pxToRem(200),
   minHeight: theme.typography.pxToRem(200),
@@ -99,9 +99,11 @@ const CardFooter = styled(Box)(({ theme }) => ({
 }));
 
 const StyledCardWrapper = React.memo(({ type, item }) => {
-  const mainImgUrl =
-    item?.gallery_details?.gallery?.images?.[0] || "/placeholder.jpg";
 
+  const mainImgUrl =
+    item?.product_data?.gallery?.images?.[0] || "/placeholder.jpg";
+
+    console.log("mainImgUrl",item?.product_data?.gallery)
   const router = useRouter(); // ✅ Next.js Routing
   const [show, setShow] = useState(false);
 
@@ -128,10 +130,10 @@ const StyledCardWrapper = React.memo(({ type, item }) => {
 
         {/* ✅ Responsive Text */}
         <TruncatedText maxWidth="90%">
-          {item?.product_details?.product_name || "No Name"}
+          {item?.product_name || "No Name"}
         </TruncatedText>
         <TruncatedText maxWidth="90%">
-          ₹{item?.product_details?.product_price_inr || "N/A"}
+          ₹{item?.product_data?.price || "N/A"}
         </TruncatedText>
 
         {/* ✅ Footer Buttons */}

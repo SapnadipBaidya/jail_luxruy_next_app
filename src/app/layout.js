@@ -1,17 +1,39 @@
+"use client"; // Ensure this runs on the client
 
-import { ThemeProviderWrapper } from "@/context/themeContext";
+import { useThemeContext } from "@/context/themeContext"; // Import theme context
 import Navbar from "@/components/NavBar";
-import { getThemeFromCookies } from "@/lib/theme";
+import { ThemeProviderWrapper } from "@/context/themeContext";
+
+
+
+// Wrapper to dynamically update the background color based on theme
+function ThemeBackgroundWrapper({ children }) {
+  const { themeMode } = useThemeContext(); // Get current theme dynamically
+
+  return (
+    <div
+      style={{
+        backgroundColor: themeMode === "dark" ? "#121212" : "#ffffff",
+        minHeight: "100vh",
+        transition: "background-color 0.3s ease-in-out",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 
 export default function RootLayout({ children }) {
-  const themeMode = getThemeFromCookies(); // Get theme from cookies (SSR)
-
   return (
     <html lang="en">
       <body>
-        <ThemeProviderWrapper initialTheme={themeMode}>
-        <Navbar/>
-          {children}</ThemeProviderWrapper>
+        <ThemeProviderWrapper>
+          <ThemeBackgroundWrapper> {/* Apply background color here */}
+            <Navbar />
+            {children}
+          </ThemeBackgroundWrapper>
+        </ThemeProviderWrapper>
       </body>
     </html>
   );
