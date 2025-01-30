@@ -77,7 +77,7 @@ const FilterSection = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
 }));
 
-function FilterWrapper({onApplyFilters,onClearFilters,selectedFilters, setSelectedFilters}) {
+function FilterWrapper({onApplyFilters,onClearFilters,selectedFilters, setSelectedFilters,sizeFilterArr,allColors}) {
   const theme = useTheme();
 
 
@@ -150,7 +150,7 @@ function FilterWrapper({onApplyFilters,onClearFilters,selectedFilters, setSelect
         {/* Size Filter (Checkbox - Multiple Selections) */}
         <FilterSection>
           <FilterSizeComponent
-            sizeArr={[]}
+            sizeArr={sizeFilterArr}
             sizeLoading={false}
             selectedFilters={selectedFilters}
             handleCheckboxChange={handleCheckboxChange}
@@ -159,7 +159,7 @@ function FilterWrapper({onApplyFilters,onClearFilters,selectedFilters, setSelect
 
         <FilterSection>
           <FilterColorComponent
-            colorArr={[]}
+            colorArr={allColors}
             colorLoading={false}
             selectedFilters={selectedFilters}
             handleCheckboxChange={handleCheckboxChange}

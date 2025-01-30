@@ -26,7 +26,7 @@ function FilterSizeComponent({ sizeArr,sizeLoading ,selectedFilters,handleCheckb
   return (
     <>
       <FilterTitle>Size</FilterTitle>
-      { !sizeLoading ? sizeArr?.map((size) => (
+      {  sizeArr?.data?.map((size) => (
         <FormControlLabel
           key={"size"+size?.pk_size_id}
           control={
@@ -37,7 +37,7 @@ function FilterSizeComponent({ sizeArr,sizeLoading ,selectedFilters,handleCheckb
           }
           label={<StyledText>{size?.size_name}</StyledText>}
         />
-      )):<><TextAreaSkeleton/></>}
+      ))}
     </>
   );
 }

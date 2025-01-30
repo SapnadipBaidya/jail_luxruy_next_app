@@ -28,7 +28,7 @@ const GridWrapperComponent = styled("div")(({ theme }) => ({
   },
 }));
 
-function GridWrapper({ itemsArr, type }) {
+function GridWrapper({ itemsArr, type,loading }) {
   const theme = useTheme();
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
   console.log("loading", itemsArr?.loading);
@@ -38,7 +38,7 @@ function GridWrapper({ itemsArr, type }) {
   return (
     <GridWrapperComponent>
       <Grid container spacing={3} justifyContent="space-between" alignItems="stretch">
-        {itemsArr?.length < 1 ? (
+        {loading ? (
           // ✅ Render 8 skeleton placeholders in Grid layout
           <>
             {Array.from({ length: 8 }).map((_, index) => (

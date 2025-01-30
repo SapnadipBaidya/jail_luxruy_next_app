@@ -48,8 +48,8 @@ function FilterColorComponent({
     <>
       <FilterTitle>Colours</FilterTitle>
       <FilterColorWrapper>
-        {!colorLoading ? (
-          colorArr?.map((color) => (
+        {
+          colorArr?.data?.map((color) => (
             <FormControlLabel
               key={"color" + color?.pk_color_id}
               control={
@@ -71,11 +71,7 @@ function FilterColorComponent({
               }
             />
           ))
-        ) : (
-          <>
-            <TextAreaSkeleton />
-          </>
-        )}
+       }
       </FilterColorWrapper>
     </>
   );
