@@ -12,7 +12,6 @@ const CardContainer = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  width: "100vw",
   height: "30vh",
   boxShadow: theme.shadows[3],
   borderRadius: theme.shape.borderRadius,
@@ -20,7 +19,15 @@ const CardContainer = styled(Box)(({ theme }) => ({
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center",
   position: "relative", // Needed for absolute positioning of arrows
-  padding:"0 5vw 0 5vw"
+  padding: "0 5vw", // Adjusted padding for better responsiveness
+  [theme.breakpoints.down("md")]: {
+    height: "25vh", // Adjusted for tablets
+    padding: "0 3vw",
+  },
+  [theme.breakpoints.down("sm")]: {
+    height: "20vh", // Adjusted for mobile
+    padding: "0 2vw",
+  },
 }));
 
 const CircleWrapper = styled(Box)(({ theme }) => ({
@@ -32,8 +39,15 @@ const CircleWrapper = styled(Box)(({ theme }) => ({
   scrollbarWidth: "none", // ✅ Hide scrollbar
   "&::-webkit-scrollbar": { display: "none" },
   scrollBehavior: "smooth",
-  width: "90%", // Limits scrolling area
-   padding: theme.spacing(10)
+  padding: theme.spacing(5), // Adjusted for better spacing
+  [theme.breakpoints.down("md")]: {
+    gap: theme.spacing(1.5),
+    padding: theme.spacing(3),
+  },
+  [theme.breakpoints.down("sm")]: {
+    gap: theme.spacing(1),
+    padding: theme.spacing(2),
+  },
 }));
 
 export default function CategoryCarousel({ categories }) {
