@@ -30,7 +30,7 @@ import ProfileBtn from "./buttons/profileBtn";
 import TruncatedText from "./wrappers/TruncatedText";
 import ThemeToggle from "./themeToggle";
 import { useTheme } from "@emotion/react";
-import useDebounce from "@/utils/customHooks/useDebounce"
+import useDebounce from "@/utils/customHooks/useDebounce";
 
 // ✅ Mocked user for now
 const user = { id: "111", name: "sapnadip" };
@@ -76,10 +76,18 @@ export default function Navbar() {
   const handleMenuClose = () => setAnchorEl(null);
   const toggleMobileNav = () => setMobileOpen(!mobileOpen);
 
+  // Prefetch the products page
+  React.useEffect(() => {
+    router.prefetch("/products");
+  }, [router]);
+
   // ✅ Debounced search handler
   const handleSearch = useDebounce((query) => {
-    console.log("Searching for:", query);
-    router.push(`products/search?userInput=${query}`)
+    if (query.trim()) {
+      const searchPath = `/products/search?userInput=${encodeURIComponent(query)}`;
+      console.log("Navigating to:", searchPath);
+      router.push(searchPath);
+    }
   }, 500);
 
   // ✅ Handle search input change
@@ -92,7 +100,9 @@ export default function Navbar() {
   // ✅ Handle search submission
   const handleSearchSubmit = () => {
     if (searchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+      const searchPath = `/products/search?userInput=${encodeURIComponent(searchQuery)}`;
+      console.log("Navigating to:", searchPath);
+      router.push(searchPath);
     }
   };
 
