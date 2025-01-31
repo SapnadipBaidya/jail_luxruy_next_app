@@ -22,6 +22,7 @@ export default function ItemsPageClient({ ItemsData, initialFilters, initialPage
   const [showFilters, setShowFilters] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState(initialFilters);
   const [itemsArr, setItemsArr] = useState(ItemsData?.data);
+  console.log("itemsArr",itemsArr?.data)
   const [page, setPage] = useState(initialPage);  // ✅ Fix: Declare page state
 
   // Create query string from filters

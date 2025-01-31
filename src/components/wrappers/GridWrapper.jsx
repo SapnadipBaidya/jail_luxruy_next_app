@@ -29,8 +29,8 @@ function GridWrapper({ itemsArr, type,loading }) {
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
   console.log("loading", itemsArr?.loading);
   
-  const data = Array.isArray(itemsArr) ? itemsArr : [];
-
+  const data =  itemsArr 
+  console.log("data",Array.isArray(data),data,data.length,itemsArr)
   return (
     <GridWrapperComponent>
       <Grid container spacing={3} justifyContent="space-between" alignItems="stretch">

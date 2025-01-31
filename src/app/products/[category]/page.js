@@ -5,18 +5,19 @@ import { Suspense } from 'react'
 
 // Separate data fetching components
 async function ItemsPageContent({ params, searchParams }) {
-  const category = params?.category || "default-category";
+  const category = await params?.category || "default-category";
+  const userInput = await searchParams?.userInput || "";
   const page = parseInt( await searchParams?.page) || 1;
   const color = await  searchParams?.color || "";
   const size = await  searchParams?.size || "";
   const gender = await  searchParams?.gender || "";
- console.log("searchParams",page,color,size,gender)
+  console.log("searchParams",page,color,size,gender ,"params",category)
   // Fetch data in parallel where possible
   const [ItemsData, allSizesPerCategory, allColors] = await Promise.all([
-    fetchItemsFromAPI(category, page,color,size,gender),
+    category === "search" ? fetchSearchItemsFromAPI(userInput,page) : fetchItemsFromAPI(category, page, color, size, gender),
     fetchSizeFilterByCategoryName(category),
     fetchAllColors(),
-  ]);
+]);
 
   const initialFilters = {
     gender: searchParams.gender || "",
@@ -64,6 +65,16 @@ async function fetchItemsFromAPI(category, page,colors,sizes,gender) {
   const response = await makeGetAPIcall(apiUrl);
   return { loading: false, data: response?.data || [] };
 }
+
+async function fetchSearchItemsFromAPI(userInput,page) {
+  console.log("fetchSearchItemsFromAPI",userInput,page)
+  const apiUrl = `http://localhost:8080/api/products/searchByNameColorCategory?userInput=${userInput}&limit=12&page=${page}`;
+  console.log("apiUrl",apiUrl)
+  const response = await makeGetAPIcall(apiUrl);
+  console.log("response",response.data)
+  return { loading: false, data: response?.data || [] };
+}
+
 
 async function fetchAllColors() {
   const apiUrl = `http://localhost:8080/api/filters/getAllColors`;

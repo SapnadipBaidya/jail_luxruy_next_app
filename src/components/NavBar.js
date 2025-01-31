@@ -15,13 +15,13 @@ import {
   Drawer,
   Box,
   TextField,
+  Card,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
   Search as SearchIcon,
   ShoppingCart,
   Favorite,
-  Person,
   Close as CloseIcon,
   KeyboardArrowDown as ChevronDownIcon,
 } from "@mui/icons-material";
@@ -30,6 +30,7 @@ import ProfileBtn from "./buttons/profileBtn";
 import TruncatedText from "./wrappers/TruncatedText";
 import ThemeToggle from "./themeToggle";
 import { useTheme } from "@emotion/react";
+import useDebounce from "@/utils/customHooks/useDebounce"
 
 // ✅ Mocked user for now
 const user = { id: "111", name: "sapnadip" };
@@ -75,6 +76,26 @@ export default function Navbar() {
   const handleMenuClose = () => setAnchorEl(null);
   const toggleMobileNav = () => setMobileOpen(!mobileOpen);
 
+  // ✅ Debounced search handler
+  const handleSearch = useDebounce((query) => {
+    console.log("Searching for:", query);
+    router.push(`products/search?userInput=${query}`)
+  }, 500);
+
+  // ✅ Handle search input change
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    handleSearch(query);
+  };
+
+  // ✅ Handle search submission
+  const handleSearchSubmit = () => {
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
   return (
     <>
       {/* ✅ Top AppBar */}
@@ -102,11 +123,7 @@ export default function Navbar() {
               onClose={handleMenuClose}
             >
               {!user?.id ? (
-                <MenuItem
-                  onClick={() => {
-                    router.push("/login-signup");
-                  }}
-                >
+                <MenuItem onClick={() => router.push("/login-signup")}>
                   <Card sx={{ padding: "1vw" }}>
                     <h2>Welcome</h2>
                     <h6>
@@ -119,15 +136,13 @@ export default function Navbar() {
                 <>
                   <MenuItem
                     key="profile"
-                    onClick={(e) => {
-                      router.push("userContact");
-                    }}
+                    onClick={() => router.push("/userContact")}
                   >
                     Profile
                   </MenuItem>
                   <MenuItem
                     key="logout"
-                    onClick={(e) => {
+                    onClick={() => {
                       // logout();
                     }}
                   >
@@ -146,23 +161,17 @@ export default function Navbar() {
 
           {/* ✅ Logo */}
           <HomeLogoWrapper onClick={() => router.push("/")}>
-            {theme.palette.mode == "light" ? (
-              <img
-                src="http://localhost:3000/webps/homePageLogoLight.webp"
-                alt="Jail Logo"
-                width={200}
-                height={50}
-                priority
-              />
-            ) : (
-              <img
-                src="http://localhost:3000/webps/homePageLogoDark.webp"
-                alt="Jail Logo"
-                width={200}
-                height={50}
-                priority
-              />
-            )}
+            <img
+              src={
+                theme.palette.mode === "light"
+                  ? "/webps/homePageLogoLight.webp"
+                  : "/webps/homePageLogoDark.webp"
+              }
+              alt="Jail Logo"
+              width={200}
+              height={50}
+              priority
+            />
           </HomeLogoWrapper>
 
           {/* ✅ Right Side Icons */}
@@ -170,23 +179,29 @@ export default function Navbar() {
             <StyledButton
               color="inherit"
               onClick={() => setIsSearchOpen(!isSearchOpen)}
+              aria-label="search"
             >
               {isSearchOpen ? <CloseIcon /> : <SearchIcon />}
             </StyledButton>
             <StyledButton
               color="inherit"
               onClick={() => router.push("/wishlist")}
+              aria-label="wishlist"
             >
               <Favorite />
             </StyledButton>
-            <StyledButton color="inherit" onClick={() => router.push("/cart")}>
+            <StyledButton
+              color="inherit"
+              onClick={() => router.push("/cart")}
+              aria-label="cart"
+            >
               <ShoppingCart />
             </StyledButton>
 
             <ProfileBtn
               text={
                 user?.id ? (
-                  <TruncatedText maxWidth="9vw">{"sapnadip"}</TruncatedText>
+                  <TruncatedText maxWidth="9vw">{user.name}</TruncatedText>
                 ) : (
                   "Profile"
                 )
@@ -205,7 +220,12 @@ export default function Navbar() {
               variant="outlined"
               placeholder="Search for products..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  handleSearchSubmit();
+                }
+              }}
             />
           </SearchBox>
         )}
