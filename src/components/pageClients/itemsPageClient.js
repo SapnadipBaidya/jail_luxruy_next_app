@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams,useParams } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import GridWrapper from "@/components/wrappers/GridWrapper";
@@ -12,10 +12,13 @@ import PaginationComponent from "@/components/paginationComponent/pagination";
 import { usePathname } from 'next/navigation';
 import { debounce } from "lodash";
 
-export default function ItemsPageClient({ ItemsData, initialFilters, initialPage, sizeFilterArr, allColors }) {
+export default function ItemsPageClient({ ItemsData, initialFilters, initialPage, sizeFilterArr, allColors ,userInput}) {
+  console.log("userInput",userInput)
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const params = useParams();
+  console.log("searchParams",searchParams,params)
   const theme = useTheme();
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -28,7 +31,7 @@ export default function ItemsPageClient({ ItemsData, initialFilters, initialPage
   // Create query string from filters
   const createQueryString = useCallback((filters, page) => {
     const params = [];
-
+    if(userInput)  params.push(`userInput=${userInput}`);
     if (page) params.push(`page=${page}`);
     if (filters.gender) params.push(`gender=${filters.gender}`);
     

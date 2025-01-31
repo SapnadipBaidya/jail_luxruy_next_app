@@ -7,6 +7,7 @@ import { StyledEngineProvider } from "@mui/material";
 
 
 
+
 // Wrapper to dynamically update the background color based on theme
 function ThemeBackgroundWrapper({ children }) {
   const { themeMode } = useThemeContext(); // Get current theme dynamically
@@ -25,14 +26,14 @@ function ThemeBackgroundWrapper({ children }) {
 }
 
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
       <StyledEngineProvider injectFirst>
         <ThemeProviderWrapper>
           <ThemeBackgroundWrapper> {/* Apply background color here */}
-            <Navbar />
+            <Navbar categories={carouselImages.data}/>
             {children}
           </ThemeBackgroundWrapper>
         </ThemeProviderWrapper>
