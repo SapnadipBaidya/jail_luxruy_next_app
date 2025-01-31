@@ -74,7 +74,7 @@ const FilterSection = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
 }));
 
-const FilterDrawerMobile = ({ onApplyFilters, onClearFilters, selectedFilters, setSelectedFilters ,setShowFilters ,showFilters}) => {
+const FilterDrawerMobile = ({ onApplyFilters, onClearFilters, selectedFilters, setSelectedFilters ,setShowFilters ,showFilters , sizeFilterArr,allColors}) => {
   const theme = useTheme();
 
 
@@ -146,8 +146,8 @@ const FilterDrawerMobile = ({ onApplyFilters, onClearFilters, selectedFilters, s
             {/* Size Filter (Checkbox - Multiple Selections) */}
             <FilterSection>
               <FilterSizeComponent
-                sizeArr={sizeData}
-                sizeLoading={sizeLoading}
+                sizeArr={sizeFilterArr}
+                sizeLoading={false}
                 selectedFilters={selectedFilters}
                 handleCheckboxChange={handleCheckboxChange}
               />
@@ -156,8 +156,8 @@ const FilterDrawerMobile = ({ onApplyFilters, onClearFilters, selectedFilters, s
             {/* Color Filter */}
             <FilterSection>
               <FilterColorComponent
-                colorArr={colorData}
-                colorLoading={colorLoading}
+                colorArr={allColors}
+                colorLoading={false}
                 selectedFilters={selectedFilters}
                 handleCheckboxChange={handleCheckboxChange}
               />
@@ -195,7 +195,8 @@ const FilterDrawerMobile = ({ onApplyFilters, onClearFilters, selectedFilters, s
               variant="contained"
               fullWidth
               sx={{ marginTop: 1 }}
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault()
                 onApplyFilters(selectedFilters);
                 setShowFilters(false);
               }}

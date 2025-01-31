@@ -6,20 +6,23 @@ import { Suspense } from 'react'
 // Separate data fetching components
 async function ItemsPageContent({ params, searchParams }) {
   const category = params?.category || "default-category";
-  const page = parseInt(searchParams?.page) || 1;
-
+  const page = parseInt( await searchParams?.page) || 1;
+  const color = await  searchParams?.color || "";
+  const size = await  searchParams?.size || "";
+  const gender = await  searchParams?.gender || "";
+ console.log("searchParams",page,color,size,gender)
   // Fetch data in parallel where possible
   const [ItemsData, allSizesPerCategory, allColors] = await Promise.all([
-    fetchItemsFromAPI(category, page),
+    fetchItemsFromAPI(category, page,color,size,gender),
     fetchSizeFilterByCategoryName(category),
     fetchAllColors(),
   ]);
 
   const initialFilters = {
-    gender: "",
-    size: [],
-    color: [],
-    price: [0, 1000000],
+    gender: searchParams.gender || "",
+    size: searchParams.size ? searchParams.size.split(',').map(Number) : [],
+    color: searchParams.color ? searchParams.color.split(',').map(Number) : [],
+    price: searchParams.price ? searchParams.price.split(',').map(Number) : [0, 1000000]
   };
 
   return (
@@ -55,8 +58,9 @@ export default function ItemsPage({ params, searchParams }) {
 }
 
 // Move data fetching functions here
-async function fetchItemsFromAPI(category, page) {
-  const apiUrl = `http://localhost:8080/api/products/findProductsByCategoryName?categoryName=${category}&sortBy=product_price_local&sortOrder=ASC&limit=12&page=${page}`;
+async function fetchItemsFromAPI(category, page,colors,sizes,gender) {
+  const apiUrl = `http://localhost:8080/api/products/findProductsByCategoryName?categoryName=${category}&colorFilter=${colors}&sizeFilter=${sizes}&gender=${gender}&sortBy=product_price_local&sortOrder=ASC&limit=12&page=${page}`;
+  console.log("apiUrl",apiUrl)
   const response = await makeGetAPIcall(apiUrl);
   return { loading: false, data: response?.data || [] };
 }
