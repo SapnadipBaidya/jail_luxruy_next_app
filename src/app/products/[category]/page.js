@@ -5,12 +5,14 @@ import { Suspense } from 'react'
 
 // Separate data fetching components
 async function ItemsPageContent({ params, searchParams }) {
-  const category = await params?.category || "default-category";
-  const userInput = await searchParams?.userInput || "";
-  const page = parseInt( await searchParams?.page) || 1;
-  const color = await  searchParams?.color || "";
-  const size = await  searchParams?.size || "";
-  const gender = await  searchParams?.gender || "";
+  const waitedParams = await params;
+  const waitedSearchParams = await searchParams;
+  const category = waitedParams?.category || "default-category";
+  const userInput = waitedSearchParams?.userInput || "";
+  const page = parseInt( waitedSearchParams?.page) || 1;
+  const color = waitedSearchParams?.color || "";
+  const size = waitedSearchParams?.size || "";
+  const gender = waitedSearchParams?.gender || "";
   console.log("searchParams",page,color,size,gender ,"params",category)
   // Fetch data in parallel where possible
   const [ItemsData, allSizesPerCategory, allColors] = await Promise.all([
@@ -47,8 +49,8 @@ function ErrorBoundary({ children }) {
   }
 }
 
-export default function ItemsPage({ params, searchParams }) {
-  const page = parseInt(searchParams?.page) || 1;
+export default async function ItemsPage({ params, searchParams }) {
+  const page = parseInt(await searchParams?.page) || 1;
   return (
     <ErrorBoundary>
       <Suspense key={page} fallback={<LoadingAnimation />}>

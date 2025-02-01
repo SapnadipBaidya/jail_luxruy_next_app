@@ -33,7 +33,7 @@ export default async function RootLayout({ children }) {
       <StyledEngineProvider injectFirst>
         <ThemeProviderWrapper>
           <ThemeBackgroundWrapper> {/* Apply background color here */}
-            <Navbar categories={carouselImages.data}/>
+            <Navbar />
             {children}
           </ThemeBackgroundWrapper>
         </ThemeProviderWrapper>

@@ -84,11 +84,12 @@ export default function Navbar() {
   // ✅ Debounced search handler
   const handleSearch = useDebounce((query) => {
     if (query.trim()) {
-      const searchPath = `/products/search?userInput=${encodeURIComponent(query)}`;
+      const searchPath = `/search?userInput=${encodeURIComponent(query)}`;
       console.log("Navigating to:", searchPath);
-      router.push(searchPath);
+      router.push(searchPath); // This will navigate to /search
     }
   }, 500);
+  
 
   // ✅ Handle search input change
   const handleSearchChange = (e) => {
@@ -100,7 +101,7 @@ export default function Navbar() {
   // ✅ Handle search submission
   const handleSearchSubmit = () => {
     if (searchQuery.trim()) {
-      const searchPath = `/products/search?userInput=${encodeURIComponent(searchQuery)}`;
+      const searchPath = `/search?userInput=${encodeURIComponent(searchQuery)}`;
       console.log("Navigating to:", searchPath);
       router.push(searchPath);
     }

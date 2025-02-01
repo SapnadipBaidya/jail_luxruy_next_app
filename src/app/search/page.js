@@ -5,36 +5,32 @@ import { Suspense } from 'react'
 
 // Separate data fetching components
 async function SearchPageContent({ params, searchParams }) {
-  const category = await params?.category || "default-category";
-  const userInput = await searchParams?.userInput || "";
-  const page = parseInt( await searchParams?.page) || 1;
-  const color = await  searchParams?.color || "";
-  const size = await  searchParams?.size || "";
-  const gender = await  searchParams?.gender || "";
-  console.log("searchParams", await searchParams ,"params", await params)
+
+  const waitedSearchParams = await searchParams
+
   // Fetch data in parallel where possible
   const [ItemsData, allSizesPerCategory, allColors] = await Promise.all([
-    fetchSearchItemsFromAPI(userInput,page),
-    fetchSizeFilterByCategoryName(userInput),
+    fetchSearchItemsFromAPI(waitedSearchParams?.userInput,waitedSearchParams?.page),
+    fetchSizeFilterByCategoryName(waitedSearchParams?.userInput),
     fetchAllColors(),
 ]);
 
   const initialFilters = {
-    gender: searchParams.gender || "",
-    size: searchParams.size ? searchParams.size.split(',').map(Number) : [],
-    color: searchParams.color ? searchParams.color.split(',').map(Number) : [],
-    price: searchParams.price ? searchParams.price.split(',').map(Number) : [0, 1000000]
+    gender: waitedSearchParams.gender || "",
+    size:   waitedSearchParams.size ? waitedSearchParams.size.split(',').map(Number) : [],
+    color:  waitedSearchParams.color ? waitedSearchParams.color.split(',').map(Number) : [],
+    price:  waitedSearchParams.price ? waitedSearchParams.price.split(',').map(Number) : [0, 1000000]
   };
 
   return (
     <ItemsPageClient
       ItemsData={ItemsData}
       initialFilters={initialFilters}
-      initialPage={page}
-      category={category}
+      initialPage={waitedSearchParams?.page}
+      category={waitedSearchParams?.category}
       sizeFilterArr={allSizesPerCategory}
       allColors={allColors}
-      userInput={userInput}
+      userInput={waitedSearchParams?.userInput}
     />
   );
 }
@@ -48,8 +44,8 @@ function ErrorBoundary({ children }) {
   }
 }
 
-export default function ItemsPage({ params, searchParams }) {
-  const page = parseInt(searchParams?.page) || 1;
+export default async function ItemsPage({ params, searchParams }) {
+  const page = parseInt(await searchParams?.page) || 1;
   return (
     <ErrorBoundary>
       <Suspense key={page} fallback={<LoadingAnimation />}>
