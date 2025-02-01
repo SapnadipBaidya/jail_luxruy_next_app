@@ -4,10 +4,7 @@ import { useThemeContext } from "@/context/themeContext"; // Import theme contex
 import Navbar from "@/components/NavBar";
 import { ThemeProviderWrapper } from "@/context/themeContext";
 import { StyledEngineProvider } from "@mui/material";
-
-
-
-
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 // Wrapper to dynamically update the background color based on theme
 function ThemeBackgroundWrapper({ children }) {
   const { themeMode } = useThemeContext(); // Get current theme dynamically
@@ -25,20 +22,25 @@ function ThemeBackgroundWrapper({ children }) {
   );
 }
 
-
 export default async function RootLayout({ children }) {
   return (
+    <ErrorBoundary>
     <html lang="en">
       <body>
-      <StyledEngineProvider injectFirst>
-        <ThemeProviderWrapper>
-          <ThemeBackgroundWrapper> {/* Apply background color here */}
-            <Navbar />
-            {children}
-          </ThemeBackgroundWrapper>
-        </ThemeProviderWrapper>
-        </StyledEngineProvider>
+      
+          <StyledEngineProvider injectFirst>
+            <ThemeProviderWrapper>
+              <ThemeBackgroundWrapper>
+                {" "}
+                {/* Apply background color here */}
+                <Navbar />
+                {children}
+              </ThemeBackgroundWrapper>
+            </ThemeProviderWrapper>
+          </StyledEngineProvider>
+      
       </body>
     </html>
+    </ErrorBoundary>
   );
 }

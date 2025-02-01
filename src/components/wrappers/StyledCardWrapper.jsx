@@ -126,7 +126,7 @@ const StyledCardWrapper = React.memo(({ type, item }) => {
               e.preventDefault();
               e.stopPropagation();
              
-              router.push(`/item/`+"/"+removeWhiteSpaceFromMiddle(item?.product_name)+"?pid="+item?.product_id+"&pdid="+item?.product_detail_id);
+              router.push(`/item/`+"/"+(item?.product_name)+"?pid="+item?.product_id+"&pdid="+item?.product_detail_id);
             }}
           />
         </Fade>

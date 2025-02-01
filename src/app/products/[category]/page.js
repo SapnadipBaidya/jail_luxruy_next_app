@@ -16,7 +16,7 @@ async function ItemsPageContent({ params, searchParams }) {
   console.log("searchParams",page,color,size,gender ,"params",category)
   // Fetch data in parallel where possible
   const [ItemsData, allSizesPerCategory, allColors] = await Promise.all([
-    category === "search" ? fetchSearchItemsFromAPI(userInput,page) : fetchItemsFromAPI(category, page, color, size, gender),
+    fetchItemsFromAPI(category, page, color, size, gender),
     fetchSizeFilterByCategoryName(category),
     fetchAllColors(),
 ]);
@@ -40,23 +40,16 @@ async function ItemsPageContent({ params, searchParams }) {
   );
 }
 
-// Error boundary component (simplified example)
-function ErrorBoundary({ children }) {
-  try {
-    return children;
-  } catch (error) {
-    return <div>Error loading content. Please try again later.</div>;
-  }
-}
+
 
 export default async function ItemsPage({ params, searchParams }) {
   const page = parseInt(await searchParams?.page) || 1;
   return (
-    <ErrorBoundary>
+   
       <Suspense key={page} fallback={<LoadingAnimation />}>
         <ItemsPageContent params={params} searchParams={searchParams} />
       </Suspense>
-    </ErrorBoundary>
+    
   );
 }
 

@@ -254,7 +254,8 @@ const RelatedProducts = ({ products }) => (
 )
 
 // Main Component
-export default function ProductDetail() {
+export default function ProductDetail({data}) {
+  console.log("inside productdetail ",data)
   const productData = {
     title: "Wallet",
     price: 2999,
