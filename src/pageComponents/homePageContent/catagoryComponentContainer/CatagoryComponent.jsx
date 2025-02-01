@@ -57,14 +57,14 @@ export default function CategoryCarousel({ categories }) {
   // ✅ Function to Scroll Left
   const scrollLeft = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollLeft -= 200;
+      scrollRef.current.scrollLeft -= window.innerWidth < 600 ? 150 : 200; // Adjust scroll distance for mobile
     }
   };
 
   // ✅ Function to Scroll Right
   const scrollRight = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollLeft += 200;
+      scrollRef.current.scrollLeft += window.innerWidth < 600 ? 150 : 200; // Adjust scroll distance for mobile
     }
   };
 
@@ -85,7 +85,7 @@ export default function CategoryCarousel({ categories }) {
             onClick={scrollLeft}
             sx={{
               position: "absolute",
-              left: 0,
+              left: { xs: "5px", sm: "10px", md: "20px" }, // Responsive positioning
               zIndex: 10,
               backgroundColor: "rgba(255,255,255,0.7)",
               boxShadow: 3,
@@ -113,7 +113,7 @@ export default function CategoryCarousel({ categories }) {
             onClick={scrollRight}
             sx={{
               position: "absolute",
-              right: 0,
+              right: { xs: "5px", sm: "10px", md: "20px" }, // Responsive positioning
               zIndex: 10,
               backgroundColor: "rgba(255,255,255,0.7)",
               boxShadow: 3,
