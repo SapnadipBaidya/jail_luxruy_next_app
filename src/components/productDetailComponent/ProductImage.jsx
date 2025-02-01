@@ -1,15 +1,9 @@
 "use client"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 
 // Dummy images for fallback (Different text for each)
-const DUMMY_IMAGES = [
-  "https://via.placeholder.com/400x400/cccccc/000000?text=Image+1",
-  "https://via.placeholder.com/400x400/aaaaaa/000000?text=Image+2",
-  "https://via.placeholder.com/400x400/888888/000000?text=Image+3",
-  "https://via.placeholder.com/400x400/666666/000000?text=Image+4",
-];
 
 const StyledContainer = styled(Box)({
   display: "flex",
@@ -59,17 +53,16 @@ const StyledThumbnail = styled("img")(({ theme, active }) => ({
 }));
 
 const ProductImage = ({ images = [] }) => {
-  // Use real images if available, otherwise use dummy images
-  const validImages = images.length > 0 ? images : DUMMY_IMAGES;
-  const [selectedImage, setSelectedImage] = useState(validImages[0]);
+  
+  const [selectedImage, setSelectedImage] = useState(images[0]);
 
   return (
     <StyledContainer>
       <StyledMainImage src={selectedImage} alt="Product Image" />
       <StyledThumbnailContainer>
-        {validImages.map((image, index) => (
+        {images?.map((image, index) => (
           <StyledThumbnail
-            key={index}
+            key={`Thumbnail ${index + 1}`}
             src={image}
             alt={`Thumbnail ${index + 1}`}
             active={image === selectedImage ? 1 : 0}
@@ -81,4 +74,4 @@ const ProductImage = ({ images = [] }) => {
   );
 };
 
-export default ProductImage;
+export default React.memo(ProductImage);
