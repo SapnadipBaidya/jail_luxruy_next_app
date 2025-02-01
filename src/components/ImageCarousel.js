@@ -4,18 +4,27 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
-import useDebounce from "@/utils/customHooks/useDebounce"; // ✅ Debounced Auto-Slide
+import useDebounce from "@/utils/customHooks/useDebounce";
 import removeWhiteSpaceFromMiddle from "@/utils/attachProperNavName";
 
-const CarouselContainer = styled(Box)({
+const CarouselContainer = styled(Box)(({ theme }) => ({
   position: "relative",
   width: "100vw",
-  height: "100vh",
-  overflow: "hidden", // ✅ Prevents scrolling
+  minHeight: "50vh", // Default height for mobile
+  maxHeight: "70vh", // Prevents overflow on large screens
+  overflow: "hidden",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-});
+
+  [theme.breakpoints.up("sm")]: {
+    minHeight: "60vh", // Taller height for tablets and desktops
+  },
+
+  [theme.breakpoints.up("md")]: {
+    minHeight: "70vh", // Taller height for larger screens
+  },
+}));
 
 const ImageWrapper = styled(Box)(({ active }) => ({
   position: "absolute",
@@ -26,43 +35,56 @@ const ImageWrapper = styled(Box)(({ active }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  cursor: active ? "pointer" : "default", // ✅ Clickable only when active
-  zIndex: active ? 10 : 1, // ✅ Ensures active image is on top
+  cursor: active ? "pointer" : "default",
+  zIndex: active ? 10 : 1,
 }));
 
-const Image = styled("img")({
-  width: "100%", // ✅ Makes sure the image doesn't overflow
+const Image = styled("img")(({ theme }) => ({
+  width: "100%",
   height: "100%",
-  objectFit: "cover", // ✅ Maintains aspect ratio and prevents stretching
-  maxWidth: "100vw", // ✅ Prevents going outside viewport
+  objectFit: "cover", // Default to cover for larger screens
+  maxWidth: "100vw",
   maxHeight: "100vh",
-});
 
-const DotsWrapper = styled(Box)({
+  [theme.breakpoints.down("sm")]: {
+    objectFit: "contain", // Prevents cropping on mobile
+  },
+}));
+
+const DotsWrapper = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   position: "absolute",
-  bottom: "30px",
+  bottom: "20px", // Adjusted for smaller screens
   width: "100%",
   zIndex: 100,
-});
+
+  [theme.breakpoints.down("sm")]: {
+    bottom: "10px", // Moves dots up on mobile
+  },
+}));
 
 const Dot = styled("div")(({ theme, active }) => ({
-  width: "14px",
-  height: "14px",
+  width: active ? "14px" : "10px",
+  height: active ? "14px" : "10px",
   borderRadius: "50%",
   backgroundColor: active ? theme.palette.primary.main : theme.palette.grey[400],
   cursor: "pointer",
-  transition: "background-color 0.3s ease",
+  transition: "background-color 0.3s ease, width 0.3s ease, height 0.3s ease",
   margin: "0 5px",
+
+  [theme.breakpoints.down("sm")]: {
+    width: active ? "10px" : "8px",
+    height: active ? "10px" : "8px",
+    margin: "0 3px",
+  },
 }));
 
 export default function ImageCarousel({ images }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const router = useRouter();
 
-  // ✅ Use debounced auto-slide (Prevents re-renders)
   const autoSlide = useDebounce(() => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
   }, 5000);
@@ -83,17 +105,21 @@ export default function ImageCarousel({ images }) {
           key={image.id || index}
           active={index === currentIndex}
           onClick={() =>
-            index === currentIndex && router.push(`/products/${removeWhiteSpaceFromMiddle(image?.catagory_name)}`)
+            index === currentIndex &&
+            router.push(`/products/${removeWhiteSpaceFromMiddle(image?.catagory_name)}`)
           }
         >
           <Image src={image.catagory_img} alt={image.alt || "Product Image"} />
         </ImageWrapper>
       ))}
 
-      {/* Dot Navigation */}
       <DotsWrapper>
         {images.map((_, index) => (
-          <Dot key={index} active={index === currentIndex} onClick={() => setCurrentIndex(index)} />
+          <Dot
+            key={index}
+            active={index === currentIndex}
+            onClick={() => setCurrentIndex(index)}
+          />
         ))}
       </DotsWrapper>
     </CarouselContainer>
