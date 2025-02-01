@@ -22,10 +22,10 @@ async function ItemsPageContent({ params, searchParams }) {
 ]);
 
   const initialFilters = {
-    gender: searchParams.gender || "",
-    size: searchParams.size ? searchParams.size.split(',').map(Number) : [],
-    color: searchParams.color ? searchParams.color.split(',').map(Number) : [],
-    price: searchParams.price ? searchParams.price.split(',').map(Number) : [0, 1000000]
+    gender: waitedSearchParams.gender || "",
+    size: waitedSearchParams.size ? waitedSearchParams.size.split(',').map(Number) : [],
+    color: waitedSearchParams.color ? waitedSearchParams.color.split(',').map(Number) : [],
+    price: waitedSearchParams.price ? waitedSearchParams.price.split(',').map(Number) : [0, 1000000]
   };
 
   return (

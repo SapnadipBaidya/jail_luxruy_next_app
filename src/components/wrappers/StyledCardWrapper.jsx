@@ -111,6 +111,7 @@ const StyledCardWrapper = React.memo(({ type, item }) => {
 
   useEffect(() => {
     setShow(true);
+    router.prefetch("/item")
     return () => setShow(false);
   }, []);
 
