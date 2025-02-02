@@ -1,9 +1,7 @@
 "use client"
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
-
-// Dummy images for fallback (Different text for each)
 
 const StyledContainer = styled(Box)({
   display: "flex",
@@ -12,6 +10,7 @@ const StyledContainer = styled(Box)({
   alignItems: "center",
   width: "100%",
   maxWidth: "500px",
+  position: "relative", // Added for zoom container positioning
   "@media (min-width: 900px)": {
     alignItems: "flex-start",
   },
@@ -23,6 +22,7 @@ const StyledMainImage = styled("img")(({ theme }) => ({
   objectFit: "cover",
   borderRadius: "8px",
   backgroundColor: theme.palette.secondary.main,
+  cursor: "zoom-in", // Indicates zoom functionality
   [theme.breakpoints.up("sm")]: {
     height: "400px",
   },
@@ -33,7 +33,7 @@ const StyledThumbnailContainer = styled(Box)(({ theme }) => ({
   gap: "10px",
   justifyContent: "center",
   width: "100%",
-  flexWrap: "wrap", // Ensures thumbnails wrap properly
+  flexWrap: "wrap",
   [theme.breakpoints.up("md")]: {
     justifyContent: "flex-start",
   },
@@ -52,13 +52,57 @@ const StyledThumbnail = styled("img")(({ theme, active }) => ({
   },
 }));
 
+const ZoomContainer = styled(Box)({
+  position: "absolute",
+  top: 0,
+  left: "40vw",
+  width: "40vw",
+  height: "400px",
+  overflow: "hidden",
+  borderRadius: "8px",
+  border: "1px solid #ccc",
+  display: "none", // Initially hidden
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "400% 400%", // Zoomed image size
+  zIndex:1000,
+});
+
 const ProductImage = ({ images = [] }) => {
-  
   const [selectedImage, setSelectedImage] = useState(images[0]);
+  const [hoveredImage, setHoveredImage] = useState(null);
+  const [zoomStyle, setZoomStyle] = useState({});
+  const mainImageRef = useRef(null);
+  const zoomContainerRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    if (!mainImageRef.current || !zoomContainerRef.current) return;
+
+    const { left, top, width, height } = mainImageRef.current.getBoundingClientRect();
+    const x = ((e.pageX - left) / width) * 100;
+    
+    const y = ((e.pageY - top) / height) * 100;
+
+    setZoomStyle({
+      display: "block",
+      backgroundImage: `url(${hoveredImage || selectedImage})`,
+      backgroundPosition: `${x}% ${y}%`,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setZoomStyle({ display: "none" });
+  };
 
   return (
     <StyledContainer>
-      <StyledMainImage src={selectedImage} alt="Product Image" />
+      <StyledMainImage
+        ref={mainImageRef}
+        src={hoveredImage || selectedImage}
+        alt="Product Image"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      />
+      <ZoomContainer ref={zoomContainerRef} style={zoomStyle} />
       <StyledThumbnailContainer>
         {images?.map((image, index) => (
           <StyledThumbnail
@@ -67,6 +111,8 @@ const ProductImage = ({ images = [] }) => {
             alt={`Thumbnail ${index + 1}`}
             active={image === selectedImage ? 1 : 0}
             onClick={() => setSelectedImage(image)}
+            onMouseEnter={() => setHoveredImage(image)}
+            onMouseLeave={() => setHoveredImage(null)}
           />
         ))}
       </StyledThumbnailContainer>
