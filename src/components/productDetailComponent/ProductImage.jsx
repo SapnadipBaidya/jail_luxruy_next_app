@@ -52,20 +52,22 @@ const StyledThumbnail = styled("img")(({ theme, active }) => ({
   },
 }));
 
-const ZoomContainer = styled(Box)({
+const ZoomContainer = styled(Box)(({ theme }) => ({
   position: "absolute",
   top: 0,
-  left: "40vw",
-  width: "40vw",
-  height: "400px",
+  left: "105%",
+  width: "48vw",
+  height: "70vh",
   overflow: "hidden",
   borderRadius: "8px",
-  border: "1px solid #ccc",
+  border: `0.5vh solid ${theme.custom.cardBg}`,
   display: "none", // Initially hidden
   backgroundRepeat: "no-repeat",
-  backgroundSize: "400% 400%", // Zoomed image size
+  backgroundSize: "300% 300%", // Zoomed image size
+  backgroundColor:theme.custom.cardBg,
   zIndex:1000,
-});
+  transition:"ease-in-out 0.5s !important"
+}));
 
 const ProductImage = ({ images = [] }) => {
   const [selectedImage, setSelectedImage] = useState(images[0]);
