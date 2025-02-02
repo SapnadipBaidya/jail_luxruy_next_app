@@ -36,16 +36,29 @@ const StyledMainImage = styled("img")(({ theme }) => ({
 const StyledThumbnailContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: "10px",
-  justifyContent: "center",
   width: "100%",
-  flexWrap: "wrap",
-  [theme.breakpoints.up("md")]: {
-    justifyContent: "flex-start",
+  overflowX: "auto", // Enable horizontal scrolling
+  scrollbarWidth: "thin", // For Firefox
+  scrollbarColor: `${theme.palette.primary.main} transparent`, // For Firefox
+  "&::-webkit-scrollbar": {
+    height: "8px", // Scrollbar height
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: theme.palette.primary.main, // Scrollbar thumb color
+    borderRadius: "4px", // Scrollbar thumb border radius
+  },
+  "&::-webkit-scrollbar-track": {
+    backgroundColor: theme.palette.grey[300], // Scrollbar track color
+  },
+  // Add hover effect for better visibility
+  "&:hover::-webkit-scrollbar-thumb": {
+    backgroundColor: theme.palette.primary.dark, // Darker thumb on hover
   },
 }));
 
 const ThumbnailWrapper = styled(Box)({
   position: "relative",
+  flexShrink: 0, // Prevent thumbnails from shrinking
 });
 
 const StyledThumbnail = styled("img")(({ theme, active }) => ({
