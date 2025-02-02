@@ -130,6 +130,7 @@ const ProductImage = ({ images = [] }) => {
   const mainImageRef = useRef(null);
   const zoomContainerRef = useRef(null);
   const cursorOverlayRef = useRef(null);
+  const thumbnailContainerRef = useRef(null);
   const currentImageRef = useRef(selectedImage);
 
   // Use useMediaQuery to detect mobile view
@@ -195,6 +196,25 @@ const ProductImage = ({ images = [] }) => {
   }, [isTablet]); // Add isTablet as a dependency
 
   useEffect(() => {
+    const thumbnailContainer = thumbnailContainerRef.current;
+    if (!thumbnailContainer) return;
+      
+    const handleWheel = (e) => {
+      if (e.deltaY !== 0) {
+       
+        thumbnailContainer.scrollLeft += e.deltaY; // Scroll horizontally instead
+      }
+    };
+
+    thumbnailContainer.addEventListener("wheel", handleWheel, { passive: false });
+    
+    return () => {
+      thumbnailContainer.removeEventListener("wheel", handleWheel);
+      e.preventDefault();
+    };
+  }, []);
+
+  useEffect(() => {
     if (zoomContainerRef.current) {
       zoomContainerRef.current.style.backgroundImage = `url(${currentImageRef.current})`;
     }
@@ -223,7 +243,7 @@ const ProductImage = ({ images = [] }) => {
         </>
       )}
 
-      <StyledThumbnailContainer>
+      <StyledThumbnailContainer ref={thumbnailContainerRef}>
         {images?.map((image, index) => (
           <ThumbnailWrapper key={`Thumbnail-${index}`}>
             <StyledThumbnail
