@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState, useRef } from "react";
-import { Box, CircularProgress } from "@mui/material";
-import { styled } from "@mui/system";
+import { Box, CircularProgress, useMediaQuery } from "@mui/material";
+import { styled, useTheme } from "@mui/system";
 
 const StyledContainer = styled(Box)({
   display: "flex",
@@ -75,7 +75,27 @@ const ZoomContainer = styled(Box)(({ theme }) => ({
   backgroundSize: "300% 300%",
   backgroundColor: theme.custom.cardBg,
   zIndex: 1000,
-  transition:"ease-in-out 0.3s !important"
+  transition: "ease-in-out 0.3s !important",
+}));
+
+const CursorOverlay = styled(Box)(({ theme }) => ({
+  position: "fixed", // Use fixed to ensure it follows the cursor correctly
+  width: "100px", // Diameter of the circle
+  height: "100px", // Diameter of the circle
+  borderRadius: "50%",
+  border: `2px solid ${theme.palette.primary.main}`,
+  pointerEvents: "none",
+  transform: "translate(-50%, -50%)", // Center the circle on the cursor
+  overflow: "hidden",
+  display: "none",
+  zIndex: 1001,
+  "& img": {
+    position: "absolute",
+    width: "300%", // Adjust based on zoom level
+    height: "300%", // Adjust based on zoom level
+    objectFit: "cover",
+    transform: "translate(-50%, -50%)", // Center the image in the circle
+  },
 }));
 
 const Spinner = ({ size = "40px" }) => (
@@ -96,7 +116,13 @@ const ProductImage = ({ images = [] }) => {
   const [loadedImages, setLoadedImages] = useState({});
   const mainImageRef = useRef(null);
   const zoomContainerRef = useRef(null);
+  const cursorOverlayRef = useRef(null);
   const currentImageRef = useRef(selectedImage);
+
+  // Use useMediaQuery to detect mobile view
+  const theme = useTheme();
+  
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     currentImageRef.current = hoveredImage || selectedImage;
@@ -104,24 +130,46 @@ const ProductImage = ({ images = [] }) => {
 
   useEffect(() => {
     const mainImage = mainImageRef.current;
-    if (!mainImage) return;
+    if (!mainImage || isTablet) return; // Disable zooming on mobile
 
     const handleMouseMove = (e) => {
-      if (!mainImageRef.current || !zoomContainerRef.current) return;
+      if (!mainImageRef.current || !zoomContainerRef.current || !cursorOverlayRef.current) return;
 
       const { left, top, width, height } = mainImage.getBoundingClientRect();
       const x = ((e.clientX - left) / width) * 100;
       const y = ((e.clientY - top) / height) * 100;
 
+      // Update zoom container
       const zoomContainer = zoomContainerRef.current;
       zoomContainer.style.display = "block";
       zoomContainer.style.backgroundImage = `url(${currentImageRef.current})`;
       zoomContainer.style.backgroundPosition = `${x}% ${y}%`;
+
+      // Update cursor overlay
+      const cursorOverlay = cursorOverlayRef.current;
+      cursorOverlay.style.display = "block";
+      cursorOverlay.style.left = `${e.clientX}px`;
+      cursorOverlay.style.top = `${e.clientY}px`;
+
+      // Calculate the offset for the image inside the circle
+      const circleRadius = 50; // Half of the circle's diameter (100px)
+      const offsetX = (e.clientX - left - circleRadius) / width * 100;
+      const offsetY = (e.clientY - top - circleRadius) / height * 100;
+
+      cursorOverlay.innerHTML = `
+        <img 
+          src="${currentImageRef.current}" 
+          style="left: ${-offsetX}%; top: ${-offsetY}%; width: 300%; height: 300%;" 
+        />
+      `;
     };
 
     const handleMouseLeave = () => {
       if (zoomContainerRef.current) {
         zoomContainerRef.current.style.display = "none";
+      }
+      if (cursorOverlayRef.current) {
+        cursorOverlayRef.current.style.display = "none";
       }
     };
 
@@ -132,7 +180,7 @@ const ProductImage = ({ images = [] }) => {
       mainImage.removeEventListener("mousemove", handleMouseMove);
       mainImage.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, []);
+  }, [isTablet]); // Add isTablet as a dependency
 
   useEffect(() => {
     if (zoomContainerRef.current) {
@@ -151,11 +199,17 @@ const ProductImage = ({ images = [] }) => {
           alt="Product Image"
           onLoad={() => setLoadedImages((prev) => ({ ...prev, [currentImage]: true }))}
           onError={() => setLoadedImages((prev) => ({ ...prev, [currentImage]: true }))}
+          style={{ cursor: isTablet ? "default" : "zoom-in" }} // Disable zoom cursor on mobile
         />
         {!loadedImages[currentImage] && <Spinner />}
       </MainImageContainer>
 
-      <ZoomContainer ref={zoomContainerRef} />
+      {!isTablet && ( // Only render zoom components if not in mobile view
+        <>
+          <ZoomContainer ref={zoomContainerRef} />
+          <CursorOverlay ref={cursorOverlayRef} />
+        </>
+      )}
 
       <StyledThumbnailContainer>
         {images?.map((image, index) => (
@@ -165,8 +219,8 @@ const ProductImage = ({ images = [] }) => {
               alt={`Thumbnail ${index + 1}`}
               active={image === selectedImage ? 1 : 0}
               onClick={() => setSelectedImage(image)}
-              onMouseEnter={() => setHoveredImage(image)}
-              onMouseLeave={() => setHoveredImage(null)}
+              onMouseEnter={() => !isTablet && setHoveredImage(image)} // Disable hover on mobile
+              onMouseLeave={() => !isTablet && setHoveredImage(null)} // Disable hover on mobile
               onLoad={() => setLoadedImages((prev) => ({ ...prev, [image]: true }))}
               onError={() => setLoadedImages((prev) => ({ ...prev, [image]: true }))}
             />
