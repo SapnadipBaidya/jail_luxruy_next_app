@@ -82,8 +82,8 @@ const CursorOverlay = styled(Box)(({ theme }) => ({
   position: "fixed", // Use fixed to ensure it follows the cursor correctly
   width: "100px", // Diameter of the circle
   height: "100px", // Diameter of the circle
-  borderRadius: "50%",
-  border: `2px solid ${theme.palette.primary.main}`,
+  borderRadius: "",
+  border: `2px dashed ${theme.palette.ascentColor.main}`,
   pointerEvents: "none",
   transform: "translate(-50%, -50%)", // Center the circle on the cursor
   overflow: "hidden",
@@ -121,7 +121,6 @@ const ProductImage = ({ images = [] }) => {
 
   // Use useMediaQuery to detect mobile view
   const theme = useTheme();
-  
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
