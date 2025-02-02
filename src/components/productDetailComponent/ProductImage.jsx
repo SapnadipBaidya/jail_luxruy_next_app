@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState, useRef } from "react";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { styled } from "@mui/system";
 
 const StyledContainer = styled(Box)({
@@ -10,10 +10,15 @@ const StyledContainer = styled(Box)({
   alignItems: "center",
   width: "100%",
   maxWidth: "500px",
-  position: "relative", // Added for zoom container positioning
+  position: "relative",
   "@media (min-width: 900px)": {
     alignItems: "flex-start",
   },
+});
+
+const MainImageContainer = styled(Box)({
+  position: "relative",
+  width: "100%",
 });
 
 const StyledMainImage = styled("img")(({ theme }) => ({
@@ -22,7 +27,7 @@ const StyledMainImage = styled("img")(({ theme }) => ({
   objectFit: "cover",
   borderRadius: "8px",
   backgroundColor: theme.palette.secondary.main,
-  cursor: "zoom-in", // Indicates zoom functionality
+  cursor: "zoom-in",
   [theme.breakpoints.up("sm")]: {
     height: "400px",
   },
@@ -38,6 +43,10 @@ const StyledThumbnailContainer = styled(Box)(({ theme }) => ({
     justifyContent: "flex-start",
   },
 }));
+
+const ThumbnailWrapper = styled(Box)({
+  position: "relative",
+});
 
 const StyledThumbnail = styled("img")(({ theme, active }) => ({
   width: "64px",
@@ -61,61 +70,108 @@ const ZoomContainer = styled(Box)(({ theme }) => ({
   overflow: "hidden",
   borderRadius: "8px",
   border: `0.5vh solid ${theme.custom.cardBg}`,
-  display: "none", // Initially hidden
+  display: "none",
   backgroundRepeat: "no-repeat",
-  backgroundSize: "300% 300%", // Zoomed image size
-  backgroundColor:theme.custom.cardBg,
-  zIndex:1000,
-  transition:"ease-in-out 0.5s !important"
+  backgroundSize: "300% 300%",
+  backgroundColor: theme.custom.cardBg,
+  zIndex: 1000,
+  transition:"ease-in-out 0.3s !important"
 }));
+
+const Spinner = ({ size = "40px" }) => (
+  <CircularProgress
+    size={size}
+    sx={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+    }}
+  />
+);
 
 const ProductImage = ({ images = [] }) => {
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [hoveredImage, setHoveredImage] = useState(null);
-  const [zoomStyle, setZoomStyle] = useState({});
+  const [loadedImages, setLoadedImages] = useState({});
   const mainImageRef = useRef(null);
   const zoomContainerRef = useRef(null);
+  const currentImageRef = useRef(selectedImage);
 
-  const handleMouseMove = (e) => {
-    if (!mainImageRef.current || !zoomContainerRef.current) return;
+  useEffect(() => {
+    currentImageRef.current = hoveredImage || selectedImage;
+  }, [hoveredImage, selectedImage]);
 
-    const { left, top, width, height } = mainImageRef.current.getBoundingClientRect();
-    const x = ((e.pageX - left) / width) * 100;
-    
-    const y = ((e.pageY - top) / height) * 100;
+  useEffect(() => {
+    const mainImage = mainImageRef.current;
+    if (!mainImage) return;
 
-    setZoomStyle({
-      display: "block",
-      backgroundImage: `url(${hoveredImage || selectedImage})`,
-      backgroundPosition: `${x}% ${y}%`,
-    });
-  };
+    const handleMouseMove = (e) => {
+      if (!mainImageRef.current || !zoomContainerRef.current) return;
 
-  const handleMouseLeave = () => {
-    setZoomStyle({ display: "none" });
-  };
+      const { left, top, width, height } = mainImage.getBoundingClientRect();
+      const x = ((e.clientX - left) / width) * 100;
+      const y = ((e.clientY - top) / height) * 100;
+
+      const zoomContainer = zoomContainerRef.current;
+      zoomContainer.style.display = "block";
+      zoomContainer.style.backgroundImage = `url(${currentImageRef.current})`;
+      zoomContainer.style.backgroundPosition = `${x}% ${y}%`;
+    };
+
+    const handleMouseLeave = () => {
+      if (zoomContainerRef.current) {
+        zoomContainerRef.current.style.display = "none";
+      }
+    };
+
+    mainImage.addEventListener("mousemove", handleMouseMove, { passive: true });
+    mainImage.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      mainImage.removeEventListener("mousemove", handleMouseMove);
+      mainImage.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (zoomContainerRef.current) {
+      zoomContainerRef.current.style.backgroundImage = `url(${currentImageRef.current})`;
+    }
+  }, [hoveredImage, selectedImage]);
+
+  const currentImage = hoveredImage || selectedImage;
 
   return (
     <StyledContainer>
-      <StyledMainImage
-        ref={mainImageRef}
-        src={hoveredImage || selectedImage}
-        alt="Product Image"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      />
-      <ZoomContainer ref={zoomContainerRef} style={zoomStyle} />
+      <MainImageContainer>
+        <StyledMainImage
+          ref={mainImageRef}
+          src={currentImage}
+          alt="Product Image"
+          onLoad={() => setLoadedImages((prev) => ({ ...prev, [currentImage]: true }))}
+          onError={() => setLoadedImages((prev) => ({ ...prev, [currentImage]: true }))}
+        />
+        {!loadedImages[currentImage] && <Spinner />}
+      </MainImageContainer>
+
+      <ZoomContainer ref={zoomContainerRef} />
+
       <StyledThumbnailContainer>
         {images?.map((image, index) => (
-          <StyledThumbnail
-            key={`Thumbnail ${index + 1}`}
-            src={image}
-            alt={`Thumbnail ${index + 1}`}
-            active={image === selectedImage ? 1 : 0}
-            onClick={() => setSelectedImage(image)}
-            onMouseEnter={() => setHoveredImage(image)}
-            onMouseLeave={() => setHoveredImage(null)}
-          />
+          <ThumbnailWrapper key={`Thumbnail-${index}`}>
+            <StyledThumbnail
+              src={image}
+              alt={`Thumbnail ${index + 1}`}
+              active={image === selectedImage ? 1 : 0}
+              onClick={() => setSelectedImage(image)}
+              onMouseEnter={() => setHoveredImage(image)}
+              onMouseLeave={() => setHoveredImage(null)}
+              onLoad={() => setLoadedImages((prev) => ({ ...prev, [image]: true }))}
+              onError={() => setLoadedImages((prev) => ({ ...prev, [image]: true }))}
+            />
+            {!loadedImages[image] && <Spinner size="24px" />}
+          </ThumbnailWrapper>
         ))}
       </StyledThumbnailContainer>
     </StyledContainer>
