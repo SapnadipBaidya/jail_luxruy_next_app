@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Box, Typography, Button, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-
+import { useRouter ,usePathname,useParams} from "next/navigation";
 // Optimized styled components (moved outside main component)
 const ColorCircle = styled(Box)(({ bgcolor, selected, theme }) => ({
   width: "32px",
@@ -27,6 +27,9 @@ const SizeButton = styled(Button)(({ selected }) => ({
 }));
 
 const ProductDetails = ({ data }) => {
+  const router = useRouter();
+  const params = useParams();
+  const pathName = usePathname();
   // Memoize product info to prevent unnecessary recalculations
   const productInfo = useMemo(() => data?.product_info || {}, [data]);
   
@@ -42,6 +45,8 @@ const ProductDetails = ({ data }) => {
         item => item?.productDetailId === productInfo.productDetailsId
       )?.sizeId;
       setSelectedSize(initialSize);
+      // router.push();
+     
     }
 
     if (productInfo.allColorProducts) {
@@ -49,6 +54,7 @@ const ProductDetails = ({ data }) => {
         item => item?.productId === productInfo.productId
       )?.colorId;
       setSelectedColor(initialColor);
+      // router.push();
     }
   }, [productInfo]);
 
@@ -65,12 +71,19 @@ const ProductDetails = ({ data }) => {
 
   // Stable callback handlers
   const handleColorSelect = useCallback(
-    (colorId) => setSelectedColor(colorId),
+    (color) =>{
+    console.log("color",color)
+      router.push(`/item/${params['item-name']}?pid=${color?.productId}`)
+      setSelectedColor(color?.colorId)},
     []
   );
 
   const handleSizeSelect = useCallback(
-    (sizeId) => setSelectedSize(sizeId),
+    (size) => {
+      console.log("size",size)
+
+      router.push(`/item/${params['item-name']}?pid=${size?.productId}&pdid=${size?.productDetailId}`)
+      setSelectedSize(size?.sizeId)},
     []
   );
 
@@ -160,7 +173,7 @@ const ColorSelector = React.memo(({ colors, selectedColor, onSelect }) => (
           key={`${color.productId}_${color.colorId}`}
           bgcolor={color.colorHex}
           selected={selectedColor === color.colorId}
-          onClick={() => onSelect(color.colorId)}
+          onClick={() => onSelect(color)}
           role="button"
           aria-label={`Select color ${color.colorName}`}
           aria-pressed={selectedColor === color.colorId}
@@ -180,7 +193,7 @@ const SizeSelector = React.memo(({ sizes, selectedSize, onSelect }) => (
         <SizeButton
           key={`${size.productDetailId}_${size.sizeId}`}
           selected={selectedSize === size.sizeId}
-          onClick={() => onSelect(size.sizeId)}
+          onClick={() => onSelect(size)}
           aria-label={`Select size ${size.sizeName}`}
           aria-pressed={selectedSize === size.sizeId}
         >
