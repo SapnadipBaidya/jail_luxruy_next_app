@@ -171,7 +171,6 @@ const ProductImage = ({ images = [] }) => {
 
       cursorOverlay.innerHTML = `
         <img 
-          src="${currentImageRef.current}" 
           style="left: ${-offsetX}%; top: ${-offsetY}%; width: 300%; height: 300%;" 
         />
       `;
@@ -194,25 +193,6 @@ const ProductImage = ({ images = [] }) => {
       mainImage.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, [isTablet]); // Add isTablet as a dependency
-
-  useEffect(() => {
-    const thumbnailContainer = thumbnailContainerRef.current;
-    if (!thumbnailContainer) return;
-      
-    const handleWheel = (e) => {
-      if (e.deltaY !== 0) {
-       
-        thumbnailContainer.scrollLeft += e.deltaY; // Scroll horizontally instead
-      }
-    };
-
-    thumbnailContainer.addEventListener("wheel", handleWheel, { passive: false });
-    
-    return () => {
-      thumbnailContainer.removeEventListener("wheel", handleWheel);
-      e.preventDefault();
-    };
-  }, []);
 
   useEffect(() => {
     if (zoomContainerRef.current) {

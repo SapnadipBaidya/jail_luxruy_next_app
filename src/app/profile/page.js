@@ -1,4 +1,3 @@
-import UserProfileAddressClient from "@/components/pageClients/userProfileAddressClient";
 import { cookies } from "next/headers";
 
 export default async function ProfilePage() {
@@ -9,6 +8,9 @@ export default async function ProfilePage() {
 
 
   return (
-   <UserProfileAddressClient/>
+    <div>
+      <h1>User Profile</h1>
+      <p>Access Token: {accessToken ? "Available" : "Not Found"} is {accessToken} and refresh token is \n {refreshToken}</p>
+    </div>
   );
 }
