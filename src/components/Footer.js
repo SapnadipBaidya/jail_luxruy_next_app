@@ -2,113 +2,113 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation'; // Updated import for Next.js 13+
 import { styled, useTheme } from '@mui/material/styles';
 import { Box, Typography, Grid, IconButton } from '@mui/material';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import PinterestIcon from '@mui/icons-material/Pinterest';
+import {
+  Facebook as FacebookIcon,
+  Instagram as InstagramIcon,
+  Twitter as TwitterIcon,
+  LinkedIn as LinkedInIcon,
+  Pinterest as PinterestIcon,
+} from '@mui/icons-material';
 
-// Styled components
 const FooterContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.main,
-  color: theme.palette.text.primary,
+  backgroundColor: theme.palette.background.paper,
+  color: theme.custom.primaryButtonFontColor,
   padding: '2rem 2rem 3rem',
-  
 }));
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 'bold',
   marginBottom: theme.spacing(2),
   textTransform: 'uppercase',
-  color: theme.palette.primary.main,
+  
 }));
 
 const FooterLink = styled(Box)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  
   textDecoration: 'none',
   display: 'block',
   marginBottom: theme.spacing(1),
+  cursor: 'pointer', // Add cursor pointer to indicate clickable
   '&:hover': {
     textDecoration: 'underline',
   },
 }));
 
 const SocialIcons = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.primary.main,
   padding: 0,
   marginBottom: theme.spacing(1),
   marginRight: theme.spacing(1.5),
+  display: "flex",
+  flexDirection: "column",
 }));
 
 const Footer = () => {
   const theme = useTheme();
+  const router = useRouter(); // Initialize the router
+
+  const handleNavigation = (path) => {
+    router.push(path); // Programmatically navigate to the path
+  };
 
   return (
     <FooterContainer>
       <Grid container spacing={4} justifyContent="center">
-        {/* Help Section */}
         <Grid item xs={12} sm={3}>
           <SectionTitle variant="h6">Help</SectionTitle>
-          <FooterLink><Link href="/termcondition">Terms and Conditions</Link></FooterLink>
-          <FooterLink><Link href="/privacypolicy">Privacy Policy</Link></FooterLink>
-          <FooterLink><Link href="/returnrefund">Returns and Refunds Policy</Link></FooterLink>
-          <FooterLink><Link href="/shippingpolicy">Shipping Policy</Link></FooterLink>
-          <FooterLink><Link href="/cancellationpolicy">Cancellation Policy</Link></FooterLink>
+          <FooterLink onClick={() => handleNavigation('/termcondition')}>Terms and Conditions</FooterLink>
+          <FooterLink onClick={() => handleNavigation('/privacypolicy')}>Privacy Policy</FooterLink>
+          <FooterLink onClick={() => handleNavigation('/returnrefund')}>Returns and Refunds Policy</FooterLink>
+          <FooterLink onClick={() => handleNavigation('/shippingpolicy')}>Shipping Policy</FooterLink>
+          <FooterLink onClick={() => handleNavigation('/cancellationpolicy')}>Cancellation Policy</FooterLink>
         </Grid>
 
-        {/* Company Section */}
         <Grid item xs={12} sm={2}>
           <SectionTitle variant="h6">Company</SectionTitle>
-          <FooterLink><Link href="/aboutus">About Us</Link></FooterLink>
-          <FooterLink><Link href="/contactus">Contact Us</Link></FooterLink>
+          <FooterLink onClick={() => handleNavigation('/aboutus')}>About Us</FooterLink>
+          <FooterLink onClick={() => handleNavigation('/contactus')}>Contact Us</FooterLink>
         </Grid>
 
-        {/* Shop Products Section */}
         <Grid item xs={12} sm={3}>
           <SectionTitle variant="h6">Shop Products</SectionTitle>
-          <FooterLink><Link href="/shop/bag">Bag</Link></FooterLink>
-          <FooterLink><Link href="/shop/belt">Belt</Link></FooterLink>
-          <FooterLink><Link href="/shop/duffle-bag">Duffle Bag</Link></FooterLink>
-          <FooterLink><Link href="/shop/gloves">Gloves</Link></FooterLink>
-          <FooterLink><Link href="/shop/jacket">Jacket</Link></FooterLink>
-          <FooterLink><Link href="/shop/shoes">Shoes</Link></FooterLink>
-          <FooterLink><Link href="/shop/trolley">Trolley</Link></FooterLink>
-          <FooterLink><Link href="/shop/wallet">Wallet</Link></FooterLink>
+          {['Bag', 'Belt', 'Duffle Bag', 'Gloves', 'Jackets', 'Shoes', 'Trolley', 'Wallet'].map((item) => (
+            <FooterLink key={item} onClick={() => handleNavigation(`/products/${item.toLowerCase().replace(/ /g, '-')}`)}>
+              {item}
+            </FooterLink>
+          ))}
         </Grid>
 
-        {/* Social Media Section */}
         <Grid item xs={12} sm={2}>
           <SectionTitle variant="h6">Social Media</SectionTitle>
           <Box>
-            <Link href="https://facebook.com" target="_blank"><SocialIcons><FacebookIcon /></SocialIcons></Link>
-            <Link href="https://instagram.com" target="_blank"><SocialIcons><InstagramIcon /></SocialIcons></Link>
-            <Link href="https://twitter.com" target="_blank"><SocialIcons><TwitterIcon /></SocialIcons></Link>
-            <Link href="https://linkedin.com" target="_blank"><SocialIcons><LinkedInIcon /></SocialIcons></Link>
-            <Link href="https://pinterest.com" target="_blank"><SocialIcons><PinterestIcon /></SocialIcons></Link>
+            <SocialIcons onClick={() => handleNavigation('#')}>
+              <FacebookIcon style={{ color: '#1877F2' }} /> {/* Facebook Blue */}
+            </SocialIcons>
+            <SocialIcons onClick={() => handleNavigation('#')}>
+              <InstagramIcon style={{ color: '#E4405F' }} /> {/* Instagram Pink */}
+            </SocialIcons>
+            <SocialIcons onClick={() => handleNavigation('#')}>
+              <TwitterIcon style={{ color: '#1DA1F2' }} /> {/* Twitter Blue */}
+            </SocialIcons>
+            <SocialIcons onClick={() => handleNavigation('#')}>
+              <LinkedInIcon style={{ color: '#0A66C2' }} /> {/* LinkedIn Blue */}
+            </SocialIcons>
+            <SocialIcons onClick={() => handleNavigation('#')}>
+              <PinterestIcon style={{ color: '#BD081C' }} /> {/* Pinterest Red */}
+            </SocialIcons>
           </Box>
         </Grid>
 
-        {/* Location Section */}
         <Grid item xs={12} sm={2}>
           <SectionTitle variant="h6">Location</SectionTitle>
-          <Typography variant="body2" color={theme.palette.text.secondary}>
-            3633 Prabhash Complex | Mukundopur
-          </Typography>
-          <Typography variant="body2" color={theme.palette.text.secondary}>
-            Bhagwanpur – 24 South Pargana
-          </Typography>
-          <Typography variant="body2" color={theme.palette.text.secondary}>
-            Kolkata 700150
-          </Typography>
-          <Typography variant="body2" color={theme.palette.text.secondary}>
-            India
-          </Typography>
+          {['3633 Prabhash Complex | Mukundopur', 'Bhagwanpur – 24 South Pargana', 'Kolkata 700150', 'India'].map((line, index) => (
+            <Typography key={index} variant="body2" color={theme.custom.primaryButtonFontColor}>{line}</Typography>
+          ))}
         </Grid>
       </Grid>
 
-      {/* Copyright */}
       <Box mt={4} textAlign="center">
         <Typography variant="body2" color={theme.palette.text.secondary.main}>
           Copyright © 2025 Jail Luxury. All rights reserved.
