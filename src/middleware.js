@@ -1,105 +1,101 @@
-// frontend/src/middleware.js
 import axios from "axios";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-// Define your protected routes
+// Define protected routes
 const protectedRoutes = [
   "/userContact",
   "/orders",
   "/wishlist",
   "/cart",
   "/payment",
-  "/profile"
+  "/profile",
 ];
 
 const apiClient = axios.create({
   baseURL: "http://localhost:8080",
-  withCredentials: true,
+  withCredentials: true, // Ensure cookies are included in requests
 });
 
 export async function middleware(request) {
-  const cookieStore = await cookies();
+  const cookieStore = cookies();
   const accessToken = cookieStore.get("accessToken")?.value || null;
-
   const refreshToken = cookieStore.get("refreshToken")?.value || null;
   const { pathname } = request.nextUrl;
 
-  // Check if the current route is protected
+  console.log("accessToken:", accessToken);
+  console.log("refreshToken:", refreshToken);
+
+  // Check if route is protected
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route)
   );
 
   if (isProtectedRoute) {
-    // Redirect to the login-signup page if no token is found
     if (!accessToken) {
       return NextResponse.redirect(new URL("/login-signup", request.url));
     }
 
-    console.log(
-      "Trying to access protected route using middleware with token:",
-      accessToken
-    );
-
     try {
-      console.log("trying to validate client accessToken ", accessToken);
-      // Verify the token by calling your backend /success endpoint
+      console.log("Validating access token...");
       const verifyResponse = await apiClient.get("/success", {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
-      // If the response is not OK, treat the token as invalid
-      console.log("verifyResponse ",verifyResponse.status,verifyResponse.data)
-      if (verifyResponse.status!=200) {
+      if (verifyResponse.status !== 200) {
         throw new Error("Unauthorized");
       }
     } catch (error) {
-      console.error(
-        "Token verification failed: trying with refresh token",
-        error
-      );
-      const refreshResponse = await apiClient.get("/auth/refresh", {
-        headers: {
-          Cookie: `refreshToken=${refreshToken}`,
-        },
-      });
+      console.error("Access token validation failed:", error);
+      console.log("Attempting refresh...");
 
-      console.log("refreshResponse ",refreshResponse.status,refreshResponse.data)
-      if (refreshResponse.status==200) {
-        console.log("refreshResponse",refreshResponse.data)
+      try {
+        const refreshResponse = await apiClient.get("/auth/refresh", {
+          headers: {
+            Cookie: `refreshToken=${refreshToken}`,
+          },
+        });
+        console.log("Refresh response:", refreshResponse.data);
 
-        const cookieStore = await cookies();
-        const newAccessToken = refreshResponse.data.accessToken || null;
-      
-        const newRefreshToken = refreshResponse.data.refreshToken || null;
+        const newAccessToken = refreshResponse.data.accessToken;
+        const newRefreshToken = refreshResponse.data.refreshToken;
 
-        console.log("after refresh accessToken ", newAccessToken , " refreshToken ",newRefreshToken)
-        // Update the access token cookie
+        if (!newAccessToken || !newRefreshToken) {
+          throw new Error("Invalid refresh response");
+        }
+
+        console.log("Updated tokens:", newAccessToken, newRefreshToken);
+
+        // Set new cookies
         const response = NextResponse.next();
-        cookieStore.set("accessToken", newAccessToken, {
+        response.cookies.set("accessToken", newAccessToken, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
           maxAge: 15 * 60, // 15 minutes
         });
 
+        response.cookies.set("refreshToken", newRefreshToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 7 * 24 * 60 * 60, // 7 days
+        });
+
         return response;
-      } else {
-        // Refresh token is invalid, redirect to login
+      } catch (refreshError) {
+        console.error("Refresh token failed:", refreshError);
         return NextResponse.redirect(new URL("/login-signup", request.url));
       }
     }
   }
 
-  // Continue to the requested page if not protected or verification succeeded
   return NextResponse.next();
 }
 
-// Configure which paths the middleware should run on
+// Configure paths for middleware
 export const config = {
   matcher: [
-    // Match all request paths except those starting with:
-    // api/auth, _next/static, _next/image, favicon.ico, or public
     "/((?!api/auth|_next/static|_next/image|favicon.ico|public).*)",
   ],
 };
