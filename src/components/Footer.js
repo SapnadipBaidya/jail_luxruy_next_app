@@ -73,7 +73,7 @@ const Footer = () => {
 
         <Grid item xs={12} sm={3}>
           <SectionTitle variant="h6">Shop Products</SectionTitle>
-          {['Bag', 'Belt', 'Duffle Bag', 'Gloves', 'Jackets', 'Shoes', 'Trolley', 'Wallet'].map((item) => (
+          {['Bags', 'Belts', 'Duffle Bags', 'Gloves', 'Jackets', 'Shoes', 'Trolley', 'Wallets'].map((item) => (
             <FooterLink key={item} onClick={() => handleNavigation(`/products/${item.toLowerCase().replace(/ /g, '_')}`)}>
               {item}
             </FooterLink>
