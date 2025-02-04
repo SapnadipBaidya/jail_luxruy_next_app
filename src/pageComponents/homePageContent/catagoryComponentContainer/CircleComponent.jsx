@@ -4,6 +4,7 @@ import { styled } from "@mui/material/styles";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import Link from "next/link";
 import removeWhiteSpaceFromMiddle from "@/utils/attachProperNavName";
+import TruncatedText from "@/components/wrappers/TruncatedText";
 
 // ✅ Wrapper for the entire circle and text
 const CircleWrapper = styled(Box)(({ theme }) => ({
@@ -26,7 +27,6 @@ const CircleContainer = styled(Box)(({ theme, radius = "13vh" }) => ({
   width: radius,
   height: radius,
   overflow: "hidden",
-  backgroundColor: theme.custom.btnBorder,
   position: "relative",
   transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
   "&:hover": {
@@ -97,7 +97,7 @@ function CircleComponent({ data }) {
       </Link>
 
       {/* ✅ Category Name */}
-      <Typography sx={{ padding: "1vh" }}>{data?.catagory_name}</Typography>
+      <TruncatedText maxWidth={"7vw"}>{data?.catagory_name}</TruncatedText>
     </CircleWrapper>
   );
 }

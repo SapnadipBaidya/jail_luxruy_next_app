@@ -14,7 +14,6 @@ const ImageWrapperComp = styled(Card)(({ theme }) => ({
   transition: "opacity 0.5s ease-in-out, transform 2s ease-in-out",
   opacity: 0,
   transform: "scale(1.3)",
-  border: "solid 2px red",
   overflow: "hidden", // ✅ Ensures image does not overflow
 }));
 

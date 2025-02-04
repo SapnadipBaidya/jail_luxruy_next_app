@@ -82,7 +82,6 @@ const ZoomContainer = styled(Box)(({ theme }) => ({
   height: "70vh",
   overflow: "hidden",
   borderRadius: "8px",
-  border: `0.5vh solid ${theme.custom.cardBg}`,
   display: "none",
   backgroundRepeat: "no-repeat",
   backgroundSize: "300% 300%",
