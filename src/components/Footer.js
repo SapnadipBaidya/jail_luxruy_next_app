@@ -69,7 +69,7 @@ const Footer = () => {
         <Grid item xs={12} sm={2}>
           <SectionTitle variant="h6">Company</SectionTitle>
           <FooterLink onClick={() => handleNavigation('/aboutus')}>About Us</FooterLink>
-          <FooterLink onClick={() => handleNavigation('/contactus')}>Contact Us</FooterLink>
+          <FooterLink onClick={() => handleNavigation('/contact')}>Contact Us</FooterLink>
         </Grid>
 
         <Grid item xs={12} sm={3}>
