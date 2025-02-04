@@ -18,6 +18,7 @@ import CartBtn from "../buttons/cartBtn.jsx";
 
 import TruncatedText from "./TruncatedText.jsx";
 import removeWhiteSpaceFromMiddle from "@/utils/attachProperNavName.js";
+import DeleteBtn from "../buttons/deleteBtn.jsx";
 
 // ✅ Responsive Styled Card
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -141,7 +142,7 @@ const StyledCardWrapper = React.memo(({ type, item ,accessToken }) => {
 
         {/* ✅ Footer Buttons */}
         <CardFooter>
-          {type === "Product" ? <WishListButton item={item} accessToken={accessToken}/> : <CartBtn />}
+          {type === "Product" ? <WishListButton item={item} accessToken={accessToken}/> :<><CartBtn /><DeleteBtn/></> }
         </CardFooter>
       </StyledCard>
     </Slide>

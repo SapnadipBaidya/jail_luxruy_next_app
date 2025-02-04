@@ -33,11 +33,11 @@ const FilterWrapper = styled("div")(({ theme }) => ({
 
 const StyledChip = styled(Chip)(({ theme }) => ({
   color:theme.custom.primaryButtonFontColor,
-  border: `0.3vh solid ${theme.custom.primaryButtonFontColor}`,
   fontSize: theme.typography.pxToRem(14),
   fontWeight: "bold",
-  borderRadius: "50%", // Ensures a circular shape
-  width: theme.typography.pxToRem(40),
+  borderRadius: "10%", // Ensures a circular shape
+  // width: theme.typography.pxToRem(40),
+  maxWidth: theme.typography.pxToRem(120),
   height: theme.typography.pxToRem(40),
   minWidth: theme.typography.pxToRem(40), // Prevents shrinking
   minHeight: theme.typography.pxToRem(40),

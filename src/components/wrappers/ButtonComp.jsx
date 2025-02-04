@@ -15,8 +15,10 @@ const ButtonWrapper = ({ children, variant = "contained", color = "primary", onC
     gap: theme.spacing(1),
     width: "100%",
     fontSize: theme.typography.pxToRem(16), // Default font size
-    minHeight: theme.typography.pxToRem(50),
-    maxHeight: theme.typography.pxToRem(55),
+    minHeight: theme.typography.pxToRem(40),
+    maxHeight: theme.typography.pxToRem(45),
+    minWidth: theme.typography.pxToRem(50),
+    maxWidth: theme.typography.pxToRem(50),
   
     [theme.breakpoints.down("lg")]: {
       fontSize: theme.typography.pxToRem(14),

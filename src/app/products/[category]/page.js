@@ -66,15 +66,6 @@ async function fetchItemsFromAPI(category, page,colors,sizes,gender) {
   return { loading: false, data: response?.data || [] };
 }
 
-async function fetchSearchItemsFromAPI(userInput,page) {
-  console.log("fetchSearchItemsFromAPI",userInput,page)
-  const apiUrl = `http://localhost:8080/api/products/searchByNameColorCategory?userInput=${userInput}&limit=12&page=${page}`;
-  console.log("apiUrl",apiUrl)
-  const response = await makeGetAPIcall(apiUrl);
-  console.log("response",response.data)
-  return { loading: false, data: response?.data || [] };
-}
-
 
 async function fetchAllColors() {
   const apiUrl = `http://localhost:8080/api/filters/getAllColors`;

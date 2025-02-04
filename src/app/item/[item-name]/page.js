@@ -1,6 +1,5 @@
 import LoadingAnimation from "@/components/loaders/LoadingAnimation";
 import ProductPageClient from "@/components/pageClients/productPageClient";
-import ProductDetail from "@/components/productDetailComponent/productDetail";
 import { makeGetAPIcall } from "@/utils/API_vendor";
 import { cookies } from "next/headers";
 import { Suspense } from "react";

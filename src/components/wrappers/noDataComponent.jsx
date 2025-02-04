@@ -48,6 +48,10 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
 }));
 
+const StyledText = styled(Typography)(({ theme }) => ({
+  color:theme.custom.primaryButtonFontColor
+}));
+
 const NoDataComponent = () => {
   const router = useRouter();
 
@@ -58,12 +62,12 @@ const NoDataComponent = () => {
           <SentimentDissatisfiedIcon fontSize="inherit" />
         </IconWrapper>
 
-        <Typography variant="h4" fontWeight="bold">
+        <StyledText variant="h4" fontWeight="bold">
           Oops! No Data Found
-        </Typography>
-        <Typography variant="body1" sx={{ opacity: 0.7, marginTop: 1 }}>
+        </StyledText>
+        <StyledText variant="body1" sx={{ opacity: 0.7, marginTop: 1 }}>
           It looks like we couldn’t find any data matching your request.
-        </Typography>
+        </StyledText>
 
         {/* Buttons for User Action */}
         <StyledButton

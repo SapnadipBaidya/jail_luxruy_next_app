@@ -14,6 +14,7 @@ import {
 } from '@mui/icons-material';
 
 const FooterContainer = styled(Box)(({ theme }) => ({
+  marginTop:"2vh",
   backgroundColor: theme.palette.background.paper,
   color: theme.custom.primaryButtonFontColor,
   padding: '2rem 2rem 3rem',

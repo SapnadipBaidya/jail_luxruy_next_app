@@ -31,7 +31,7 @@ function GridWrapper({ itemsArr, type,loading ,accessToken}) {
   console.log("loading", itemsArr?.loading ,StyledCardWrapper);
   
   const data =  itemsArr 
-  console.log("data",Array.isArray(data),data,data.length,itemsArr)
+  console.log("data",Array?.isArray(data),data,data?.length,itemsArr)
   return (
     <GridWrapperComponent>
       <Grid container spacing={2} justifyContent="flex-start" alignItems="center">
@@ -53,9 +53,9 @@ function GridWrapper({ itemsArr, type,loading ,accessToken}) {
               </Grid>
             ))}
           </>
-        ) : data.length > 0 ? (
+        ) : data?.length > 0 ? (
           // ✅ Render actual product cards when data exists
-          data.map((item, index) => (
+          data?.map((item, index) => (
             <Grid 
               item 
               xs={5} 
