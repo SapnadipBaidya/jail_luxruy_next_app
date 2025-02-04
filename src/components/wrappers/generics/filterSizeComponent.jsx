@@ -9,7 +9,7 @@ const FilterTitle = styled(Typography)(({ theme }) => ({
 }));
 
 const FilterWrapper = styled("div")(({ theme }) => ({
-  padding:"1vh",
+  marginTop:"1vh",
   display: "flex",
   flexDirection: "row",
   gap: theme.spacing(1),
@@ -47,6 +47,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   textAlign: "center",
   overflow: "hidden", // Ensures no content overflows
   whiteSpace: "nowrap", // Prevents text from breaking
+  backgroundColor: "transperant",
   '&.Mui-selected, &.Mui-selected:hover': {
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.common.white,
