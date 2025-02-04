@@ -131,7 +131,7 @@ function FilterWrapper({onApplyFilters,onClearFilters,selectedFilters, setSelect
             value={selectedFilters?.gender}
             onChange={(e) => handleRadioChange("gender", e.target.value)}
           >
-            {["Male", "Female"].map((gender) => (
+            {["MEN", "WOMEN"].map((gender) => (
               <FormControlLabel
                 key={gender}
                 value={gender}

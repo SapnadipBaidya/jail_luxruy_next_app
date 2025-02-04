@@ -12,8 +12,8 @@ import PaginationComponent from "@/components/paginationComponent/pagination";
 import { usePathname } from 'next/navigation';
 import { debounce } from "lodash";
 
-export default function ItemsPageClient({ ItemsData, initialFilters, initialPage, sizeFilterArr, allColors ,userInput}) {
-  console.log("userInput",userInput)
+export default function ItemsPageClient({ ItemsData, initialFilters, initialPage, sizeFilterArr, allColors ,userInput,accessToken}) {
+  console.log("ItemsPageClient",accessToken)
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -125,7 +125,7 @@ export default function ItemsPageClient({ ItemsData, initialFilters, initialPage
             <SortFilterComponent setShowFilters={setShowFilters} />
           )}
         
-          <GridWrapper itemsArr={itemsArr} type="Product" loading={ItemsData?.loading}/>
+          <GridWrapper itemsArr={itemsArr} type="Product" loading={ItemsData?.loading} accessToken={accessToken}/>
           <PaginationComponent 
             page={page} 
             setPage={handlePageChange} 

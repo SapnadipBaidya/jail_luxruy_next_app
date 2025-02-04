@@ -24,10 +24,11 @@ const GridWrapperComponent = styled("div")(({ theme }) => ({
   },
 }));
 
-function GridWrapper({ itemsArr, type,loading }) {
+function GridWrapper({ itemsArr, type,loading ,accessToken}) {
   const theme = useTheme();
+  console.log("gridwrapper",accessToken)
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
-  console.log("loading", itemsArr?.loading);
+  console.log("loading", itemsArr?.loading ,StyledCardWrapper);
   
   const data =  itemsArr 
   console.log("data",Array.isArray(data),data,data.length,itemsArr)
@@ -65,7 +66,7 @@ function GridWrapper({ itemsArr, type,loading }) {
               key={index} 
               style={{ display: "flex", flexGrow: 1 }} 
             >
-              <StyledCardWrapper type={type} item={item} />
+              <StyledCardWrapper type={type} item={item} accessToken={accessToken}/>
             </Grid>
           ))
         ) : (

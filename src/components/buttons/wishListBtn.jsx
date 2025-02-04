@@ -15,6 +15,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import GenericBtns from "./GenericBtns";
 import { useRouter } from "next/navigation";
+import useWishlistApi from "@/utils/API_lib";
 
 // ✅ Styled Animated Icon Wrapper
 const AnimatedIcon = styled(Box)(({ theme }) => ({
@@ -52,21 +53,22 @@ const AnimatedIcon = styled(Box)(({ theme }) => ({
 }));
 
 // ✅ WishList Button Component
-function WishListButton({ item }) {
+function WishListButton({ item,accessToken }) {
+  console.log("WishListButton", item,accessToken);
+  const { addOrEditWishlist } = useWishlistApi(accessToken);
   const [isChecked, setIsChecked] = useState(item.product_details?.is_wishlisted);
   const [openDialog, setOpenDialog] = useState(false); // Control login dialog
-  const user = { id: "111", name: "sapnadip" }; // Simulating Auth Context (Replace with actual Auth Hook)
   const router = useRouter(); // ✅ Next.js Router
 
-  console.log("item", item);
+
 
   // ✅ Wishlist Toggle with Authentication Check
-  const handleWishlistToggle = (e) => {
+  const handleWishlistToggle = async (e) => {
     e.preventDefault();
 
-    if (user) {
+    if (accessToken) {
       setIsChecked((prev) => !prev);
-   
+      await addOrEditWishlist(item?.product_detail_id , item?.product_id)
     } else {
       // Open login confirmation dialog
       setOpenDialog(true);

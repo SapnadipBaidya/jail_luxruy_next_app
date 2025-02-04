@@ -26,7 +26,7 @@ const SizeButton = styled(Button)(({ selected }) => ({
   transition: "background 0.2s ease-in-out",
 }));
 
-const ProductDetails = ({ data }) => {
+const ProductDetails = ({ data,accessToken}) => {
   const router = useRouter();
   const params = useParams();
   const pathName = usePathname();

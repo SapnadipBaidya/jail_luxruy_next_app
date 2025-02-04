@@ -123,7 +123,7 @@ const FilterDrawerMobile = ({ onApplyFilters, onClearFilters, selectedFilters, s
                 value={selectedFilters?.gender}
                 onChange={(e) => handleRadioChange("gender", e.target.value)}
               >
-                {["Male", "Female"].map((gender) => (
+                {["MEN", "WOMEN"].map((gender) => (
                   <FormControlLabel
                     key={gender}
                     value={gender}

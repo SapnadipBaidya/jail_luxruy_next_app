@@ -2,6 +2,7 @@ import LoadingAnimation from "@/components/loaders/LoadingAnimation";
 import ProductPageClient from "@/components/pageClients/productPageClient";
 import ProductDetail from "@/components/productDetailComponent/productDetail";
 import { makeGetAPIcall } from "@/utils/API_vendor";
+import { cookies } from "next/headers";
 import { Suspense } from "react";
 
 // Function to fetch product data
@@ -14,6 +15,8 @@ async function fetchProductFromAPI(productName, pid, pdid) {
 
 // Product Detail Page Component
 async function ProductDetailPage({ params, searchParams }) {
+      const cookieStore = await cookies();
+      const accessToken = cookieStore?.get("accessToken")?.value || null;
   const pid = searchParams?.pid;
   const pdid = searchParams?.pdid;
   const productName = params?.['item-name'];
@@ -25,7 +28,7 @@ async function ProductDetailPage({ params, searchParams }) {
     return <div>Failed to load product details.</div>;
   }
 
-  return <ProductPageClient data={data.responseData} />;
+  return <ProductPageClient data={data.responseData} accessToken={accessToken}/>;
 }
 
 // Main Product Page Component
