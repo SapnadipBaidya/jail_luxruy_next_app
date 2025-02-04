@@ -33,7 +33,7 @@ function GridWrapper({ itemsArr, type,loading }) {
   console.log("data",Array.isArray(data),data,data.length,itemsArr)
   return (
     <GridWrapperComponent>
-      <Grid container spacing={3} justifyContent="space-between" alignItems="stretch">
+      <Grid container spacing={2} justifyContent="flex-start" alignItems="center">
         {loading ? (
           // ✅ Render 8 skeleton placeholders in Grid layout
           <>
