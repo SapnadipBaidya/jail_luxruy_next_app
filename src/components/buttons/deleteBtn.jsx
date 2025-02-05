@@ -1,5 +1,5 @@
 
-import { useWishlistApi } from "@/utils/API_lib";
+import { deleteFromUserWishlist, fetchUserWishlist, useWishlistApi } from "@/utils/API_lib";
 import ButtonWrapper from "../wrappers/ButtonComp";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useRouter } from "next/navigation";
@@ -11,8 +11,7 @@ function DeleteBtn({
   accessToken,
   setWishlistData,
 }) {
-  const router = useRouter();
-  const { deleteFromUserWishlist, fetchUserWishlist } = useWishlistApi(accessToken);
+  
 
   const handleDeleteWishlistItem = async (productDetailsId, productId) => {
     await deleteFromUserWishlist(productDetailsId, productId);

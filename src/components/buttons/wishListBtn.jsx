@@ -15,7 +15,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import GenericBtns from "./GenericBtns";
 import { useRouter } from "next/navigation";
-import { useWishlistApi } from "@/utils/API_lib";
+import { addOrEditWishlist, useWishlistApi } from "@/utils/API_lib";
 // ✅ Styled Animated Icon Wrapper
 const AnimatedIcon = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -53,8 +53,6 @@ const AnimatedIcon = styled(Box)(({ theme }) => ({
 
 // ✅ WishList Button Component
 function WishListButton({ item,accessToken }) {
-  console.log("WishListButton", item,accessToken);
-  const { addOrEditWishlist } = useWishlistApi(accessToken);
   const [isChecked, setIsChecked] = useState(item.product_details?.is_wishlisted);
   const [openDialog, setOpenDialog] = useState(false); // Control login dialog
   const router = useRouter(); // ✅ Next.js Router

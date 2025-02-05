@@ -1,168 +1,79 @@
-import { useCallback } from "react";
-import axios from "axios";
+// app/actions/wishlist-actions.js
+"use server";
 
-export const useWishlistApi = (accessToken) => {
-  console.log("useWishlistApi", accessToken);
+import { cookies } from "next/headers";
 
-  const addOrEditWishlist = useCallback(
-    async (productDetailsId, productId) => {
-      if (!accessToken) {
-        console.error("Access token is missing!");
-        return;
-      }
+// Helper to get server-side API URL
+const getApiUrl = (path) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}${path}`;
+};
 
-      console.log("Proceeding to make API call: addOrEditWishlist");
-      const apiUrl = "http://localhost:8080/api/wishlist/addOrEditWishlist";
-
-      try {
-        const response = await axios.post(
-          apiUrl,
-          {
-            payloadObj: {
-              productsDetailsId: productDetailsId,
-              product_id: productId,
-            },
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        console.log("Wishlist response:", response.data);
-        return response.data;
-      } catch (error) {
-        console.error(
-          "Error adding/editing wishlist:",
-          error.response?.data || error.message
-        );
-        throw error;
-      }
-    },
-    [accessToken]
-  );
-
-  const deleteFromUserWishlist = useCallback(
-    async (productDetailsId, productId) => {
-      if (!accessToken) {
-        console.error("Access token is missing!");
-        return;
-      }
-
-      console.log("Proceeding to make API call: deleteFromUserWishlist");
-      const apiUrl =
-        "http://localhost:8080/api/wishlist/deleteFromUserWishlist";
-
-      try {
-        const response = await axios.post(
-          apiUrl,
-          {
-            payloadObj: {
-              productsDetailsId: productDetailsId,
-              product_id: productId,
-            },
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        console.log("Wishlist response:", response.data);
-        return response.data;
-      } catch (error) {
-        console.error(
-          "Error deleting from wishlist:",
-          error.response?.data || error.message
-        );
-        throw error;
-      }
-    },
-    [accessToken]
-  );
-
-  const fetchUserWishlist = useCallback(async () => {
+// Generic API handler for server actions
+const serverApiRequest = async (path, method = "GET", body = null) => {
+  try {
+    const accessToken = cookies().get("accessToken")?.value;
+    
     if (!accessToken) {
-      console.error("Access token is missing!");
-      return [];
+      throw new Error("Unauthorized - No access token found");
     }
 
-    console.log("Proceeding to make API call: fetchUserWishlist");
-    const apiUrl = "http://localhost:8080/api/wishlist/fetchUserWishlist";
+    const response = await fetch(getApiUrl(path), {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: body ? JSON.stringify(body) : null,
+    });
 
-    try {
-      const response = await axios.post(
-        apiUrl,
-        {}, // Add any required request body here
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      console.log("Wishlist response:", response.data);
-      return response.data;
-    } catch (error) {
-      console.error(
-        "Error fetching wishlist:",
-        error.response?.data || error.message
-      );
-      return [];
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  }, [accessToken]);
 
-  return { addOrEditWishlist, deleteFromUserWishlist, fetchUserWishlist };
+    return await response.json();
+  } catch (error) {
+    console.error("Server API Error:", error.message);
+    throw error;
+  }
 };
 
-export const useCartApi = (accessToken) => {
-  console.log("useCartApi", accessToken);
-
-  const addToCart = useCallback(
-    async (productDetailsId, productId) => {
-      if (!accessToken) {
-        console.error("Access token is missing!");
-        return;
-      }
-
-      console.log("Proceeding to make API call: addToCart");
-      const apiUrl = "http://localhost:8080/api/cart/addToCart";
-
-      try {
-        const response = await axios.post(
-          apiUrl,
-          {
-            payloadObj: {
-              productsDetailsId: productDetailsId,
-              product_id: productId,
-            },
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        console.log("Cart response:", response.data);
-        return response.data;
-      } catch (error) {
-        console.error(
-          "Error adding to cart:",
-          error.response?.data || error.message
-        );
-        throw error;
-      }
-    },
-    [accessToken]
-  );
-
-  return { addToCart };
+// Wishlist Actions
+export const addOrEditWishlist = async (productDetailsId, productId) => {
+  "use server";
+  
+  return serverApiRequest("/api/wishlist/addOrEditWishlist", "POST", {
+    payloadObj: {
+      productsDetailsId: productDetailsId,
+      product_id: productId,
+    }
+  });
 };
 
+export const deleteFromUserWishlist = async (productDetailsId, productId) => {
+  "use server";
+  
+  return serverApiRequest("/api/wishlist/deleteFromUserWishlist", "POST", {
+    payloadObj: {
+      productsDetailsId: productDetailsId,
+      product_id: productId,
+    }
+  });
+};
+
+export const fetchUserWishlist = async () => {
+  "use server";
+  
+  return serverApiRequest("/api/wishlist/fetchUserWishlist", "POST");
+};
+
+// Cart Actions
+export const addToCart = async (productDetailsId, productId) => {
+  "use server";
+  
+  return serverApiRequest("/api/cart/addOrEditCart", "POST", {
+    payloadObj: {
+      productsDetailsId: productDetailsId,
+      product_id: productId,
+    }
+  });
+};

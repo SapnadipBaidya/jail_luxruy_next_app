@@ -1,8 +1,7 @@
 import React from "react";
 import ButtonWrapper from "../wrappers/ButtonComp";
+import { addToCart, deleteFromUserWishlist, fetchUserWishlist } from "@/utils/API_lib";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
-import { useWishlistApi , useCartApi } from "@/utils/API_lib";
-
 function CartBtn({
   variant = "outlined",
   color = "primary",
@@ -11,8 +10,6 @@ function CartBtn({
   setWishlistData,
 }) {
 
-  const { deleteFromUserWishlist, fetchUserWishlist } = useWishlistApi(accessToken);
-  const {addToCart } = useCartApi(accessToken);
   
   const handleWishlistToCartItem = async (productDetailsId, productId) => {
     await addToCart(productDetailsId, productId)

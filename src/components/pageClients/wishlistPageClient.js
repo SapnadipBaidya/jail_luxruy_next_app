@@ -1,11 +1,12 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import GridWrapper from '../wrappers/GridWrapper';
-import { useWishlistApi } from '@/utils/API_lib';
+import { fetchUserWishlist } from '@/utils/API_lib';
+
 
 function WishListPageClient({ accessToken, itemsArr }) {
-  const [wishlistData, setWishlistData] = useState([]); // State to store fetched data
-  const { fetchUserWishlist } = useWishlistApi(accessToken);
+  const [wishlistData, setWishlistData] = useState([]);
+  
 
   useEffect(() => {
     // Fetch wishlist data when the component mounts or accessToken changes
