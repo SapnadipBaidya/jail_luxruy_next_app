@@ -84,19 +84,19 @@ const Footer = () => {
         <Grid item xs={12} sm={2}>
           <SectionTitle variant="h6">Social Media</SectionTitle>
           <Box>
-            <SocialIcons onClick={() => handleNavigation('#')}>
+            <SocialIcons onClick={() => handleNavigation('https://www.facebook.com/jail.luxury')}>
               <FacebookIcon style={{ color: '#1877F2' }} /> {/* Facebook Blue */}
             </SocialIcons>
-            <SocialIcons onClick={() => handleNavigation('#')}>
+            <SocialIcons onClick={() => handleNavigation('https://www.instagram.com/jail.luxury')}>
               <InstagramIcon style={{ color: '#E4405F' }} /> {/* Instagram Pink */}
             </SocialIcons>
-            <SocialIcons onClick={() => handleNavigation('#')}>
+            <SocialIcons onClick={() => handleNavigation('https://x.com/jailluxury')}>
               <TwitterIcon style={{ color: '#1DA1F2' }} /> {/* Twitter Blue */}
             </SocialIcons>
-            <SocialIcons onClick={() => handleNavigation('#')}>
+            <SocialIcons onClick={() => handleNavigation('https://www.linkedin.com/company/jail-luxury/')}>
               <LinkedInIcon style={{ color: '#0A66C2' }} /> {/* LinkedIn Blue */}
             </SocialIcons>
-            <SocialIcons onClick={() => handleNavigation('#')}>
+            <SocialIcons onClick={() => handleNavigation('https://pin.it/35X2dFOen')}>
               <PinterestIcon style={{ color: '#BD081C' }} /> {/* Pinterest Red */}
             </SocialIcons>
           </Box>
