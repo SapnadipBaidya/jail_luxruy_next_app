@@ -142,7 +142,7 @@ const StyledCardWrapper = React.memo(({ type, item ,accessToken }) => {
 
         {/* ✅ Footer Buttons */}
         <CardFooter>
-          {type === "Product" ? <WishListButton item={item} accessToken={accessToken}/> :<><CartBtn /><DeleteBtn/></> }
+          {type === "Product" ? <WishListButton item={item} accessToken={accessToken}/> :<><CartBtn /><DeleteBtn item={item} accessToken={accessToken}/></> }
         </CardFooter>
       </StyledCard>
     </Slide>
