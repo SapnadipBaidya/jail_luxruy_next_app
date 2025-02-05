@@ -101,7 +101,7 @@ const CardFooter = styled(Box)(({ theme }) => ({
   },
 }));
 
-const StyledCardWrapper = React.memo(({ type, item ,accessToken }) => {
+const StyledCardWrapper = React.memo(({ type, item ,accessToken,setWishlistData }) => {
    const pathname = usePathname();
    console.log("StyledCardWrapper pathname",pathname,item,accessToken)
   const mainImgUrl =
@@ -143,7 +143,7 @@ const StyledCardWrapper = React.memo(({ type, item ,accessToken }) => {
 
         {/* ✅ Footer Buttons */}
         <CardFooter>
-          {type === "Product" ? <WishListButton item={item} accessToken={accessToken}/> :<><CartBtn /><DeleteBtn item={item} accessToken={accessToken}/></> }
+          {type === "Product" ? <WishListButton item={item} accessToken={accessToken}/> :<><CartBtn item={item} accessToken={accessToken} setWishlistData={setWishlistData}/><DeleteBtn item={item} accessToken={accessToken} setWishlistData={setWishlistData}/></> }
         </CardFooter>
       </StyledCard>
     </Slide>

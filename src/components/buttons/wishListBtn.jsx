@@ -15,8 +15,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import GenericBtns from "./GenericBtns";
 import { useRouter } from "next/navigation";
-import useWishlistApi from "@/utils/API_lib";
-
+import { useWishlistApi } from "@/utils/API_lib";
 // ✅ Styled Animated Icon Wrapper
 const AnimatedIcon = styled(Box)(({ theme }) => ({
   display: "flex",

@@ -17,6 +17,10 @@ const CardContainer = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
   backgroundSize: "cover",
   backgroundRepeat: "no-repeat",
+  backgroundImage:
+  theme.palette.mode == "dark"
+    ? "url('./webps/darkmodeBackgroundImg.webp')"
+    : "url('./webps/lightmodeBackgroundImg.webp')",
   backgroundPosition: "center",
   position: "relative", // Needed for absolute positioning of arrows
   padding: "0 5vw", // Adjusted padding for better responsiveness

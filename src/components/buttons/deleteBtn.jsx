@@ -1,4 +1,5 @@
-import useWishlistApi from "@/utils/API_lib";
+
+import { useWishlistApi } from "@/utils/API_lib";
 import ButtonWrapper from "../wrappers/ButtonComp";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useRouter } from "next/navigation";
@@ -8,14 +9,16 @@ function DeleteBtn({
   color = "error",
   item,
   accessToken,
+  setWishlistData,
 }) {
   const router = useRouter();
-  const { deleteFromUserWishlist } = useWishlistApi(accessToken);
+  const { deleteFromUserWishlist, fetchUserWishlist } = useWishlistApi(accessToken);
 
   const handleDeleteWishlistItem = async (productDetailsId, productId) => {
     await deleteFromUserWishlist(productDetailsId, productId);
+    const data = await fetchUserWishlist(); // Pass necessary arguments if required
+    setWishlistData(data); // Update state with fetched data
     // Refresh the current route to update the wishlist data
-    router.refresh();
   };
 
   return (
