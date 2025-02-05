@@ -19,7 +19,7 @@ const Loader = styled("div")(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  color:theme.custom.primaryButtonFontColor,
+  color: theme.custom.primaryButtonFontColor,
   fontFamily: '"Poppins", sans-serif',
   fontWeight: 500,
   fontSize: "25px",
@@ -53,7 +53,8 @@ const Word = styled("span")(({ theme }) => ({
   height: "100%",
   paddingLeft: "6px",
   color: theme.palette.ascentColor.main,
-  animation: "spin_4991 4s infinite",
+  animation: "spin_4991 3s infinite",
+  zIndex: 30, // Added z-index to appear above gradient
   "@keyframes spin_4991": {
     "10%": {
       transform: "translateY(-102%)",

@@ -13,7 +13,7 @@ const CircleWrapper = styled(Box)(({ theme }) => ({
   alignItems: "center",
   flexDirection: "column",
 
-  height: "25vh",
+  height: "30vh",
   textAlign: "center"
 }));
 
@@ -75,7 +75,7 @@ function CircleComponent({ data }) {
     <CircleWrapper>
       {/* ✅ Next.js Link Wrapping (Added prefetch={false}) */}
       <Link href={`/products/${removeWhiteSpaceFromMiddle(data?.catagory_name)}`} passHref prefetch={false}>
-        <CircleContainer radius="12.5vh">
+        <CircleContainer radius="20vh">
           {/* ✅ Spinner Shown Until Image Loads */}
           {!isLoaded && (
             <Spinner radius="12.5vh">

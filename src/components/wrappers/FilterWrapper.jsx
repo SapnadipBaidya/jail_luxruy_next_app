@@ -26,10 +26,10 @@ const FilterWrapperComponent = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   position: "sticky",
-  top: 0,  // Ensures it sticks at the top
+  top: 0, // Ensures it sticks at the top
   backgroundColor: theme.palette.background.paper, // Ensures visibility over content
   zIndex: 1000, // Keeps it above other elements
-
+  overflow: "hidden",
   [theme.breakpoints.down("md")]: {
     minWidth: "40vw",
     maxWidth: "90vw",
@@ -71,21 +71,26 @@ const FilterFooter = styled(Box)(({ theme }) => ({
 }));
 
 const FilterTitle = styled(Typography)(({ theme }) => ({
+  color:theme.custom.primaryButtonFontColor,
   fontWeight: "bold",
   textTransform: "uppercase",
   fontSize: theme.typography.pxToRem(16),
 }));
 
 const FilterSection = styled(Box)(({ theme }) => ({
-  marginBottom: theme.spacing(2),
-  padding: theme.spacing(2),
+  marginBottom: theme.spacing(1),
+  padding: theme.spacing(1),
 }));
 
-function FilterWrapper({onApplyFilters,onClearFilters,selectedFilters, setSelectedFilters,sizeFilterArr,allColors}) {
+function FilterWrapper({
+  onApplyFilters,
+  onClearFilters,
+  selectedFilters,
+  setSelectedFilters,
+  sizeFilterArr,
+  allColors,
+}) {
   const theme = useTheme();
-
-
-
 
   const handleCheckboxChange = (category, value) => {
     setSelectedFilters((prev) => ({
@@ -104,10 +109,9 @@ function FilterWrapper({onApplyFilters,onClearFilters,selectedFilters, setSelect
   };
 
   const handlePriceChange = (_, newValue) => {
-    console.log("handlePriceChange",_);
+    console.log("handlePriceChange", _);
     setSelectedFilters((prev) => ({ ...prev, price: newValue }));
   };
-
 
   return (
     <FilterWrapperComponent>
@@ -117,78 +121,84 @@ function FilterWrapper({onApplyFilters,onClearFilters,selectedFilters, setSelect
         <GenericBtns
           type="secondary"
           btnText={"Clear Filters"}
-          executableFunction={() =>onClearFilters()}
+          executableFunction={() => onClearFilters()}
           minWidth="5vw"
         />
       </FilterHeader>
 
       {/* ✅ Scrollable Filters Section */}
-      <FilterContent>
-        {/* Gender Filter (Radio Buttons) */}
-        <FilterSection>
-          <FilterTitle>Gender</FilterTitle>
-          <RadioGroup
-            value={selectedFilters?.gender}
-            onChange={(e) => handleRadioChange("gender", e.target.value)}
-          >
-            {["MEN", "WOMEN"].map((gender) => (
-              <FormControlLabel
-                key={gender}
-                value={gender}
-                control={
-                  <Radio
-                    sx={{
-                      color: theme.palette.ascentColor.main,
-                      "&.Mui-checked": {
-                        color: theme.palette.ascentColor.main,
-                      },
-                    }}
-                  />
-                }
-                label={gender}
-              />
-            ))}
-          </RadioGroup>
-        </FilterSection>
 
-        {/* Size Filter (Checkbox - Multiple Selections) */}
-        <FilterSection>
+      {/* Gender Filter (Radio Buttons) */}
+      <FilterSection>
+        <FilterTitle>Gender</FilterTitle>
+        <RadioGroup
+          value={selectedFilters?.gender}
+          onChange={(e) => handleRadioChange("gender", e.target.value)}
+        >
+          {["MEN", "WOMEN"].map((gender) => (
+            <FormControlLabel
+              key={gender}
+              value={gender}
+              control={
+                <Radio
+                  sx={{
+                    color: theme.custom.primaryButtonFontColor,
+                    "&.Mui-checked": {
+                      color: theme.custom.primaryButtonFontColor,
+                    },
+                  }}
+                />
+              }
+              sx={{
+                color: theme.custom.primaryButtonFontColor
+              }}
+              label={gender}
+            />
+          ))}
+        </RadioGroup>
+      </FilterSection>
+
+      {/* Size Filter (Checkbox - Multiple Selections) */}
+      <FilterSection>
+        <FilterContent>
           <FilterSizeComponent
             sizeArr={sizeFilterArr}
             sizeLoading={false}
             selectedFilters={selectedFilters}
             handleCheckboxChange={handleCheckboxChange}
           />
-        </FilterSection>
+        </FilterContent>
+      </FilterSection>
 
-        <FilterSection>
+      <FilterSection>
+        <FilterContent>
           <FilterColorComponent
             colorArr={allColors}
             colorLoading={false}
             selectedFilters={selectedFilters}
             handleCheckboxChange={handleCheckboxChange}
           />
-        </FilterSection>
+        </FilterContent>
+      </FilterSection>
 
-        {/* Price Filter */}
-        <FilterSection>
-          <FilterTitle>Price</FilterTitle>
-          <Slider
-            value={selectedFilters?.price}
-            onChange={handlePriceChange}
-            valueLabelDisplay="auto"
-            min={0}
-            max={1000000}
-            sx={{
-              color: theme.palette.ascentColor.main,
-              maxWidth: "90%",
-            }}
-          />
-          <Typography>
-            ₹{selectedFilters?.price[0]} - ₹{selectedFilters?.price[1]}
-          </Typography>
-        </FilterSection>
-      </FilterContent>
+      {/* Price Filter */}
+      <FilterSection>
+        <FilterTitle>Price</FilterTitle>
+        <Slider
+          value={selectedFilters?.price}
+          onChange={handlePriceChange}
+          valueLabelDisplay="auto"
+          min={0}
+          max={1000000}
+          sx={{
+            color: theme.palette.ascentColor.main,
+            maxWidth: "90%",
+          }}
+        />
+        <Typography>
+          ₹{selectedFilters?.price[0]} - ₹{selectedFilters?.price[1]}
+        </Typography>
+      </FilterSection>
 
       {/* ✅ Fixed Footer */}
       <FilterFooter>

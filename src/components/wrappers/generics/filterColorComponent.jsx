@@ -20,8 +20,24 @@ const FilterColorWrapper = styled("div")(({ theme }) => ({
   "&.Mui-checked": { color: theme.palette.ascentColor.main },
   display: "flex",
   flexDirection: "column",
-}));
+  overflow: "auto",
+  maxHeight: "20vh",
 
+  // Custom scrollbar styles
+  "&::-webkit-scrollbar": {
+    width: "8px", // Width of the scrollbar
+  },
+  "&::-webkit-scrollbar-track": {
+    background: theme.palette.background.default, // Background color of the track
+  },
+  "&::-webkit-scrollbar-thumb": {
+    background: theme.palette.ascentColor.main, // Color of the scrollbar thumb
+    borderRadius: "4px", // Rounded corners for the thumb
+  },
+  "&::-webkit-scrollbar-thumb:hover": {
+    background: theme.palette.ascentColor.dark, // Color of the thumb on hover
+  },
+}));
 const CheckboxWrapper = styled(Checkbox)(({ theme }) => ({
   color: theme.custom.primaryButtonFontColor,
   "&.Mui-checked": { color: theme.palette.ascentColor.main },

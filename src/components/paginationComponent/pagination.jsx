@@ -10,10 +10,11 @@ const StyledPaginationContainer = styled(Card)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  minHeight: "8vh",
+  minHeight: "2vh",
   padding: theme.spacing(2),
   gap: theme.spacing(2),
-  margin: theme.spacing(1),
+  margin: theme.spacing(2),
+  border:"solid 2px red",
   flexDirection: "row",
   borderRadius: "50px",
   background: theme.palette.mode === "dark" ? "#252525" : "#f0f0f0",
@@ -104,6 +105,7 @@ export default function PaginationComponent({ page, setPage, count = 10 }) {
 
   // ✅ Validate and Update Input
   const handleInputChange = (event) => {
+    event.preventDefault();
     let value = event.target.value.replace(/[^0-9]/g, ""); // Allow only numbers
     setInputValue(value);
   };

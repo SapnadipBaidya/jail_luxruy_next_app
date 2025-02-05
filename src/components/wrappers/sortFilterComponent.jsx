@@ -16,7 +16,7 @@ const SortFilterWrapper = styled("div")(({ theme }) => ({
   height: "7vh",
   padding: "1rem",
   display: "flex",
-  justifyContent: "flex-end",
+  justifyContent: "flex-start",
   alignItems: "center",
   position: "sticky",
   top: 0, // Ensures it sticks at the top

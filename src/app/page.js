@@ -39,22 +39,6 @@ export default async function HomePage() {
           px: 2, // Add horizontal padding for smaller screens
         }}
       >
-        <Typography
-          variant="h3"
-          sx={{
-            mt: 2,
-            width: "100%", // Full width on smaller screens
-            maxWidth: "800px", // Limit width on larger screens
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            textAlign: "center", // Center text on smaller screens
-            fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" }, // Responsive font size
-          }}
-        >
-          Quality <BlurOnIcon sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" } }} /> Design{" "}
-          <BlurOnIcon sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" } }} /> Status
-        </Typography>
       </Box>
 
       {/* ✅ Category Carousel */}

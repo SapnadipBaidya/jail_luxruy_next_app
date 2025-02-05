@@ -35,11 +35,10 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   color:theme.custom.primaryButtonFontColor,
   fontSize: theme.typography.pxToRem(14),
   fontWeight: "bold",
-  borderRadius: "10%", // Ensures a circular shape
-  // width: theme.typography.pxToRem(40),
-  maxWidth: theme.typography.pxToRem(120),
+  borderRadius: "1vh", // Ensures a circular shape
+  maxWidth: theme.typography.pxToRem(200),
   height: theme.typography.pxToRem(40),
-  minWidth: theme.typography.pxToRem(40), // Prevents shrinking
+  minWidth: theme.typography.pxToRem(70), // Prevents shrinking
   minHeight: theme.typography.pxToRem(40),
   display: "flex",
   alignItems: "center",

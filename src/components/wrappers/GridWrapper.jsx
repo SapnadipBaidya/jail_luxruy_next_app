@@ -9,10 +9,10 @@ import NoDataComponent from "./noDataComponent";
 const GridWrapperComponent = styled("div")(({ theme }) => ({
   minWidth: "70vw",
   maxWidth: "70vw",
-  padding: "1rem",
+  padding: "2rem",
   display: "flex",
   flexDirection: "column",
-  justifyContent: "space-between",
+  justifyContent: "space-evenly",
 
   [theme.breakpoints.down("md")]: {
     minWidth: "99vw",

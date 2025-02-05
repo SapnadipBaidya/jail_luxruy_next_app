@@ -35,6 +35,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   alignItems: "center",
   maxWidth: theme.typography.pxToRem(250),
   maxHeight: theme.typography.pxToRem(350),
+  margin:"1vh",
 
   "&:hover": {
     transform: "scale(1.02) !important",
@@ -133,7 +134,7 @@ const StyledCardWrapper = React.memo(({ type, item ,accessToken }) => {
         </Fade>
 
         {/* ✅ Responsive Text */}
-        <TruncatedText maxWidth="90%">
+        <TruncatedText maxWidth="90%" fontSize="2vh">
           {item?.product_name || "No Name"}
         </TruncatedText>
         <TruncatedText maxWidth="90%">

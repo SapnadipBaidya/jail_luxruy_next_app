@@ -21,7 +21,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
 }));
 
 // ✅ TruncatedText Component
-const TruncatedText = ({ children, maxWidth }) => {
+const TruncatedText = ({ children, maxWidth ,fontSize = "2.5vh"}) => {
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(false);
 
@@ -32,7 +32,7 @@ const TruncatedText = ({ children, maxWidth }) => {
   }, [children]);
 
   const content = (
-    <StyledTypography ref={textRef} sx={{ maxWidth }}>
+    <StyledTypography ref={textRef} sx={{ maxWidth ,fontSize}}>
       {children}
     </StyledTypography>
   );
