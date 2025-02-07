@@ -1,9 +1,19 @@
 import axios from "axios";
+import { cookies } from "next/headers";
+
+const apiClient = axios.create({
+  baseURL: "http://localhost:8080",
+  withCredentials: true, // Ensure cookies are included in requests
+});
+
 
 export async function makePostAPIcall (url,payload){
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value || null;
     try {
-        const response = await axios.post(url, {
-        ...payload,
+        const response =  await apiClient.post(url, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          ...payload,
         });
         return response;
       } catch (error) {
@@ -12,11 +22,12 @@ export async function makePostAPIcall (url,payload){
 }
 
 export async function makeGetAPIcall (url){
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value || null;
+  console.log("makegetapicall accessToken",accessToken)
   try {
-      const response = await axios.get(url,{
-        headers: {
-          'Cache-Control': 'no-store', // Ensures fresh data in SSR
-        },
+      const response =  await apiClient.get(url, {
+        headers: { Authorization: `Bearer ${accessToken}` }
       });
       return response;
     } catch (error) {

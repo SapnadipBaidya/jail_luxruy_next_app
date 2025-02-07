@@ -8,6 +8,7 @@ import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined
 const CardContainer = styled("tr")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper, // Light gray background
   borderRadius: "16px",
+  maxWidth:"50%"
 }));
 
 const SizeBox = styled(Box)({

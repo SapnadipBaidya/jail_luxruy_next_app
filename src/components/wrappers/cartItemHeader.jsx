@@ -7,10 +7,8 @@ import { styled } from "@mui/system";
 const CardContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  justifyContent: "center",
-  borderRadius: "16px",
-  padding: "15px",
-  width: theme.typography.pxToRem(1000),
+  justifyContent: "flex-start",
+  borderRadius: "16px"
 }));
 
 const CartItemHeader = () => {
@@ -22,7 +20,8 @@ const CartItemHeader = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          width: "100%",
+          width: "50%",
+          border:"solid 2px red"
         }}
       >
         <td>

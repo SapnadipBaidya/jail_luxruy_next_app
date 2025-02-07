@@ -11,7 +11,8 @@ const getApiUrl = (path) => {
 // Generic API handler for server actions
 const serverApiRequest = async (path, method = "GET", body = null) => {
   try {
-    const accessToken = cookies().get("accessToken")?.value;
+    const clientCookie = await cookies()
+    const accessToken = clientCookie.get("accessToken")?.value;
     
     if (!accessToken) {
       throw new Error("Unauthorized - No access token found");

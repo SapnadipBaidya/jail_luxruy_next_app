@@ -24,11 +24,12 @@ const CheckoutContainer = styled(Box)(({ theme }) => ({
 }));
 
 const CartSection = styled(Box)(({ theme }) => ({
-  maxWidth: "60%",
+  maxWidth: "50%",
   marginLeft: "10vh",
   [theme.breakpoints.up("md")]: {
     width: "65%",
   },
+  border:"solid 2px blue"
 }));
 
 const SummarySection = styled(Box)(({ theme }) => ({

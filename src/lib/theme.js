@@ -4,8 +4,8 @@ import { cookies } from "next/headers";
  * Retrieves the theme mode from cookies during SSR.
  * If no theme is found, defaults to system time-based theme.
  */
-export function getThemeFromCookies() {
-  const cookieStore = cookies();
+export async function getThemeFromCookies() {
+  const cookieStore = await cookies();
   const savedTheme = cookieStore.get("theme")?.value;
 
   if (savedTheme) {

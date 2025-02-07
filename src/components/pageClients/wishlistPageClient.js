@@ -24,7 +24,7 @@ function WishListPageClient({ accessToken, itemsArr }) {
   }, [accessToken, fetchUserWishlist]); // Re-run effect if accessToken changes
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <div style={{ display: "flex", justifyContent: "center" ,minHeight:"100vh" }}>
       {/* Render GridWrapper with fetched data */}
       <GridWrapper type="Wishlist" itemsArr={wishlistData} accessToken={accessToken} setWishlistData={setWishlistData} />
     </div>

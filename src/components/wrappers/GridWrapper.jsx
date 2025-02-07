@@ -7,12 +7,12 @@ import StyledCardSkeleton from "./StyledCardSkeleton";
 import NoDataComponent from "./noDataComponent";
 
 const GridWrapperComponent = styled("div")(({ theme }) => ({
-  minWidth: "70vw",
-  maxWidth: "70vw",
+  minWidth:"70vw",
   padding: "2rem",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-evenly",
+  alignItems:"flex-start",
 
   [theme.breakpoints.down("md")]: {
     minWidth: "99vw",

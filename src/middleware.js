@@ -18,7 +18,7 @@ const apiClient = axios.create({
 });
 
 export async function middleware(request) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken")?.value || null;
   const refreshToken = cookieStore.get("refreshToken")?.value || null;
   const { pathname } = request.nextUrl;
@@ -32,7 +32,7 @@ export async function middleware(request) {
   );
 
   if (isProtectedRoute) {
-    if (!accessToken) {
+    if (!accessToken && !refreshToken) {
       return NextResponse.redirect(new URL("/login-signup", request.url));
     }
 
