@@ -9,45 +9,56 @@ import TruncatedText from "@/components/wrappers/TruncatedText";
 // ✅ Wrapper for the entire circle and text
 const CircleWrapper = styled(Box)(({ theme }) => ({
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "space-evenly",
   alignItems: "center",
   flexDirection: "column",
-
-  height: "30vh",
-  textAlign: "center"
+  
+  height:"25vh",
+  width:"50vw",
 }));
 
-// ✅ Circle container
-const CircleContainer = styled(Box)(({ theme, radius = "13vh" }) => ({
+// Text under the circle
+const CircleText = styled(Typography)(({ theme }) => ({
+  padding: "1vh",
+  
+}));
 
+// Circle container to hold the image
+const CircleContainer = styled(Box)(({ theme, radius = "13vh" }) => ({
+  
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  borderRadius: "10%",
-  width: radius,
-  height: radius,
-  overflow: "hidden",
-  position: "relative",
-  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+  borderRadius: "35%", // Makes it circular
+  width: "10vw",
+  height: "20vh",
+  overflow: "hidden", // Ensures no overflow outside the circle
+  textDecoration: "none",
+  marginLeft: "2vw",
+  marginRight: "2vw",
+  backgroundColor: theme.palette.primary.main, // Optional: Set a background color
+  position: "relative", // For positioning the spinner
+  transition: "all 0.3s ease-in-out", // Smooth transition effect
   "&:hover": {
-    transform: "scale(1.2)",
-    boxShadow: `0 0 1vw ${theme.palette.secondary.main}`,
+    transform: "scale(1.2)", // Grows slightly on hover
+    boxShadow: `0 0 1vw ${theme.palette.secondary.main}`, // Adds a smooth shadow
   },
-  padding:"0.3vh"
+  [theme.breakpoints.down("sm")]: {
+    width: "26vw",
+    height:"15vh",
+  },
 }));
 
-// ✅ Image with hydration-safe loading
-const Image = styled("img")({
-  width: "100%",
-  height: "100%",
-  objectFit: "cover",
-  opacity: 0, // ✅ Initially hidden
-  transition: "opacity 0.5s ease-in-out", // ✅ Smooth fade-in effect
-  borderRadius: "8%",
-});
+// Image styling to ensure it perfectly covers the circle
+const Image = styled('img')(({ theme }) => ({
+  width: "100%", // Fill the circle container
+  height: "100%", // Fill the circle container
+  objectFit: "cover", // Ensure the image covers the area
+  display: "block", // Ensures no inline space for images
+}));
 
-// ✅ Loading spinner inside the circle
-const Spinner = styled(Box)(({ radius = "13vh" }) => ({
+// Spinner container
+const Spinner = styled(Box)(({ theme, radius = "13vh" }) => ({
   position: "absolute",
   width: radius,
   height: radius,

@@ -1,52 +1,66 @@
-"use client"
+"use client";
 import React from "react";
-import { Card, styled } from "@mui/material";
+import { Card, Typography } from "@mui/material";
 import Link from 'next/link';
+import { styled } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
-// Styled components
 const BestSellerComp = styled(Card)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  justifyContent: "space-evenly",
   alignItems: "center",
-  height: "80%",
-  width: "85vw",
-  textDecoration: "none",
+  justifyContent: "space-between",
+  width: "100%",
+  maxWidth: "400px",
+  padding: "2vw",
+  borderRadius: "10px",
   backgroundColor: theme.palette.background.paper,
-  padding:"2vw",
-  borderRadius:"1vh"
+  textAlign: "center",
+  transition: "transform 0.3s ease-in-out, box-shadow 0.3s",
+  "&:hover": {
+    transform: "scale(1.03)",
+    boxShadow: `0 0 20px ${theme.palette.secondary.main}`,
+  },
+  [theme.breakpoints.down("sm")]: {
+    width: "95vw", // Makes it bigger on mobile
+    maxWidth: "none",
+  },
 }));
 
 const StyledVideo = styled("video")(({ theme }) => ({
-  borderRadius: "0.2vh",
-  height: "70%",
-  width: "85%",
-  padding: "2vh",
-  objectFit: "cover", // Maintain aspect ratio and cover the container
-  transition: "transform 0.3s, box-shadow 0.3s", // Smooth hover effect
+  borderRadius: "8px",
+  width: "100%",
+  height: "auto",
+  objectFit: "cover",
+  transition: "transform 0.3s ease-in-out",
   "&:hover": {
-    transform: "scale(1.05)", // Grows slightly on hover
-    boxShadow: `0 0 3vw ${theme.palette.secondary.main}`, // Adds a smooth shadow
+    transform: "scale(1.05)",
   },
-   borderRadius:"0.5vh"
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+    height: "auto", // Ensures proper scaling on mobile
+  },
 }));
 
 function BestSellerCard({ title, videoSrc }) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
-    <BestSellerComp
-      key="/product-category"
-      variant="body1"
-      component={Link}
-      to="/product-category"
-    >
-      <h3>{title}</h3>
-      <StyledVideo
-        src={videoSrc}
-        autoPlay
-        loop
-        muted
-        playsInline // Necessary for iOS to allow autoplay
-      />
+    <BestSellerComp>
+      <Link href="/product-category" passHref style={{ textDecoration: "none", color: "inherit" }}>
+        <Typography
+          variant={isMobile ? "h5" : "h6"} // Bigger text on mobile
+          sx={{ fontWeight: "bold", marginBottom: "10px" }}
+        >
+          {title}
+        </Typography>
+        <StyledVideo autoPlay loop muted playsInline>
+          <source src={videoSrc} type="video/mp4" />
+          Your browser does not support the video tag.
+        </StyledVideo>
+      </Link>
     </BestSellerComp>
   );
 }

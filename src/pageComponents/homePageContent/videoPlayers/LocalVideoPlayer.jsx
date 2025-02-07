@@ -1,14 +1,16 @@
-"use client"
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import { Box, useMediaQuery, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-// Styled container for the video and text
+
 const VideoContainer = styled(Box)(({ theme, isMobile, mode }) => ({
-  width: "90%",
-  height: "100%",
+  
+  backgroundColor:"red",
+  
+  
   display: "flex",
-  flexDirection: isMobile ? "column" : "row", // Stack in column for mobile
+  flexDirection: isMobile ? "column" : "row",
   alignItems: "center",
   justifyContent: isMobile ? "center" : "space-evenly",
   overflow: "hidden",
@@ -16,8 +18,7 @@ const VideoContainer = styled(Box)(({ theme, isMobile, mode }) => ({
   boxShadow: "0 4px 15px rgba(0, 0, 0, 0.3)",
   padding: theme.spacing(2),
   gap: theme.spacing(2),
-  position: "relative", // Make this container relative to position overlay
-  // Transparent overlay for the background image
+  position: "relative",
   "&::before": {
     content: '""',
     position: "absolute",
@@ -27,53 +28,74 @@ const VideoContainer = styled(Box)(({ theme, isMobile, mode }) => ({
     height: "100%",
     backgroundImage:
       mode === "dark"
-        ? "url('./webps/darkmodeBackgroundImg.webp')"
-        : "url('./webps/lightmodeBackgroundImg.webp')",
+        ? "url('/webps/darkmodeBackgroundImg.webp')"
+        : "url('/webps/lightmodeBackgroundImg.webp')",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
-    zIndex: -1, // Place the image behind the content
+    zIndex: -1,
   },
 }));
 
-// Styled container for the description
-const VideoDescContainer = styled(Typography)(({ theme }) => ({
-  maxWidth: "90%", // Limit the width of the text container
-  wordWrap: "break-word", // Ensures long words or text are wrapped
-  textAlign: "justify", // Optional: Justifies the text for a clean layout
-  width: "100%", // Ensures full width on mobile
-  color:theme.palette.secondary.main
+const StyledVideo = styled("video")(({ isMobile }) => ({
+  width: isMobile ? "100%" : "20%",
+  height: isMobile ? "auto" : "100%",
+  objectFit: "cover",
+  borderRadius: "1vh",
 }));
 
-const LocalVideoPlayer = ({ videoSrc , desc}) => {
+const VideoDescContainer = styled(Typography)(({ theme }) => ({
+  maxWidth: "90%",
+  wordWrap: "break-word",
+  textAlign: "justify",
+  width: "100%",
+  color: theme.palette.secondary.main,
+}));
+
+const LocalVideoPlayer = ({ videoSrc }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-console.log("mode",theme.palette.mode)
+
+  const [videoSrcState, setVideoSrcState] = useState(videoSrc || "");
+
+  useEffect(() => {
+    if (!videoSrc) {
+      const fetchVideo = async () => {
+        try {
+          const response = await fetch("/api/get-video");
+          const data = await response.json();
+          setVideoSrcState(data.videoUrl);
+        } catch (error) {
+          console.error("Error fetching video:", error);
+        }
+      };
+      fetchVideo();
+    }
+  }, [videoSrc]);
+
   return (
     <VideoContainer isMobile={isMobile} mode={theme.palette.mode}>
-      <video
-        src={videoSrc}
-        autoPlay
-        loop
-        muted
-        playsInline // Necessary for iOS to allow autoplay
-        style={{
-          width: isMobile ? "100%" : "20%", // Adjusts video size based on screen size
-          height: isMobile ? "auto" : "100%", // Maintain aspect ratio
-          objectFit: "cover", // Maintain aspect ratio and cover the container
-          borderRadius:"1vh"
-        }}
-      />
-      <div style={{ display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
+      {videoSrcState ? (
+        <StyledVideo autoPlay loop muted playsInline isMobile={isMobile}>
+          <source src={videoSrcState} type="video/mp4" />
+          Your browser does not support the video tag.
+        </StyledVideo>
+      ) : (
+        <p>Loading video...</p> // Placeholder while fetching video
+      )}
 
-     
-      <VideoDescContainer>
-      
-      {desc}
-        
-      </VideoDescContainer>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+        <VideoDescContainer component="div">
+          <h1 style={{ margin: 0 }}>WHY JAIL ?</h1>
+          <p>
+            The name “Jail” is more than just a brand; it’s a nod to our roots.
+            The original shop was located on Jail Road in Banka, and the name was born
+            out of the simplicity of directions—“Jail Road, Jail Road.” Today, it
+            stands as a symbol of our journey, from a small shop in Bihar to a
+            luxury brand that resonates with customers around the world.
+          </p>
+        </VideoDescContainer>
       </div>
-      
     </VideoContainer>
   );
 };

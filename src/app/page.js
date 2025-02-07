@@ -3,6 +3,13 @@ import { Box, Typography } from "@mui/material";
 import { cache } from "react"; // ✅ React Server Cache
 import BlurOnIcon from '@mui/icons-material/BlurOn';
 import CategoryCarousel from "@/pageComponents/homePageContent/catagoryComponentContainer/CatagoryComponent";
+import ReviewComponent from "@/components/reviewComponent/ReviewComponent";
+import BestSellerComponent from "@/pageComponents/homePageContent/bestSellerContainer/bestSellerComponent";
+import HeroSection from "@/pageComponents/homePageContent/HeroSection";
+import LocalVideoPlayer from "@/pageComponents/homePageContent/videoPlayers/LocalVideoPlayer";
+
+
+
 
 // ✅ Fetch images from API with caching
 const getCarouselImages = cache(async () => {
@@ -42,12 +49,17 @@ export default async function HomePage() {
       </Box>
 
       {/* ✅ Category Carousel */}
-      <Box sx={{ mt: 5, px: 2 }}>
+      
         <CategoryCarousel categories={carouselImages.data} />
+     
+      
+      <Box sx={{ m: 5, p: 2 }}>
+        <BestSellerComponent/>
       </Box>
-      <Box sx={{ mt: 5, px: 2 }}>
-        
+      <Box sx={{ m: 5, p: 2 }}>
+      <LocalVideoPlayer videoSrc="./JailLuxuryPromovid.mp4"/>
       </Box>
+      <ReviewComponent/>
     </Box>
   );
 }

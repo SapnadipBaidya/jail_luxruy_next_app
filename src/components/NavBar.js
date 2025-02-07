@@ -16,6 +16,7 @@ import {
   Box,
   TextField,
   Card,
+  useMediaQuery,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -69,6 +70,7 @@ export default function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const [anchorEl, setAnchorEl] = useState(null);
 
   // ✅ Handlers
@@ -111,6 +113,7 @@ export default function Navbar() {
     <>
       {/* ✅ Top AppBar */}
       <StyledAppBar position="sticky">
+        
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           {/* ✅ Mobile Menu Button */}
           <IconButton

@@ -7,52 +7,42 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CircleComponent from "./CircleComponent";
 
 // ✅ Styled Components
-const CardContainer = styled(Box)(({ theme }) => ({
+const CardContainer = styled(Box)(({ theme, mode }) => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
+  width: "100%",
   height: "30vh",
   boxShadow: theme.shadows[3],
   borderRadius: theme.shape.borderRadius,
-  backgroundSize: "cover",
-  backgroundRepeat: "no-repeat",
+  backgroundColor: theme.palette.background.paper,
+  // Use the image as the background
   backgroundImage:
-  theme.palette.mode == "dark"
-    ? "url('./webps/darkmodeBackgroundImg.webp')"
-    : "url('./webps/lightmodeBackgroundImg.webp')",
-  backgroundPosition: "center",
-  position: "relative", // Needed for absolute positioning of arrows
-  padding: "0 5vw", // Adjusted padding for better responsiveness
-  [theme.breakpoints.down("md")]: {
-    height: "25vh", // Adjusted for tablets
-    padding: "0 3vw",
-  },
-  [theme.breakpoints.down("sm")]: {
-    height: "20vh", // Adjusted for mobile
-    padding: "0 2vw",
-  },
+    mode == "dark"
+      ? "url('./webps/darkmodeBackgroundImg.webp')"
+      : "url('./webps/lightmodeBackgroundImg.webp')",
+  backgroundSize: "cover", // Make the background cover the container
+  backgroundRepeat: "no-repeat", // Prevent the image from repeating
+  backgroundPosition: "center", // Center the image
+  
 }));
 
 const CircleWrapper = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "row",
   alignItems: "center",
-  gap: theme.spacing(2),
-  overflowX: "auto",
-  scrollbarWidth: "none", // ✅ Hide scrollbar
-  "&::-webkit-scrollbar": { display: "none" },
-  scrollBehavior: "smooth",
-  padding: theme.spacing(5), // Adjusted for better spacing
-  [theme.breakpoints.down("md")]: {
-    gap: theme.spacing(1.5),
-    padding: theme.spacing(3),
-  },
+  
+  width:"85vw",
+  overflowX: "auto", // Enable horizontal scrolling
+  scrollbarWidth: "none", // Hide scrollbar in most browsers
+  "&::-webkit-scrollbar": { display: "none" }, // Hide scrollbar for Webkit-based browsers
   [theme.breakpoints.down("sm")]: {
-    gap: theme.spacing(1),
-    padding: theme.spacing(2),
+    width: "100%",
+    padding: "2vw",
   },
 }));
+
 
 export default function CategoryCarousel({ categories }) {
   const totalCards = categories?.length || 0;
@@ -73,6 +63,14 @@ export default function CategoryCarousel({ categories }) {
   };
 
   return (
+    <>
+    <Typography
+        variant="h4"
+        gutterBottom
+        style={{ marginTop: "4vh", marginBottom: "4vh",textAlign:"center",fontWeight: 600 }}
+      >
+        SHOP BY CATEGORY
+      </Typography>
     <CardContainer>
       <Box
         sx={{
@@ -89,11 +87,12 @@ export default function CategoryCarousel({ categories }) {
             onClick={scrollLeft}
             sx={{
               position: "absolute",
-              left: { xs: "5px", sm: "10px", md: "20px" }, // Responsive positioning
+              left: { xs: "5px", sm: "10px", md: "0px" }, // Responsive positioning
               zIndex: 10,
               backgroundColor: "rgba(255,255,255,0.7)",
               boxShadow: 3,
               "&:hover": { backgroundColor: "rgba(255,255,255,1)" },
+              display: { xs: "none", md: "flex" }, // Hide on mobile and tablet
             }}
           >
             <ArrowBackIosIcon />
@@ -117,11 +116,12 @@ export default function CategoryCarousel({ categories }) {
             onClick={scrollRight}
             sx={{
               position: "absolute",
-              right: { xs: "5px", sm: "10px", md: "20px" }, // Responsive positioning
+              right: { xs: "5px", sm: "10px", md: "0px" }, // Responsive positioning
               zIndex: 10,
               backgroundColor: "rgba(255,255,255,0.7)",
               boxShadow: 3,
               "&:hover": { backgroundColor: "rgba(255,255,255,1)" },
+              display: { xs: "none", md: "flex" }, // Hide on mobile and tablet
             }}
           >
             <ArrowForwardIosIcon />
@@ -129,5 +129,6 @@ export default function CategoryCarousel({ categories }) {
         )}
       </Box>
     </CardContainer>
+    </>
   );
 }
