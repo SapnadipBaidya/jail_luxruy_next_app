@@ -62,7 +62,7 @@ export async function validateAndRefresh({ accessToken, refreshToken, request, r
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
-        maxAge: 0.5 * 60, // 15 minutes
+        maxAge: 15 * 60 * 1000, // 15 minutes
       });
       response.cookies.set("refreshToken", newRefreshToken, {
         httpOnly: true,

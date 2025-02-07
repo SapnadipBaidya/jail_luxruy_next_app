@@ -14,11 +14,13 @@ async function fetchProductFromAPI(productName, pid, pdid) {
 
 // Product Detail Page Component
 async function ProductDetailPage({ params, searchParams }) {
-      const cookieStore = await cookies();
-      const accessToken = cookieStore?.get("accessToken")?.value || null;
-  const pid = searchParams?.pid;
-  const pdid = searchParams?.pdid;
-  const productName = params?.['item-name'];
+  const cookieStore = await cookies();
+  const accessToken = cookieStore?.get("accessToken")?.value || null;
+  const waitedSearchParams = await searchParams;
+  const waitedParams = await params;
+  const pid = waitedSearchParams?.pid;
+  const pdid = waitedSearchParams?.pdid;
+  const productName = waitedParams?.["item-name"];
 
   const data = await fetchProductFromAPI(productName, pid, pdid);
   const success = data.status;
@@ -27,7 +29,9 @@ async function ProductDetailPage({ params, searchParams }) {
     return <div>Failed to load product details.</div>;
   }
 
-  return <ProductPageClient data={data.responseData} accessToken={accessToken}/>;
+  return (
+    <ProductPageClient data={data.responseData} accessToken={accessToken} />
+  );
 }
 
 // Main Product Page Component
