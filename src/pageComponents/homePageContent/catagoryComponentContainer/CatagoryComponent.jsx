@@ -12,8 +12,6 @@ const CardContainer = styled(Box)(({ theme, mode }) => ({
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  width: "100%",
-  height: "30vh",
   boxShadow: theme.shadows[3],
   borderRadius: theme.shape.borderRadius,
   backgroundColor: theme.palette.background.paper,
@@ -25,6 +23,9 @@ const CardContainer = styled(Box)(({ theme, mode }) => ({
   backgroundSize: "cover", // Make the background cover the container
   backgroundRepeat: "no-repeat", // Prevent the image from repeating
   backgroundPosition: "center", // Center the image
+  width: "100%",
+  height: "100%",
+  backgroundSize: "cover",
   
 }));
 

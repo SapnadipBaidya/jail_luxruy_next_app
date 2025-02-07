@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material/styles";
 
 const VideoContainer = styled(Box)(({ theme, isMobile, mode }) => ({
   
-  backgroundColor:"red",
+
   
   
   display: "flex",
@@ -18,6 +18,10 @@ const VideoContainer = styled(Box)(({ theme, isMobile, mode }) => ({
   boxShadow: "0 4px 15px rgba(0, 0, 0, 0.3)",
   padding: theme.spacing(2),
   gap: theme.spacing(2),
+  backgroundImage:
+  theme.palette.mode === "dark"
+    ? "url('./webps/darkmodeBackgroundImg.webp')"
+    : "url('./webps/lightmodeBackgroundImg.webp')",
   position: "relative",
   "&::before": {
     content: '""',
@@ -26,11 +30,7 @@ const VideoContainer = styled(Box)(({ theme, isMobile, mode }) => ({
     left: 0,
     width: "100%",
     height: "100%",
-    backgroundImage:
-      mode === "dark"
-        ? "url('/webps/darkmodeBackgroundImg.webp')"
-        : "url('/webps/lightmodeBackgroundImg.webp')",
-    backgroundSize: "cover",
+    backgroundSize: "cover", // or "contain" depending on your preference
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     zIndex: -1,
