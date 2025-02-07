@@ -130,3 +130,8 @@ export const addToCart = async (productDetailsId, productId) => {
     },
   });
 };
+
+export const fetchUserCart = async () => {
+  "use server";
+  return serverApiRequest("/api/cart/fetchUserCart", "POST");
+};

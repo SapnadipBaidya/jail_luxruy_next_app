@@ -21,7 +21,7 @@ function WishListPageClient({ accessToken, itemsArr }) {
     };
 
     fetchData();
-  }, [accessToken, fetchUserWishlist]); // Re-run effect if accessToken changes
+  }, [fetchUserWishlist]); // Re-run effect if accessToken changes
 
   return (
     <div style={{ display: "flex", justifyContent: "center" ,minHeight:"100vh" }}>
