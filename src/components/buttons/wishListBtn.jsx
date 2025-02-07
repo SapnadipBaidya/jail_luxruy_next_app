@@ -53,7 +53,7 @@ const AnimatedIcon = styled(Box)(({ theme }) => ({
 
 // ✅ WishList Button Component
 function WishListButton({ item,accessToken }) {
-  const [isChecked, setIsChecked] = useState(item.product_details?.is_wishlisted);
+  const [isChecked, setIsChecked] = useState(item?.product_data?.isWishlisted);
   const [openDialog, setOpenDialog] = useState(false); // Control login dialog
   const router = useRouter(); // ✅ Next.js Router
 

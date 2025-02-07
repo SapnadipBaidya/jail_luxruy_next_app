@@ -103,7 +103,7 @@ const CardFooter = styled(Box)(({ theme }) => ({
 
 const StyledCardWrapper = React.memo(({ type, item ,accessToken,setWishlistData }) => {
    const pathname = usePathname();
-   console.log("StyledCardWrapper pathname",pathname,item,accessToken)
+   console.log("StyledCardWrapper pathname", item?.product_data)
   const mainImgUrl =
     item?.product_data?.gallery?.images?.[0] || "/placeholder.jpg";
 
