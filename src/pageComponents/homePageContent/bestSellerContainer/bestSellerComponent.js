@@ -1,42 +1,50 @@
 "use client"; // Ensure this is a client component
 
 import React from "react";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Grid } from "@mui/material";
 import BestSellerCard from "./bestSellerCard";
 import { styled } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery"; // Import the client-side hook
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
-const BestSellerContainer = styled("div")(({ theme, isTablet }) => ({
+const BestSellerContainer = styled(Box)(({ theme }) => ({
   display: "flex",
-  flexDirection: isTablet ? "column" : "row", // Stack vertically on tablets
-  justifyContent: "space-between",
+  flexDirection: "column",
   alignItems: "center",
-  width: "80vw",
+  width: "100%",
   padding: theme.spacing(2),
-  gap: theme.spacing(2),
+  margin: "auto",
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(1),
+  },
 }));
 
 export default function BestSellerComponent() {
-  const theme = useTheme(); // MUI theme hook (Client only)
-  const isTablet = useMediaQuery(theme.breakpoints.down("lg")); // Check if screen is tablet size or smaller
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Detects mobile screens
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-evenly",
-        alignItems: "center",
-        padding: "1vh",
-        width: "90vw",
-      }}
-    >
-      <Typography variant="h5" style={{ padding: "2vh" }}>OUR BEST SELLERS</Typography>
-      <BestSellerContainer isTablet={isTablet}>
-        <BestSellerCard title="LADIES" videoSrc="./elegantShe.mp4" />
-        <BestSellerCard title="GENTLEMEN" videoSrc="./elegantMan.mp4" />
-      </BestSellerContainer>
-    </div>
+    <BestSellerContainer>
+      <Typography
+        variant={isMobile ? "h5" : "h4"} // Larger title for mobile
+        sx={{ textAlign: "center", padding: "2vh", fontWeight: 600 }}
+      >
+        OUR BEST SELLERS
+      </Typography>
+
+      <Grid
+        container
+        spacing={isMobile ? 2 : 3}
+        justifyContent="center"
+        sx={{ width: "100%", maxWidth: "1200px" }}
+      >
+        <Grid item xs={12} sm={6} display="flex" justifyContent="center">
+          <BestSellerCard title="LADIES" videoSrc="./elegantShe.mp4" />
+        </Grid>
+        <Grid item xs={12} sm={6} display="flex" justifyContent="center">
+          <BestSellerCard title="GENTLEMEN" videoSrc="./elegantMan.mp4" />
+        </Grid>
+      </Grid>
+    </BestSellerContainer>
   );
 }
