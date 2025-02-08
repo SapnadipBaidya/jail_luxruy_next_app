@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Box, Button, Typography } from "@mui/material";
 import { styled } from "@mui/system";
@@ -8,7 +8,6 @@ import CartItemComp from "@/components/wrappers/cartItemComp";
 import CartItemHeader from "@/components/wrappers/cartItemHeader";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CartCartSkeleton from "@/components/wrappers/cartCartSkeleton";
-import LoginSignupPage from "@/app/login-signup/page"; // Import login page
 import { deleteFromUserCart, fetchUserCart } from "@/utils/API_lib";
 
 // ✅ Styled Components (Same as Before)
@@ -80,39 +79,32 @@ const ProceedButton = styled(Button)(({ theme }) => ({
 
 export default function CartPageClient() {
   const [cartData, setCartData] = useState([]);
-
-  useEffect(() => {
-    console.log("runnnnn")
-    // Fetch wishlist data when the component mounts or accessToken changes
-    const fetchData = async () => {
-      try {
-        const data = await fetchUserCart(); // Pass necessary arguments if required
-        console.log("cart data",data)
-        setCartData(data); // Update state with fetched data
-        console.log("WishListPageClient: Data fetched successfully", data);
-      } catch (error) {
-        console.error(
-          "WishListPageClient: Error fetching wishlist data",
-          error
-        );
-      }
-    };
-
-    fetchData();
-  }, [fetchUserCart]); 
-
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
+  const fetchData = useCallback(async () => {
+    try {
+      const data = await fetchUserCart();
+      setCartData(data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching cart data", error);
+      setLoading(false);
+    }
+  }, []);
 
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
-  const handleDeleteFromCart = async (productDetailsId, productId) => {
-    await deleteFromUserCart(productDetailsId, productId);
-    const data = await fetchUserCart(); // Pass necessary arguments if required
-    // await setCartData(data); // Update state with fetched data
-    // Refresh the current route to update the wishlist data
-  };
-
-  
+  const handleDeleteFromCart = useCallback(async (productDetailsId, productId) => {
+    try {
+      await deleteFromUserCart(productDetailsId, productId);
+      await fetchData(); // Refresh cart data
+    } catch (error) {
+      console.error("Error deleting item from cart", error);
+    }
+  }, [fetchData]);
 
   return (
     <CheckoutContainer>
@@ -124,17 +116,14 @@ export default function CartPageClient() {
         <TableWrapper>
           <StyledTable>
             <tbody>
-              {cartData?.loading ? (
+              {loading ? (
                 <CartCartSkeleton cardNum={5} />
-              ) : cartData?.length > 0 ? (
-                cartData?.map((item, index) => (
-                  <CartItemComp item={item} key={`cart_td_${index}`} handleDeleteFromCart={handleDeleteFromCart}/>
+              ) : cartData.length > 0 ? (
+                cartData.map((item, index) => (
+                  <CartItemComp item={item} key={`cart_td_${index}`} handleDeleteFromCart={handleDeleteFromCart} />
                 ))
               ) : (
-                <Typography
-                  variant="body1"
-                  sx={{ textAlign: "center", padding: "2rem" }}
-                >
+                <Typography variant="body1" sx={{ textAlign: "center", padding: "2rem" }}>
                   Your cart is empty.
                 </Typography>
               )}
