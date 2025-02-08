@@ -32,28 +32,28 @@ const HeaderCell = styled(Box)(({ theme }) => ({
 
 const CartItemHeader = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const ismobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <CardContainer>
       <HeaderRow>
         <HeaderCell>
-          <Typography variant={isMobile ? "body2" : "body1"}>Product</Typography>
+          <Typography variant={ismobile ? "body2" : "body1"}>Product</Typography>
         </HeaderCell>
         <HeaderCell>
-          <Typography variant={isMobile ? "body2" : "body1"}>Size</Typography>
+          <Typography variant={ismobile ? "body2" : "body1"}>Size</Typography>
         </HeaderCell>
         <HeaderCell>
-          <Typography variant={isMobile ? "body2" : "body1"}>Price</Typography>
+          <Typography variant={ismobile ? "body2" : "body1"}>Price</Typography>
         </HeaderCell>
         <HeaderCell>
-          <Typography variant={isMobile ? "body2" : "body1"}>Quantity</Typography>
+          <Typography variant={ismobile ? "body2" : "body1"}>Quantity</Typography>
         </HeaderCell>
         <HeaderCell>
-          <Typography variant={isMobile ? "body2" : "body1"}>Subtotal</Typography>
+          <Typography variant={ismobile ? "body2" : "body1"}>Subtotal</Typography>
         </HeaderCell>
         <HeaderCell>
-          <Typography variant={isMobile ? "body2" : "body1"}>Action</Typography>
+          <Typography variant={ismobile ? "body2" : "body1"}>Action</Typography>
         </HeaderCell>
       </HeaderRow>
     </CardContainer>

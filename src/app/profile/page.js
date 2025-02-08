@@ -10,7 +10,6 @@ export default async function ProfilePage() {
   return (
     <div>
       <h1>User Profile</h1>
-      <p>Access Token: {accessToken ? "Available" : "Not Found"} is {accessToken} and refresh token is \n {refreshToken}</p>
     </div>
   );
 }

@@ -22,7 +22,7 @@ const FlipCardContainer = styled(Box)(({ theme }) => ({
 }));
 
 // ✅ Flip Card Inner Wrapper
-const FlipCardInner = styled(Box)(({ theme , isMobile }) => ({
+const FlipCardInner = styled(Box)(({ theme , ismobile }) => ({
   position: "relative",
   width: "90%",
   height: "90%",
@@ -31,7 +31,7 @@ const FlipCardInner = styled(Box)(({ theme , isMobile }) => ({
   transformStyle: "preserve-3d",
  
   "&:hover": {
-    transform:  isMobile ? "":"rotateY(180deg)",
+    transform:  ismobile ? "":"rotateY(180deg)",
   },
 }));
 
@@ -128,7 +128,7 @@ function RecommendationCard() {
       <ScrollableContainer ref={scrollContainerRef}>
         {products.map((product) => (
           <FlipCardContainer key={product.id} onClick={() => setSelectedProduct(product)}>
-            <FlipCardInner isMobile={isTablet}>
+            <FlipCardInner ismobile={isTablet}>
               {/* ✅ Front Side of Card */}
               <FlipCardFront>
                 <img

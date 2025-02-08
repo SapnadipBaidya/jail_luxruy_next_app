@@ -1,4 +1,5 @@
-export async function ErrorBoundary({ children }) {
+"use client"
+export  function ErrorBoundary({ children }) {
     try {
       return children;
     } catch (error) {

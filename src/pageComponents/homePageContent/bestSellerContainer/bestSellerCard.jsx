@@ -45,13 +45,13 @@ const StyledVideo = styled("video")(({ theme }) => ({
 
 function BestSellerCard({ title, videoSrc }) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const ismobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <BestSellerComp>
       <Link href="/product-category" passHref style={{ textDecoration: "none", color: "inherit" }}>
         <Typography
-          variant={isMobile ? "h5" : "h6"} // Bigger text on mobile
+          variant={ismobile ? "h5" : "h6"} // Bigger text on mobile
           sx={{ fontWeight: "bold", marginBottom: "10px" }}
         >
           {title}

@@ -1,11 +1,10 @@
+"use server"
 import ImageCarousel from "@/components/ImageCarousel";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { cache } from "react"; // ✅ React Server Cache
-import BlurOnIcon from '@mui/icons-material/BlurOn';
 import CategoryCarousel from "@/pageComponents/homePageContent/catagoryComponentContainer/CatagoryComponent";
 import ReviewComponent from "@/components/reviewComponent/ReviewComponent";
 import BestSellerComponent from "@/pageComponents/homePageContent/bestSellerContainer/bestSellerComponent";
-import HeroSection from "@/pageComponents/homePageContent/HeroSection";
 import LocalVideoPlayer from "@/pageComponents/homePageContent/videoPlayers/LocalVideoPlayer";
 
 

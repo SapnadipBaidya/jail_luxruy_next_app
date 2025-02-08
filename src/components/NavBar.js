@@ -64,6 +64,17 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
   borderColor: "divider",
 }));
 
+const StyledInput = styled("input")(({ theme }) => ({
+  width: "100%", // Full width
+  height: "100%", // Full height of the container
+  padding: "8px", // Add padding for better UX
+  fontSize: "1rem", // Adjust font size
+  border: `0.5vh solid ${theme.palette.secondary.main}`, // Add border
+  backgroundColor:theme.palette.background.paper,
+  borderRadius: "4px", // Add border radius
+  outline: "none", // Remove default outline
+}));
+
 export default function Navbar() {
   const theme = useTheme();
   const router = useRouter();
@@ -91,7 +102,6 @@ export default function Navbar() {
       router.push(searchPath); // This will navigate to /search
     }
   }, 500);
-  
 
   // ✅ Handle search input change
   const handleSearchChange = (e) => {
@@ -113,7 +123,6 @@ export default function Navbar() {
     <>
       {/* ✅ Top AppBar */}
       <StyledAppBar position="sticky">
-        
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           {/* ✅ Mobile Menu Button */}
           <IconButton
@@ -147,13 +156,13 @@ export default function Navbar() {
                   </Card>
                 </MenuItem>
               ) : (
-                <>
+                [
                   <MenuItem
                     key="profile"
                     onClick={() => router.push("/userContact")}
                   >
                     Profile
-                  </MenuItem>
+                  </MenuItem>,
                   <MenuItem
                     key="logout"
                     onClick={() => {
@@ -161,8 +170,8 @@ export default function Navbar() {
                     }}
                   >
                     Logout
-                  </MenuItem>
-                </>
+                  </MenuItem>,
+                ]
               )}
             </Menu>
             <StyledButton component={Link} href="/about">
@@ -229,11 +238,10 @@ export default function Navbar() {
         {/* ✅ Search Bar */}
         {isSearchOpen && (
           <SearchBox>
-            <TextField
-              fullWidth
-              variant="outlined"
+            <StyledInput
+              type="text"
               placeholder="Search for products..."
-              value={searchQuery}
+              value={searchQuery || ""} // Ensure value is never undefined
               onChange={handleSearchChange}
               onKeyPress={(e) => {
                 if (e.key === "Enter") {

@@ -27,7 +27,7 @@ const SortFilterWrapper = styled("div")(({ theme }) => ({
 
 function SortFilterComponent({ setShowFilters, showFilters }) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // ✅ Detects mobile view
+  const ismobile = useMediaQuery(theme.breakpoints.down("sm")); // ✅ Detects mobile view
   const isTablet = useMediaQuery(theme.breakpoints.down("md")); // ✅ Detects tablet view
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -51,7 +51,7 @@ function SortFilterComponent({ setShowFilters, showFilters }) {
 
   return (
     <SortFilterWrapper>
-      {isMobile && (
+      {ismobile && (
         <GenericBtns
           type="primary"
           btnText={<FilterListIcon />}
@@ -71,7 +71,7 @@ function SortFilterComponent({ setShowFilters, showFilters }) {
         onClose={() => handleClose(null)}
         PaperProps={{
           sx: {
-            width: isMobile ? "100vw" : isTablet ? "36.5vw" : "10vw", // ✅ Responsive Width
+            width: ismobile ? "100vw" : isTablet ? "36.5vw" : "10vw", // ✅ Responsive Width
             padding: "1vh",
           },
         }}
@@ -96,9 +96,9 @@ function SortFilterComponent({ setShowFilters, showFilters }) {
             onClick={() => handleClose(item.value)}
             sx={{
               fontSize: theme.typography.pxToRem(
-                isMobile ? 12 : isTablet ? 12 : 14
+                ismobile ? 12 : isTablet ? 12 : 14
               ), // ✅ Adjust font size dynamically
-              padding: isMobile ? "0.5vh" : "1vh", // ✅ Adjust padding dynamically
+              padding: ismobile ? "0.5vh" : "1vh", // ✅ Adjust padding dynamically
             }}
           >
             {item.label}

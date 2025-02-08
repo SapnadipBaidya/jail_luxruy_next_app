@@ -3,16 +3,17 @@ import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import { Box, useMediaQuery, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import TruncatedText from "@/components/wrappers/TruncatedText";
 
-const VideoContainer = styled(Box)(({ theme, isMobile, mode }) => ({
+const VideoContainer = styled(Box)(({ theme, ismobile, mode }) => ({
   
 
   
   
   display: "flex",
-  flexDirection: isMobile ? "column" : "row",
+  flexDirection: ismobile ? "column" : "row",
   alignItems: "center",
-  justifyContent: isMobile ? "center" : "space-evenly",
+  justifyContent: ismobile ? "center" : "space-evenly",
   overflow: "hidden",
   borderRadius: "12px",
   boxShadow: "0 4px 15px rgba(0, 0, 0, 0.3)",
@@ -37,9 +38,9 @@ const VideoContainer = styled(Box)(({ theme, isMobile, mode }) => ({
   },
 }));
 
-const StyledVideo = styled("video")(({ isMobile }) => ({
-  width: isMobile ? "100%" : "20%",
-  height: isMobile ? "auto" : "100%",
+const StyledVideo = styled("video")(({ ismobile }) => ({
+  width: ismobile ? "100%" : "20%",
+  height: ismobile ? "auto" : "100%",
   objectFit: "cover",
   borderRadius: "1vh",
 }));
@@ -60,7 +61,7 @@ const TextContainer  = styled(Typography)(({ theme }) => ({
 
 const LocalVideoPlayer = ({ videoSrc }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const ismobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [videoSrcState, setVideoSrcState] = useState(videoSrc || "");
 
@@ -80,27 +81,27 @@ const LocalVideoPlayer = ({ videoSrc }) => {
   }, [videoSrc]);
 
   return (
-    <VideoContainer isMobile={isMobile} mode={theme.palette.mode}>
+    <VideoContainer ismobile={ismobile} mode={theme.palette.mode}>
       {videoSrcState ? (
-        <StyledVideo autoPlay loop muted playsInline isMobile={isMobile}>
+        <StyledVideo autoPlay loop muted playsInline ismobile={ismobile}>
           <source src={videoSrcState} type="video/mp4" />
           Your browser does not support the video tag.
         </StyledVideo>
       ) : (
-        <p>Loading video...</p> // Placeholder while fetching video
+        <span>Loading video...</span> // Placeholder while fetching video
       )}
 
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
         <VideoDescContainer component="div">
           <TextContainer>
-          <h1 style={{ margin: 0 }}>WHY JAIL ?</h1>
-          <p>
-            The name “Jail” is more than just a brand; it’s a nod to our roots.
+          <TruncatedText style={{ margin: 0 }}>WHY JAIL ?</TruncatedText>
+          <span>
+            The name “Jail” is more {"\n"} than just a brand .  it’s a nod to our roots.
             The original shop was located on Jail Road in Banka, and the name was born
-            out of the simplicity of directions—“Jail Road, Jail Road.” Today, it
+            out of the simplicity of directions—“Jail Road, Jail Road.”  Today, it
             stands as a symbol of our journey, from a small shop in Bihar to a
             luxury brand that resonates with customers around the world.
-          </p>
+          </span>
           </TextContainer>
         </VideoDescContainer>
       </div>

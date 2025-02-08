@@ -87,7 +87,7 @@ export default function LoadingAnimation() {
   return (
     <Card>
       <Loader>
-        <p>loading</p>
+        <>loading</>
         <Words>
           <Word>Design</Word>
           <Word>Quality</Word>

@@ -55,7 +55,7 @@ const Image = styled("img")(({ theme }) => ({
 
 const CartItemComp = ({ item ,handleDeleteFromCart}) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const ismobile = useMediaQuery(theme.breakpoints.down("sm"));
   const router = useRouter();
 
   return (
@@ -81,7 +81,7 @@ const CartItemComp = ({ item ,handleDeleteFromCart}) => {
               }}
             />
             <Typography
-              variant={isMobile ? "body2" : "body1"}
+              variant={ismobile ? "body2" : "body1"}
               fontWeight="bold"
             >
               {item?.product_details?.product_name}
@@ -92,7 +92,7 @@ const CartItemComp = ({ item ,handleDeleteFromCart}) => {
           <SizeBox>{item?.size_details?.size_name}</SizeBox>
         </ItemCell>
         <ItemCell>
-          <Typography variant={isMobile ? "body2" : "body1"}>
+          <Typography variant={ismobile ? "body2" : "body1"}>
             ₹{item?.product_details?.product_price_inr}
           </Typography>
         </ItemCell>
@@ -100,16 +100,16 @@ const CartItemComp = ({ item ,handleDeleteFromCart}) => {
           <SizeBox>{item?.cart_details?.quantity}</SizeBox>
         </ItemCell>
         <ItemCell>
-          <Typography variant={isMobile ? "body2" : "body1"}>
+          <Typography variant={ismobile ? "body2" : "body1"}>
             ₹
             {item?.cart_details?.quantity *
               item?.product_details?.product_price_inr}
           </Typography>
         </ItemCell>
         <ItemCell>
-          <IconButton size={isMobile ? "small" : "medium"}>
+          <IconButton size={ismobile ? "small" : "medium"}>
             <DeleteForeverOutlinedIcon
-              fontSize={isMobile ? "small" : "medium"}
+              fontSize={ismobile ? "small" : "medium"}
               onClick={(e) => {
                 e.preventDefault();
                 handleDeleteFromCart(

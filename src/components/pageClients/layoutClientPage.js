@@ -1,0 +1,53 @@
+"use client"
+
+import React from 'react'
+import { ErrorBoundary } from '../ErrorBoundary';
+import { StyledEngineProvider } from '@mui/material';
+import { ThemeProviderWrapper, useThemeContext } from '@/context/themeContext';
+import Footer from '../Footer';
+import Navbar from '../NavBar';
+
+
+
+
+function ThemeBackgroundWrapper({ children }) {
+  const { themeMode } = useThemeContext(); // Get current theme dynamically
+
+  return (
+    <div
+      style={{
+        backgroundColor: themeMode === "dark" ? "#121212" : "#ffffff",
+        minHeight: "100vh",
+        minWidth: "100vw",
+        
+        transition: "background-color 0.3s ease-in-out",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function LayoutClientPage({ children }) {
+  return (
+    <ErrorBoundary>
+    <html lang="en">
+      <body>
+
+   
+        <ThemeProviderWrapper>
+          <ThemeBackgroundWrapper> {/* Apply background color here */}
+            <Navbar />
+            {children}
+            <Footer/>
+          </ThemeBackgroundWrapper>
+        </ThemeProviderWrapper>
+        
+
+      </body>
+    </html>
+    </ErrorBoundary>
+  )
+}
+
+export default LayoutClientPage

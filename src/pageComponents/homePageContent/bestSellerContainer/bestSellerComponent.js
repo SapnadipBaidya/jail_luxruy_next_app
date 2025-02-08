@@ -21,12 +21,12 @@ const BestSellerContainer = styled(Box)(({ theme }) => ({
 
 export default function BestSellerComponent() {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Detects mobile screens
+  const ismobile = useMediaQuery(theme.breakpoints.down("sm")); // Detects mobile screens
 
   return (
     <BestSellerContainer>
       <Typography
-        variant={isMobile ? "h5" : "h4"} // Larger title for mobile
+        variant={ismobile ? "h5" : "h4"} // Larger title for mobile
         sx={{ textAlign: "center", padding: "2vh", fontWeight: 600 }}
       >
         OUR BEST SELLERS
@@ -34,7 +34,7 @@ export default function BestSellerComponent() {
 
       <Grid
         container
-        spacing={isMobile ? 2 : 3}
+        spacing={ismobile ? 2 : 3}
         justifyContent="center"
         sx={{ width: "100%", maxWidth: "1200px" }}
       >

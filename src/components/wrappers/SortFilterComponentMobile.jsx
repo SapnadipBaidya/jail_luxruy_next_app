@@ -46,7 +46,7 @@ const DrawerHeader = styled(Box)(({ theme }) => ({
 
 const SortFilterComponentMobile = ({ setShowFilters, showFilters }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const ismobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
   const [drawerOpen, setDrawerOpen] = useState(false);
