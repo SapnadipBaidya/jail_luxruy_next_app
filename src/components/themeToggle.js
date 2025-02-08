@@ -1,8 +1,8 @@
 "use client";
 import { useThemeContext } from "../context/themeContext";
 import { styled } from "@mui/material/styles";
-import WbSunnyRoundedIcon from '@mui/icons-material/WbSunnyRounded';
-import NightsStayIcon from '@mui/icons-material/NightsStay';
+import WbSunnyRoundedIcon from "@mui/icons-material/WbSunnyRounded";
+import NightsStayIcon from "@mui/icons-material/NightsStay";
 
 const ThemeSwitchWrapper = styled("div")({
   position: "relative",
@@ -62,6 +62,11 @@ const IconWrapper = styled("span")({
 export default function ThemeToggle() {
   const { toggleTheme, themeMode } = useThemeContext();
 
+  // Ensure themeMode is properly initialized
+  if (typeof themeMode === "undefined") {
+    return null; // Render nothing until themeMode is initialized
+  }
+
   return (
     <ThemeSwitchWrapper>
       <HiddenCheckbox
@@ -72,15 +77,13 @@ export default function ThemeToggle() {
       />
       <SwitchLabel htmlFor="theme-checkbox">
         <SwitchSlider>
-          {themeMode === "dark" ? (
-            <IconWrapper>
+          <IconWrapper>
+            {themeMode === "dark" ? (
               <NightsStayIcon sx={{ color: "white" }} />
-            </IconWrapper>
-          ) : (
-            <IconWrapper>
+            ) : (
               <WbSunnyRoundedIcon sx={{ color: "black" }} />
-            </IconWrapper>
-          )}
+            )}
+          </IconWrapper>
         </SwitchSlider>
       </SwitchLabel>
     </ThemeSwitchWrapper>

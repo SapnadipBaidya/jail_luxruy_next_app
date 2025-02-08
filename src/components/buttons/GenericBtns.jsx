@@ -1,6 +1,5 @@
 import React from 'react';
-import { styled } from '@mui/system';
-import { Button, useTheme, useMediaQuery } from '@mui/material';
+import { Button, useTheme, useMediaQuery, styled } from '@mui/material';
 
 function GenericBtns({ type, btnText, defaultText = "default", executableFunction, minWidth = "10vw" }) {
   const theme = useTheme();

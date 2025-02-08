@@ -45,7 +45,8 @@ function ErrorBoundary({ children }) {
 }
 
 export default async function ItemsPage({ params, searchParams }) {
-  const page = parseInt(await searchParams?.page) || 1;
+  const waitedSearchParams = await searchParams;
+  const page = parseInt(waitedSearchParams?.page) || 1;
   return (
     <ErrorBoundary>
       <Suspense key={page} fallback={<LoadingAnimation />}>

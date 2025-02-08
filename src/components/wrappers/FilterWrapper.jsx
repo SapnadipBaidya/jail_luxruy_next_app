@@ -8,13 +8,11 @@ import {
   Radio,
   Slider,
   Button,
-  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import GenericBtns from "../buttons/GenericBtns";
 import FilterSizeComponent from "./generics/filterSizeComponent";
-import Chip from "@mui/material/Chip";
 import FilterColorComponent from "./generics/filterColorComponent";
 const FilterWrapperComponent = styled(Box)(({ theme }) => ({
   minWidth: theme.typography.pxToRem(260),

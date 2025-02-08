@@ -2,13 +2,11 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Box, Button, Typography } from "@mui/material";
-import { styled } from "@mui/system";
-import CartItemComp from "@/components/wrappers/cartItemComp";
-import CartItemHeader from "@/components/wrappers/cartItemHeader";
+import { Box, Button, styled, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CartCartSkeleton from "@/components/wrappers/cartCartSkeleton";
 import { deleteFromUserCart, fetchUserCart } from "@/utils/API_lib";
+import CartComponent from "@/pageComponents/cartComponent";
 
 // ✅ Styled Components (Same as Before)
 const CheckoutContainer = styled(Box)(({ theme }) => ({
@@ -99,37 +97,23 @@ export default function CartPageClient() {
 
   const handleDeleteFromCart = useCallback(async (productDetailsId, productId) => {
     try {
-      await deleteFromUserCart(productDetailsId, productId);
+      await deleteFromUserCart(productId,productDetailsId);
       await fetchData(); // Refresh cart data
     } catch (error) {
       console.error("Error deleting item from cart", error);
     }
   }, [fetchData]);
 
+
+  console.log("cartData",cartData)
+
   return (
     <CheckoutContainer>
       <CartSection>
         <Typography variant="h5">Checkout</Typography>
-        <CartItemHeader />
-
+        
         {/* Scrollable Table */}
-        <TableWrapper>
-          <StyledTable>
-            <tbody>
-              {loading ? (
-                <CartCartSkeleton cardNum={5} />
-              ) : cartData.length > 0 ? (
-                cartData.map((item, index) => (
-                  <CartItemComp item={item} key={`cart_td_${index}`} handleDeleteFromCart={handleDeleteFromCart} />
-                ))
-              ) : (
-                <Typography variant="body1" sx={{ textAlign: "center", padding: "2rem" }}>
-                  Your cart is empty.
-                </Typography>
-              )}
-            </tbody>
-          </StyledTable>
-        </TableWrapper>
+       <CartComponent item={cartData} handleDeleteFromCart={handleDeleteFromCart}/>
 
         <WishlistButton onClick={() => router.push("/wishlist")}>
           <Typography>Add More From Wishlist</Typography>

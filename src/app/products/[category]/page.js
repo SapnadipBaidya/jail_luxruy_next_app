@@ -48,7 +48,8 @@ async function ItemsPageContent({ params, searchParams }) {
 
 
 export default async function ItemsPage({ params, searchParams }) {
-  const page = parseInt(await searchParams?.page) || 1;
+  const waitedSearchParams = await searchParams;
+  const page = parseInt(waitedSearchParams?.page) || 1;
   return (
    
       <Suspense key={page} fallback={<LoadingAnimation />}>

@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useRef } from "react";
 import { Box, Typography, Card, Container } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { styled } from "@mui/material";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 

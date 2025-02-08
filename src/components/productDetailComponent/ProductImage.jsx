@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState, useRef } from "react";
-import { Box, CircularProgress, useMediaQuery } from "@mui/material";
-import { styled, useTheme } from "@mui/system";
+import { Box, CircularProgress, useMediaQuery , styled, useTheme} from "@mui/material";
+
 
 const StyledContainer = styled(Box)({
   display: "flex",

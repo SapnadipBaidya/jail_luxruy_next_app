@@ -2,10 +2,10 @@
 
 import React from 'react'
 import { ErrorBoundary } from '../ErrorBoundary';
-import { StyledEngineProvider } from '@mui/material';
 import { ThemeProviderWrapper, useThemeContext } from '@/context/themeContext';
 import Footer from '../Footer';
 import Navbar from '../NavBar';
+import { CssBaseline, StyledEngineProvider } from '@mui/material';
 
 
 
@@ -33,8 +33,7 @@ function LayoutClientPage({ children }) {
     <ErrorBoundary>
     <html lang="en">
       <body>
-
-   
+      <CssBaseline />
         <ThemeProviderWrapper>
           <ThemeBackgroundWrapper> {/* Apply background color here */}
             <Navbar />
@@ -42,8 +41,6 @@ function LayoutClientPage({ children }) {
             <Footer/>
           </ThemeBackgroundWrapper>
         </ThemeProviderWrapper>
-        
-
       </body>
     </html>
     </ErrorBoundary>

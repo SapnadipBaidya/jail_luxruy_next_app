@@ -1,8 +1,7 @@
 "use client"
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
-import { Box, Typography, Button, IconButton } from "@mui/material";
-import { styled } from "@mui/system";
+import { Box, Typography, Button, IconButton,styled } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useRouter ,usePathname,useParams} from "next/navigation";
 // Optimized styled components (moved outside main component)

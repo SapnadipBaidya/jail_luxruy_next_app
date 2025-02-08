@@ -1,7 +1,6 @@
 "use client"
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Typography, Card, useTheme } from "@mui/material";
-import { styled } from "@mui/system";
+import { Box, Typography, Card, useTheme,styled } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 
 // Styled MUI Components
