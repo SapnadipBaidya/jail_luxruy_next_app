@@ -21,12 +21,11 @@ const CheckoutContainer = styled(Box)(({ theme }) => ({
 }));
 
 const CartSection = styled(Box)(({ theme }) => ({
-  maxWidth: "50%",
-  marginLeft: "10vh",
+  width: theme.typography.pxToRem(250),
+  marginLeft: "0",
   [theme.breakpoints.up("md")]: {
     width: "65%",
   },
-  border: "solid 2px blue",
 }));
 
 const SummarySection = styled(Box)(({ theme }) => ({
@@ -113,7 +112,7 @@ export default function CartPageClient() {
         <Typography variant="h5">Checkout</Typography>
         
         {/* Scrollable Table */}
-       <CartComponent item={cartData} handleDeleteFromCart={handleDeleteFromCart}/>
+       <CartComponent item={cartData} handleDeleteFromCart={handleDeleteFromCart} fetchData={fetchData}/>
 
         <WishlistButton onClick={() => router.push("/wishlist")}>
           <Typography>Add More From Wishlist</Typography>

@@ -1,8 +1,14 @@
 "use client";
 
-import { Box, IconButton, TextField, Typography, styled, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, styled, Skeleton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRouter } from "next/navigation";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import TruncatedText from "@/components/wrappers/TruncatedText";
+import { addToCart } from "@/utils/API_lib";
+import { useCallback, useState } from "react";
+import NoDataComponent from "@/components/wrappers/noDataComponent";
 
 const CartRow = styled(Box)(({ theme }) => ({
   display: "grid",
@@ -13,28 +19,29 @@ const CartRow = styled(Box)(({ theme }) => ({
   backgroundColor: "#f5f5f5",
   borderRadius: theme.spacing(1),
   marginBottom: theme.spacing(1),
-  [theme.breakpoints.down('md')]: {
-    gridTemplateColumns: "repeat(3, 1fr) 40px",
-    "& > :nth-of-type(3)": { display: "none" }, // Hide price column
-    "& > :nth-of-type(5)": { display: "none" }, // Hide subtotal column
+  [theme.breakpoints.down("md")]: {
+    gridTemplateColumns: "repeat(5, 2fr) 40px",
+    minWidth: "80vw",
   },
-  [theme.breakpoints.down('sm')]: {
-    gridTemplateColumns: "1fr 40px",
-    "& > :not(:first-of-type):not(:last-child)": { display: "none" },
+  [theme.breakpoints.down("sm")]: {
+    gridTemplateColumns: "repeat(3, 2fr) 40px",
+    "& > :nth-of-type(3), & > :nth-of-type(5)": { display: "none" }, // Hide price and subtotal columns
   },
 }));
 
 const ProductImage = styled(Box)(({ theme }) => ({
-  width: 80,
-  height: 80,
+  width: "14vh",
+  height: "14vh",
+  aspectRatio: "1/1",
   backgroundColor: "#fff",
   borderRadius: 8,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  [theme.breakpoints.down('sm')]: {
-    width: 60,
-    height: 60,
+  flexDirection: "column",
+  [theme.breakpoints.down("sm")]: {
+    width: "10vh",
+    height: "10vh",
   },
 }));
 
@@ -49,51 +56,91 @@ const SizeBox = styled(Box)(({ theme }) => ({
   backgroundColor: "#fff",
 }));
 
-const InputField = styled(TextField)(({ theme }) => ({
-  '& .MuiOutlinedInput-root': {
-    backgroundColor: "#fff",
-    width: '100%',
-    maxWidth: 120,
-  },
-  [theme.breakpoints.down('sm')]: {
-    '& .MuiOutlinedInput-root': {
-      maxWidth: '80px',
-    },
-  },
-}));
-
 const HeaderText = styled(Typography)(({ theme }) => ({
   fontWeight: 600,
-  textAlign: 'center',
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '0.875rem',
+  textAlign: "center",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "0.875rem",
   },
 }));
 
 const ResponsiveBox = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  textAlign: 'center',
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center",
 }));
 
 const Image = styled("img")(({ theme }) => ({
-    width: "10vh",
-    height: "10vh",
-    objectFit: "cover",
-    borderRadius: "8px",
-  }));
-  
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  borderRadius: "8px",
+}));
 
-export default function CartComponent({item,handleDeleteFromCart}) {
-  const theme = useTheme();
+const NumberControl = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+}));
+
+const NumberQuantity = styled("input")(({ theme }) => ({
+  padding: "0.25rem",
+  border: "0",
+  width: "50px",
+  textAlign: "center",
+  borderTop: "1px solid black",
+  borderBottom: "1px solid black",
+  "-moz-appearance": "textfield",
+  "&::-webkit-inner-spin-button, &::-webkit-outer-spin-button": {
+    "-webkit-appearance": "none",
+    margin: 0,
+  },
+}));
+
+export default function CartComponent({ item, handleDeleteFromCart, fetchData }) {
   const router = useRouter();
-  console.log("item",item)
+  const [loading, setLoading] = useState(false); // Loading state for quantity updates
+  const [deleteLoading, setDeleteLoading] = useState(null); // Loading state for delete operation
+
+  const handleQuantityChange = useCallback(
+    async (productId, productDetailId, delta) => {
+      if (loading) return; // Prevent multiple clicks
+      setLoading(true); // Start loading
+      try {
+        console.log(
+          `Update quantity for item productId ${productId} and productDetailId ${productDetailId} by ${delta}`
+        );
+        await addToCart(productDetailId, productId, delta);
+        await fetchData();
+      } catch (error) {
+        console.error("Error updating cart:", error);
+      } finally {
+        setLoading(false); // Stop loading
+      }
+    },
+    [loading, fetchData]
+  );
+
+  const handleDelete = useCallback(
+    async (productDetailId, productId) => {
+      if (deleteLoading === productDetailId) return; // Prevent multiple clicks
+      setDeleteLoading(productDetailId); // Start loading for this specific item
+      try {
+        await handleDeleteFromCart(productDetailId, productId);
+        await fetchData();
+      } catch (error) {
+        console.error("Error deleting item:", error);
+      } finally {
+        setDeleteLoading(null); // Stop loading
+      }
+    },
+    [deleteLoading, handleDeleteFromCart, fetchData]
+  );
 
   return (
-    <Box sx={{ maxWidth: 800, margin: '0 auto', p: 0 }}>
+    <Box sx={{ maxWidth: 800, margin: "0 auto", p: 0 }}>
       {/* Header */}
-      <CartRow sx={{ backgroundColor: 'transparent', mb: 2 }}>
+      <CartRow sx={{ backgroundColor: "transparent", mb: 2 }}>
         <HeaderText>Product</HeaderText>
         <HeaderText>Size</HeaderText>
         <HeaderText>Price</HeaderText>
@@ -103,65 +150,148 @@ export default function CartComponent({item,handleDeleteFromCart}) {
       </CartRow>
 
       {/* Items */}
-      {item?.map((i) => (
-        <CartRow key={i?.product_details?.products_details_id}>
-          <ResponsiveBox sx={{ gap: 2 }}>
-            <ProductImage>
-            <Image
-              src={i?.gallery_details?.gallary?.images[0]}
-              alt={i?.product_details?.product_name}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                router.push(
-                  `/item/` +
-                    "/" +
-                    i?.product_details?.product_name +
-                    "?pid=" +
-                    i?.product_details?.product_id +
-                    "&pdid=" +
-                    i?.product_details?.products_details_id
-                );
-              }}
-              width={20}
-              height={20}
-            />
-            </ProductImage>
-          </ResponsiveBox>
+      {item?.map((i) => {
+        const isDeleteLoading = deleteLoading === i?.product_details?.products_details_id;
+        const isLoading = loading || isDeleteLoading;
 
-          <ResponsiveBox>
-            <SizeBox>
-              <Typography variant="body2">{i?.size_details?.size_name}</Typography>
-            </SizeBox>
-          </ResponsiveBox>
+        return (
+          <CartRow key={i?.product_details?.products_details_id}>
+            <ResponsiveBox sx={{ gap: 1, flexDirection: "column" }}>
+              <ProductImage>
+                {isLoading ? (
+                  <Skeleton variant="rectangular" width="100%" height="100%" />
+                ) : (
+                  <Image
+                    src={i?.gallery_details?.gallary?.images[0]}
+                    alt={i?.product_details?.product_name}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      router.push(
+                        `/item/${i?.product_details?.product_name}?pid=${i?.product_details?.product_id}&pdid=${i?.product_details?.products_details_id}`
+                      );
+                    }}
+                  />
+                )}
+              </ProductImage>
+              {isLoading ? (
+                <Skeleton variant="text" width="80%" height={24} />
+              ) : (
+                <TruncatedText maxWidth="15vw" fontSize="2vh">
+                  {i?.product_details?.product_name || "No Name"}
+                </TruncatedText>
+              )}
+            </ResponsiveBox>
 
-          <ResponsiveBox>
-            <Typography variant="body1">${i?.product_details?.product_price_inr}</Typography>
-          </ResponsiveBox>
+            <ResponsiveBox>
+              {isLoading ? (
+                <Skeleton variant="rectangular" width={32} height={32} />
+              ) : (
+                <SizeBox>
+                  <Typography variant="body2">
+                    {i?.size_details?.size_name}
+                  </Typography>
+                </SizeBox>
+              )}
+            </ResponsiveBox>
 
-          <ResponsiveBox>
-            <InputField
-              variant="outlined"
-              size="small"
-              type="number"
-              value={i?.cart_details?.quantity}
-              inputProps={{ min: 1 }}
-            />
-          </ResponsiveBox>
+            <ResponsiveBox>
+              {isLoading ? (
+                <Skeleton variant="text" width={50} height={24} />
+              ) : (
+                <Typography variant="body1">
+                  ${i?.product_details?.product_price_inr}
+                </Typography>
+              )}
+            </ResponsiveBox>
 
-          <ResponsiveBox>
-            <Typography variant="body1">
-              ${(i?.product_details?.product_price_inr * i?.cart_details?.quantity)?.toFixed(2)}
-            </Typography>
-          </ResponsiveBox>
+            <ResponsiveBox>
+              <NumberControl>
+                {isLoading ? (
+                  <Skeleton variant="rectangular" width={20} height={20} />
+                ) : (
+                  <IconButton
+                    size="small"
+                    disabled={i?.cart_details?.quantity <= 1 || isLoading}
+                    onClick={() =>
+                      handleQuantityChange(
+                        i?.product_details?.product_id,
+                        i?.product_details?.products_details_id,
+                        -1
+                      )
+                    }
+                  >
+                    <RemoveIcon />
+                  </IconButton>
+                )}
+                {isLoading ? (
+                  <Skeleton variant="rectangular" width={50} height={32} />
+                ) : (
+                  <NumberQuantity
+                    type="number"
+                    name="number"
+                    value={i?.cart_details?.quantity}
+                    readOnly
+                  />
+                )}
+                {isLoading ? (
+                  <Skeleton variant="rectangular" width={20} height={20} />
+                ) : (
+                  <IconButton
+                    size="small"
+                    disabled={isLoading}
+                    onClick={() =>
+                      handleQuantityChange(
+                        i?.product_details?.product_id,
+                        i?.product_details?.products_details_id,
+                        1
+                      )
+                    }
+                  >
+                    <AddOutlinedIcon />
+                  </IconButton>
+                )}
+              </NumberControl>
+            </ResponsiveBox>
 
-          <ResponsiveBox>
-            <IconButton size="small">
-              <DeleteIcon fontSize="small" onClick={(e)=>handleDeleteFromCart(i?.product_details?.products_details_id,i?.product_details?.product_id)}/>
-            </IconButton>
-          </ResponsiveBox>
-        </CartRow>
-      ))}
+            <ResponsiveBox>
+              {isLoading ? (
+                <Skeleton variant="text" width={50} height={24} />
+              ) : (
+                <Typography variant="body1">
+                  $
+                  {(
+                    i?.product_details?.product_price_inr *
+                    i?.cart_details?.quantity
+                  )?.toFixed(2)}
+                </Typography>
+              )}
+            </ResponsiveBox>
+
+            <ResponsiveBox>
+              {isLoading ? (
+                <Skeleton variant="circular" width={32} height={32} />
+              ) : (
+                <IconButton
+                  size="small"
+                  disabled={isLoading}
+                  onClick={(e) =>
+                    handleDelete(
+                      i?.product_details?.products_details_id,
+                      i?.product_details?.product_id
+                    )
+                  }
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              )}
+            </ResponsiveBox>
+          </CartRow>
+        );
+      })}
+
+
+      {item?.length == 0 &&  <NoDataComponent/>}
     </Box>
   );
 }

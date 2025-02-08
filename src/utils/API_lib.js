@@ -121,12 +121,13 @@ export const fetchUserWishlist = async () => {
 };
 
 // Cart Actions
-export const addToCart = async (productDetailsId, productId) => {
+export const addToCart = async (productDetailsId, productId,quantity) => {
   "use server";
   return serverApiRequest("/api/cart/addOrEditCart", "POST", {
     payloadObj: {
       productsDetailsId: productDetailsId,
       product_id: productId,
+      quantity:quantity
     },
   });
 };
