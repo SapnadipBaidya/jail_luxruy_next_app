@@ -9,7 +9,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   fontWeight: "bold",
   fontSize: theme.typography.pxToRem(14),
   lineHeight: "1.4",
-  maxHeight: "3vh",
+  maxHeight: "7vh",
   maxWidth: "20vw",
   overflow: "hidden",
   whiteSpace: "nowrap",

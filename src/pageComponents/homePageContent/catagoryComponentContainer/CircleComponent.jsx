@@ -30,8 +30,10 @@ const CircleContainer = styled(Box)(({ theme, radius = "13vh" }) => ({
   justifyContent: "center",
   alignItems: "center",
   borderRadius: "35%", // Makes it circular
-  width: "10vw",
-  height: "20vh",
+  width: radius,
+  height: radius,
+  minWidth: radius,
+  minHeight: radius,
   overflow: "hidden", // Ensures no overflow outside the circle
   textDecoration: "none",
   marginLeft: "2vw",
@@ -108,7 +110,7 @@ function CircleComponent({ data }) {
       </Link>
 
       {/* ✅ Category Name */}
-      <TruncatedText maxWidth={"7vw"}>{data?.catagory_name}</TruncatedText>
+      <TruncatedText maxWidth={"60%"}>{data?.catagory_name}</TruncatedText>
     </CircleWrapper>
   );
 }

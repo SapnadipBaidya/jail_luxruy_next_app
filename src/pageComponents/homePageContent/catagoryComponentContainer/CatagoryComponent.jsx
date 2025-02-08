@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef } from "react";
-import { Box, Typography, IconButton } from "@mui/material";
+import { Box, Typography, IconButton, useTheme } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -10,20 +10,24 @@ import CircleComponent from "./CircleComponent";
 const CardContainer = styled(Box)(({ theme, mode }) => ({
   display: "flex",
   flexDirection: "column",
-  justifyContent: "center",
+  justifyContent: "space-evenly",
   alignItems: "center",
   boxShadow: theme.shadows[3],
   borderRadius: theme.shape.borderRadius,
   backgroundColor: theme.palette.background.paper,
   backgroundImage:
-    mode == "dark"
+    mode === "dark"
       ? "url('./webps/darkmodeBackgroundImg.webp')"
       : "url('./webps/lightmodeBackgroundImg.webp')",
   backgroundSize: "cover",
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center",
   width: "100%",
-  height: "100%",
+  height: "50vh",
+  padding: theme.spacing(2),
+  [theme.breakpoints.down("sm")]: {
+    height: "40vh", // Adjust height for smaller screens
+  },
 }));
 
 const CircleWrapper = styled(Box)(({ theme }) => ({
@@ -31,16 +35,18 @@ const CircleWrapper = styled(Box)(({ theme }) => ({
   flexDirection: "row",
   alignItems: "center",
   width: "85vw",
-  overflowX: "auto", // Enable horizontal scrolling
+  overflowX: "auto",
   scrollbarWidth: "none", // Hide scrollbar in most browsers
   "&::-webkit-scrollbar": { display: "none" }, // Hide scrollbar for Webkit-based browsers
+  gap: theme.spacing(2), // Consistent spacing between circles
   [theme.breakpoints.down("sm")]: {
     width: "100%",
-    padding: "2vw",
+    gap: theme.spacing(2), // Reduce gap for smaller screens
   },
+  minHeight:"35vh"
 }));
 
-export default function CategoryCarousel({ categories }) {
+export default function CategoryCarousel({ categories, mode = "light" }) {
   const totalCards = categories?.length || 0;
   const scrollRef = useRef(null);
 
@@ -60,14 +66,21 @@ export default function CategoryCarousel({ categories }) {
 
   return (
     <>
+    
+      <CardContainer mode={mode}>
       <Typography
         variant="h4"
         gutterBottom
-        style={{ marginTop: "4vh", marginBottom: "4vh", textAlign: "center", fontWeight: 600 }}
+        sx={{
+          // marginTop: theme.spacing(6), // Consistent spacing
+          // marginBottom: theme.spacing(4), // Consistent spacing
+          textAlign: "center",
+          fontWeight: 600,
+          fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" }, // Responsive font size
+        }}
       >
         SHOP BY CATEGORY
       </Typography>
-      <CardContainer>
         <Box
           sx={{
             display: "flex",
@@ -78,20 +91,9 @@ export default function CategoryCarousel({ categories }) {
           }}
         >
           {totalCards > 0 && (
-            <IconButton
-              onClick={scrollLeft}
-              sx={{
-                position: "absolute",
-                left: { xs: "5px", sm: "10px", md: "0px" },
-                zIndex: 10,
-                backgroundColor: "rgba(255,255,255,0.7)",
-                boxShadow: 3,
-                "&:hover": { backgroundColor: "rgba(255,255,255,1)" },
-                display: { xs: "none", md: "flex" },
-              }}
-            >
-              <ArrowBackIosIcon />
-            </IconButton>
+          
+              <ArrowBackIosIcon   onClick={scrollLeft} sx={{marginRight:"1vh"}}/>
+           
           )}
 
           {totalCards > 0 ? (
@@ -101,24 +103,15 @@ export default function CategoryCarousel({ categories }) {
               ))}
             </CircleWrapper>
           ) : (
-            <Typography>No Categories Available</Typography>
+            <Typography variant="body1" sx={{ color: "text.secondary" }}>
+              No Categories Available
+            </Typography>
           )}
 
           {totalCards > 0 && (
-            <IconButton
-              onClick={scrollRight}
-              sx={{
-                position: "absolute",
-                right: { xs: "5px", sm: "10px", md: "0px" },
-                zIndex: 10,
-                backgroundColor: "rgba(255,255,255,0.7)",
-                boxShadow: 3,
-                "&:hover": { backgroundColor: "rgba(255,255,255,1)" },
-                display: { xs: "none", md: "flex" },
-              }}
-            >
-              <ArrowForwardIosIcon />
-            </IconButton>
+           
+              <ArrowForwardIosIcon sx={{marginLeft:"1vh"}}/>
+           
           )}
         </Box>
       </CardContainer>
