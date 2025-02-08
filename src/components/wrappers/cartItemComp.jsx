@@ -1,9 +1,15 @@
 "use client";
 import React from "react";
-import { Box, Typography, IconButton, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Typography,
+  IconButton,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { styled } from "@mui/system";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from "next/navigation";
 // Styled Components
 const CardContainer = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -47,21 +53,37 @@ const Image = styled("img")(({ theme }) => ({
   borderRadius: "8px",
 }));
 
-const CartItemComp = ({ item }) => {
+const CartItemComp = ({ item ,handleDeleteFromCart}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const router = useRouter();
+
   return (
     <CardContainer>
       <ItemRow>
         <ItemCell>
           <Box display="flex" flexDirection="column" alignItems="center">
-            <Image src={item?.gallery_details?.gallary?.images[0]} alt={item?.product_details?.product_name} onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              router.push(`/item/`+"/"+(item?.product_details?.product_name)+"?pid="+item?.product_details?.product_id+"&pdid="+item?.product_details?.products_details_id);
-            }}/>
-            <Typography variant={isMobile ? "body2" : "body1"} fontWeight="bold">
+            <Image
+              src={item?.gallery_details?.gallary?.images[0]}
+              alt={item?.product_details?.product_name}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                router.push(
+                  `/item/` +
+                    "/" +
+                    item?.product_details?.product_name +
+                    "?pid=" +
+                    item?.product_details?.product_id +
+                    "&pdid=" +
+                    item?.product_details?.products_details_id
+                );
+              }}
+            />
+            <Typography
+              variant={isMobile ? "body2" : "body1"}
+              fontWeight="bold"
+            >
               {item?.product_details?.product_name}
             </Typography>
           </Box>
@@ -79,12 +101,23 @@ const CartItemComp = ({ item }) => {
         </ItemCell>
         <ItemCell>
           <Typography variant={isMobile ? "body2" : "body1"}>
-            ₹{item?.cart_details?.quantity * item?.product_details?.product_price_inr}
+            ₹
+            {item?.cart_details?.quantity *
+              item?.product_details?.product_price_inr}
           </Typography>
         </ItemCell>
         <ItemCell>
           <IconButton size={isMobile ? "small" : "medium"}>
-            <DeleteForeverOutlinedIcon fontSize={isMobile ? "small" : "medium"} />
+            <DeleteForeverOutlinedIcon
+              fontSize={isMobile ? "small" : "medium"}
+              onClick={(e) => {
+                e.preventDefault();
+                handleDeleteFromCart(
+                  item?.product_details?.product_id,
+                  item?.product_details?.products_details_id
+                );
+              }}
+            />
           </IconButton>
         </ItemCell>
       </ItemRow>

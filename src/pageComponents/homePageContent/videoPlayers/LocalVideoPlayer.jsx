@@ -52,6 +52,12 @@ const VideoDescContainer = styled(Typography)(({ theme }) => ({
   color: theme.palette.secondary.main,
 }));
 
+const TextContainer  = styled(Typography)(({ theme }) => ({
+ 
+  color: theme.custom.primaryButtonFontColor,
+}));
+
+
 const LocalVideoPlayer = ({ videoSrc }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -86,6 +92,7 @@ const LocalVideoPlayer = ({ videoSrc }) => {
 
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
         <VideoDescContainer component="div">
+          <TextContainer>
           <h1 style={{ margin: 0 }}>WHY JAIL ?</h1>
           <p>
             The name “Jail” is more than just a brand; it’s a nod to our roots.
@@ -94,6 +101,7 @@ const LocalVideoPlayer = ({ videoSrc }) => {
             stands as a symbol of our journey, from a small shop in Bihar to a
             luxury brand that resonates with customers around the world.
           </p>
+          </TextContainer>
         </VideoDescContainer>
       </div>
     </VideoContainer>

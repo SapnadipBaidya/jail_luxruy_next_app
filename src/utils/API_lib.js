@@ -135,3 +135,15 @@ export const fetchUserCart = async () => {
   "use server";
   return serverApiRequest("/api/cart/fetchUserCart", "POST");
 };
+
+
+export const deleteFromUserCart = async (productId,productDetailsId ) => {
+  "use server";
+  console.log("deleteFromUserCart")
+  return serverApiRequest("/api/cart/deleteFromUserCart", "POST", {
+    payloadObj: {
+      productsDetailsId: productDetailsId,
+      product_id: productId,
+    },
+  });
+};

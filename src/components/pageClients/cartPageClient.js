@@ -9,7 +9,7 @@ import CartItemHeader from "@/components/wrappers/cartItemHeader";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CartCartSkeleton from "@/components/wrappers/cartCartSkeleton";
 import LoginSignupPage from "@/app/login-signup/page"; // Import login page
-import { fetchUserCart } from "@/utils/API_lib";
+import { deleteFromUserCart, fetchUserCart } from "@/utils/API_lib";
 
 // ✅ Styled Components (Same as Before)
 const CheckoutContainer = styled(Box)(({ theme }) => ({
@@ -82,6 +82,7 @@ export default function CartPageClient() {
   const [cartData, setCartData] = useState([]);
 
   useEffect(() => {
+    console.log("runnnnn")
     // Fetch wishlist data when the component mounts or accessToken changes
     const fetchData = async () => {
       try {
@@ -102,6 +103,15 @@ export default function CartPageClient() {
 
   const router = useRouter();
 
+
+
+  const handleDeleteFromCart = async (productDetailsId, productId) => {
+    await deleteFromUserCart(productDetailsId, productId);
+    const data = await fetchUserCart(); // Pass necessary arguments if required
+    // await setCartData(data); // Update state with fetched data
+    // Refresh the current route to update the wishlist data
+  };
+
   
 
   return (
@@ -118,7 +128,7 @@ export default function CartPageClient() {
                 <CartCartSkeleton cardNum={5} />
               ) : cartData?.length > 0 ? (
                 cartData?.map((item, index) => (
-                  <CartItemComp item={item} key={`cart_td_${index}`} />
+                  <CartItemComp item={item} key={`cart_td_${index}`} handleDeleteFromCart={handleDeleteFromCart}/>
                 ))
               ) : (
                 <Typography
