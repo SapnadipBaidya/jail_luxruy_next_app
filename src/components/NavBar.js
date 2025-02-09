@@ -113,11 +113,6 @@ export default function Navbar({ carouselImages }) {
 
 
   const isTablet = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
-  const handleMenuClose = () => setAnchorEl(null);
   const toggleMobileNav = () => setMobileOpen((prev) => !prev);
 
   useEffect(() => {
@@ -228,7 +223,6 @@ export default function Navbar({ carouselImages }) {
                       "Profile"
                     )
                   }
-                  executableFunction={handleMenuOpen}
                 />
                 <ThemeToggle />
               </>
