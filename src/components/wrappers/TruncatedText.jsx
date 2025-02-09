@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import React, { useRef, useEffect, useState } from "react";
 
 // ✅ Styled Typography with Overflow Handling
-const StyledTypography = styled(Typography)(({ theme }) => ({
+const StyledTypography = styled("span")(({ theme }) => ({
   fontWeight: "bold",
   fontSize: theme.typography.pxToRem(14),
   lineHeight: "1.4",

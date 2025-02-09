@@ -110,7 +110,7 @@ export default function CategoryCarousel({ categories, mode = "light" }) {
 
           {totalCards > 0 && (
            
-              <ArrowForwardIosIcon sx={{marginLeft:"1vh"}}/>
+              <ArrowForwardIosIcon  onClick={scrollRight} sx={{marginLeft:"1vh"}}/>
            
           )}
         </Box>

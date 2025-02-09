@@ -33,9 +33,10 @@ function LayoutClientPage({ children }) {
     <ErrorBoundary>
     <html lang="en">
       <body>
-      <CssBaseline />
+     
         <ThemeProviderWrapper>
-          <ThemeBackgroundWrapper> {/* Apply background color here */}
+        <CssBaseline />
+          <ThemeBackgroundWrapper> {/* Apply background color here */}    
             <Navbar />
             {children}
             <Footer/>
