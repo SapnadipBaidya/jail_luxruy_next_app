@@ -26,7 +26,7 @@ function ThemeBackgroundWrapper({ children }) {
   );
 }
 
-function LayoutClientPage({ children }) {
+function LayoutClientPage({ children ,carouselImages}) {
   return (
     <ErrorBoundary>
       <html lang="en">
@@ -37,7 +37,7 @@ function LayoutClientPage({ children }) {
               {" "}
               {/* Apply background color here */}{" "}
               <AppContextProvider>
-                <Navbar />
+                <Navbar carouselImages={carouselImages.data}/>
                 {children}
                 <Footer />
               </AppContextProvider>

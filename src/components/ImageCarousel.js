@@ -82,29 +82,29 @@ const Dot = styled("div")(({ theme, active }) => ({
   },
 }));
 
-export default function ImageCarousel({ images }) {
+export default function ImageCarousel({ }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const router = useRouter();
 
   const { categoryItems, setCategoryItems, state2, setState2} = useContext(AppContext);
-  setCategoryItems(images)
+
 
   const autoSlide = useDebounce(() => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % categoryItems.length);
   }, 5000);
 
   useEffect(() => {
-    if (!images || images.length === 0) return;
+    if (!categoryItems || categoryItems.length === 0) return;
     autoSlide();
   }, [currentIndex, autoSlide]);
 
-  if (!images || images.length === 0) {
-    return <Box sx={{ textAlign: "center", mt: 5 }}>No images available</Box>;
+  if (!categoryItems || categoryItems.length === 0) {
+    return <Box sx={{ textAlign: "center", mt: 5 }}>No categoryItems available</Box>;
   }
 
   return (
     <CarouselContainer>
-      {images.map((image, index) => (
+      {categoryItems.map((image, index) => (
         <ImageWrapper
           key={image.id || index}
           active={index === currentIndex}
@@ -118,7 +118,7 @@ export default function ImageCarousel({ images }) {
       ))}
 
       <DotsWrapper>
-        {images.map((_, index) => (
+        {categoryItems.map((_, index) => (
           <Dot
             key={index}
             active={index === currentIndex}

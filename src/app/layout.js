@@ -3,12 +3,29 @@
 import { StyledEngineProvider } from "@mui/material";
 
 import LayoutClientPage from "@/components/pageClients/layoutClientPage";
+import { cache } from "react";
 // Wrapper to dynamically update the background color based on theme
 
+const getCarouselImages = cache(async () => {
+  try {
+    const res = await fetch("http://localhost:8080/api/items/getAllCategories", {
+      cache: "force-cache", // ✅ Statically caches the API response (No re-fetch on every request)
+      next: { revalidate: 3600 }, // ✅ Refreshes API data every 1 hour (3600 seconds)
+    });
+
+    if (!res.ok) throw new Error("Failed to fetch images");
+    return await res.json(); // Returns the JSON data
+  } catch (error) {
+    console.error("Error fetching images:", error);
+    return { data: [] }; // Return empty array if API fails
+  }
+});
+
 export default async function RootLayout({ children }) {
+  const carouselImages = await getCarouselImages(); 
   return (
     <StyledEngineProvider injectFirst>
-      <LayoutClientPage children={children} />
+      <LayoutClientPage children={children} carouselImages={carouselImages}/>
     </StyledEngineProvider>
   );
 }

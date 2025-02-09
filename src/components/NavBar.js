@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { styled } from "@mui/material/styles";
@@ -30,6 +30,7 @@ import TruncatedText from "./wrappers/TruncatedText";
 import ThemeToggle from "./themeToggle";
 import { useTheme } from "@emotion/react";
 import useDebounce from "@/utils/customHooks/useDebounce";
+import { AppContext } from "@/context/applicationContext";
 
 // ✅ Mocked user for now
 const user = { id: "111", name: "sapnadip" };
@@ -99,12 +100,14 @@ const StyledInput = styled("input")(({ theme }) => ({
   outline: "none",
 }));
 
-export default function Navbar() {
+export default function Navbar({carouselImages}) {
   const theme = useTheme();
   const router = useRouter();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { categoryItems, setCategoryItems, state2, setState2} = useContext(AppContext);
+  setCategoryItems(carouselImages)
 
   // Hooks for responsive behavior:
   // isTablet: true for screen sizes md and below.
@@ -148,6 +151,10 @@ export default function Navbar() {
       router.push(searchPath);
     }
   };
+
+   
+
+    console.log("navBar category items" ,categoryItems);
 
   return (
     <>
