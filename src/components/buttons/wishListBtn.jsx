@@ -62,6 +62,7 @@ function WishListButton({ item,accessToken }) {
   // ✅ Wishlist Toggle with Authentication Check
   const handleWishlistToggle = async (e) => {
     e.preventDefault();
+    e.stopPropagation();
 
     if (accessToken) {
      
@@ -86,19 +87,17 @@ function WishListButton({ item,accessToken }) {
   return (
     <>
       <GenericBtns
-        type="secondary"
+        // type="secondary"
         btnText={
           <AnimatedIcon className={isChecked ? "checked" : ""}>
-            <Typography sx={{ fontSize: "14px", fontWeight: "bold", color: "black" }}>
-              WISHLIST
-            </Typography>
+
             <FavoriteBorderIcon className="inactive" fontSize="medium" />
             <FavoriteIcon className="active" fontSize="medium" />
             
           </AnimatedIcon>
         }
         executableFunction={handleWishlistToggle}
-        minWidth="100%"
+        minWidth="5vh"
       />
 
       {/* ✅ Login Dialog */}

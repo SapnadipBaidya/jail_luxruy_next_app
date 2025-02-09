@@ -21,7 +21,8 @@ export const lightTheme = createTheme({
     btnBgColor:"#dbd5cd",
     primaryButtonFontColor: "#363230",
     btnBorder:"#363230",
-    cardBg:"#E4E2E0"
+    cardBg:"#E4E2E0",
+    banner:"#f7f33ed"
   },
   typography: {
     fontFamily: "Roboto, Arial, sans-serif",
@@ -50,6 +51,7 @@ export const darkTheme = createTheme(lightTheme, {
     btnBgColor:"#363230",
     primaryButtonFontColor: "#dbd5cd",
     btnBorder:"black" ,// profile btn border
-    cardBg:"#747272"
+    cardBg:"#747272",
+    banner:"#201d1c"
   },
 });

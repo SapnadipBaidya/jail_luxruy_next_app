@@ -1,72 +1,77 @@
+"use server"
 import LoadingAnimation from "@/components/loaders/LoadingAnimation";
 import ItemsPageClient from "@/components/pageClients/itemsPageClient";
 import { makeGetAPIcall, makePostAPIcall } from "@/utils/API_vendor";
 import { cookies } from "next/headers";
-import { Suspense } from 'react'
+import { Suspense } from "react";
 
 // Separate data fetching components
 async function ItemsPageContent({ params, searchParams }) {
-  const cookieStore =await cookies();
+  const cookieStore = await cookies();
   const accessToken = cookieStore?.get("accessToken")?.value || null;
-  console.log("ItemsPageContent",accessToken)
+  console.log("ItemsPageContent", accessToken);
   const waitedParams = await params;
   const waitedSearchParams = await searchParams;
   const category = waitedParams?.category || "default-category";
   const userInput = waitedSearchParams?.userInput || "";
-  const page = parseInt( waitedSearchParams?.page) || 1;
+  const page = parseInt(waitedSearchParams?.page) || 1;
   const color = waitedSearchParams?.color || "";
   const size = waitedSearchParams?.size || "";
   const gender = waitedSearchParams?.gender || "";
-  console.log("searchParams",page,color,size,gender ,"params",category)
+  console.log("searchParams", page, color, size, gender, "params", category);
   // Fetch data in parallel where possible
   const [ItemsData, allSizesPerCategory, allColors] = await Promise.all([
     fetchItemsFromAPI(category, page, color, size, gender),
     fetchSizeFilterByCategoryName(category),
     fetchAllColors(),
-]);
+  ]);
 
   const initialFilters = {
     gender: waitedSearchParams.gender || "",
-    size: waitedSearchParams.size ? waitedSearchParams.size.split(',').map(Number) : [],
-    color: waitedSearchParams.color ? waitedSearchParams.color.split(',').map(Number) : [],
-    price: waitedSearchParams.price ? waitedSearchParams.price.split(',').map(Number) : [0, 1000000]
+    size: waitedSearchParams.size
+      ? waitedSearchParams.size.split(",").map(Number)
+      : [],
+    color: waitedSearchParams.color
+      ? waitedSearchParams.color.split(",").map(Number)
+      : [],
+    price: waitedSearchParams.price
+      ? waitedSearchParams.price.split(",").map(Number)
+      : [0, 1000000],
   };
 
   return (
-    <ItemsPageClient
-      ItemsData={ItemsData}
-      initialFilters={initialFilters}
-      initialPage={page}
-      category={category}
-      sizeFilterArr={allSizesPerCategory}
-      allColors={allColors}
-      accessToken={accessToken}
-    />
+    <>
+     
+      <ItemsPageClient
+        ItemsData={ItemsData}
+        initialFilters={initialFilters}
+        initialPage={page}
+        category={category}
+        sizeFilterArr={allSizesPerCategory}
+        allColors={allColors}
+        accessToken={accessToken}
+      />
+    </>
   );
 }
-
-
 
 export default async function ItemsPage({ params, searchParams }) {
   const waitedSearchParams = await searchParams;
   const page = parseInt(waitedSearchParams?.page) || 1;
   return (
-   
-      <Suspense key={page} fallback={<LoadingAnimation />}>
-        <ItemsPageContent params={params} searchParams={searchParams} />
-      </Suspense>
-    
+    <Suspense key={page} fallback={<LoadingAnimation />}>
+      <ItemsPageContent params={params} searchParams={searchParams} />
+    </Suspense>
   );
 }
 
 // Move data fetching functions here
-async function fetchItemsFromAPI(category, page,colors,sizes,gender) {
+async function fetchItemsFromAPI(category, page, colors, sizes, gender) {
   const apiUrl = `http://localhost:8080/api/products/findProductsByCategoryName?categoryName=${category}&colorFilter=${colors}&sizeFilter=${sizes}&gender=${gender}&sortBy=product_price_local&sortOrder=ASC&limit=12&page=${page}`;
-  console.log("apiUrl",apiUrl)
+  console.log("apiUrl", apiUrl);
   const response = await makeGetAPIcall(apiUrl);
   return { loading: false, data: response?.data || [] };
 }
-
 
 async function fetchAllColors() {
   const apiUrl = `http://localhost:8080/api/filters/getAllColors`;

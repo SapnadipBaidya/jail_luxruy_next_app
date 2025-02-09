@@ -5,9 +5,9 @@ import PropTypes from "prop-types";
 import React, { useRef, useEffect, useState } from "react";
 
 // ✅ Styled Typography with Overflow Handling
-const StyledTypography = styled("span")(({ theme }) => ({
+const StyledTypography = styled("span")(({ theme ,fontSizeNumber}) => ({
   fontWeight: "bold",
-  fontSize: theme.typography.pxToRem(14),
+  fontSize: theme.typography.pxToRem(fontSizeNumber),
   lineHeight: "1.4",
   maxHeight: "7vh",
   maxWidth: "20vw",
@@ -16,12 +16,12 @@ const StyledTypography = styled("span")(({ theme }) => ({
   textOverflow: "ellipsis",
   display: "block",
   cursor: "pointer",
-  padding:"1vh",
+  padding:"0.5vh",
   color: theme.custom.primaryButtonFontColor
 }));
 
 // ✅ TruncatedText Component
-const TruncatedText = ({ children, maxWidth ,fontSize = "2.5vh"}) => {
+const TruncatedText = ({ children, maxWidth ,fontSizeNumber=16}) => {
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(false);
 
@@ -32,7 +32,7 @@ const TruncatedText = ({ children, maxWidth ,fontSize = "2.5vh"}) => {
   }, [children]);
 
   const content = (
-    <StyledTypography ref={textRef} sx={{ maxWidth ,fontSize}}>
+    <StyledTypography ref={textRef} fontSizeNumber={fontSizeNumber} sx={{ maxWidth}}>
       {children}
     </StyledTypography>
   );

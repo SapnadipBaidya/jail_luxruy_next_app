@@ -31,8 +31,8 @@ function GenericBtns({ type, btnText, defaultText = "default", executableFunctio
         );
       default:
         return (
-          <StyledButton variant="contained" color="primary" onClick={executableFunction} minwidth={buttonMinWidth}>
-            {defaultText}
+          <StyledButton variant="text" color="primary" onClick={executableFunction} minwidth={buttonMinWidth}>
+            {btnText || defaultText}
           </StyledButton>
         );
     }
@@ -74,6 +74,7 @@ const StyledButton = styled(Button)(({ theme, minwidth }) => ({
 
   '&.MuiButton-text': {
     color: theme.palette.error.main,
+    boxShadow: 'none', 
   },
 
   // ✅ Tablet View Adjustments

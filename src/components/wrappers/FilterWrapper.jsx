@@ -17,7 +17,7 @@ import FilterColorComponent from "./generics/filterColorComponent";
 const FilterWrapperComponent = styled(Box)(({ theme }) => ({
   minWidth: theme.typography.pxToRem(260),
   maxWidth: theme.typography.pxToRem(350),
-  minHeight: "80vh",
+  minHeight: "100vh",
   maxHeight: "85vh",
   overflow: "auto",
   padding: theme.spacing(2),
@@ -27,7 +27,7 @@ const FilterWrapperComponent = styled(Box)(({ theme }) => ({
   top: 0, // Ensures it sticks at the top
   backgroundColor: theme.palette.background.paper, // Ensures visibility over content
   zIndex: 1000, // Keeps it above other elements
-  overflow: "hidden",
+  overflow: "visible",
   [theme.breakpoints.down("md")]: {
     minWidth: "40vw",
     maxWidth: "90vw",
