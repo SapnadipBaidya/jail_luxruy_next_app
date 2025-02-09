@@ -22,7 +22,7 @@ const StyledCard = styled(Card, {
   minWidth: `clamp(${theme.typography.pxToRem(200)}, 15vw, ${theme.typography.pxToRem(300)})`, // Responsive min-width
   minHeight:`clamp(${theme.typography.pxToRem(250)}, 40vh, ${theme.typography.pxToRem(400)})`, // Responsive min-height
   maxWidth: "50vh",
-  maxHeight: "50vh",
+  maxHeight: "65vh",
   position: "relative",
   overflow: "hidden",
   backgroundColor: theme.custom?.cardBg,

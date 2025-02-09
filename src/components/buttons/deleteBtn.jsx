@@ -1,35 +1,79 @@
-
-import { deleteFromUserWishlist, fetchUserWishlist, useWishlistApi } from "@/utils/API_lib";
-import ButtonWrapper from "../wrappers/ButtonComp";
+import { styled } from "@mui/material/styles";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useRouter } from "next/navigation";
+import { deleteFromUserWishlist, fetchUserWishlist } from "@/utils/API_lib";
+import { Button } from "@mui/material";
 
-function DeleteBtn({
-  variant = "outlined",
-  color = "error",
-  item,
-  accessToken,
-  setWishlistData,
-}) {
-  
+// Styled Button Component
+const DeleteButton = styled(Button)(({ theme }) => ({
+  borderRadius: "10%",
+  backgroundColor: "transparent",
+  border: "none",
+  fontWeight: 600,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  boxShadow: "none",
+  cursor: "pointer",
+  transitionDuration: "0.3s",
+  overflow: "hidden",
+  position: "relative",
+  maxWidth: "50px", // Adjusted to make the container thinner
+  minWidth: "50px", // Ensure the button doesn't shrink further
+  minHeight:"40px",
+  padding: "0", // Remove padding to make the container thinner
+  border: `solid 0.2vh ${theme.palette.primary.main}`,
+  "&:hover": {
+    borderRadius: "1vh",
+    transitionDuration: "0.3s",
+    backgroundColor: theme.palette.error.main, // Use theme for error color
+    alignItems: "center",
+  },
+  "& .svgIcon": {
+    fontSize: "4vh",
+    transitionDuration: "0.3s",
+  },
+  "&:hover .svgIcon": {
+    maxWidth: theme.typography.pxToRem(20),
+    transitionDuration: "0.3s",
+    transform: "translateY(60%)",
+  },
+  "&::before": {
+    position: "absolute",
+    top: "-20px",
+    content: '"Delete"',
+    color: theme.palette.common.white, // Use theme for text color
+    transitionDuration: "0.3s",
+    fontSize: "1px",
+  },
+  "&:hover::before": {
+    fontSize: "10px",
+    opacity: 1,
+    transform: "translateY(30px)",
+    transitionDuration: "0.3s",
+  },
+}));
+
+function DeleteBtn({ item, setWishlistData }) {
+  const router = useRouter();
 
   const handleDeleteWishlistItem = async (productDetailsId, productId) => {
     await deleteFromUserWishlist(productDetailsId, productId);
-    const data = await fetchUserWishlist(); // Pass necessary arguments if required
+    const data = await fetchUserWishlist(); // Fetch updated wishlist data
     setWishlistData(data); // Update state with fetched data
-    // Refresh the current route to update the wishlist data
   };
 
   return (
-    <ButtonWrapper
-      variant={variant}
-      color={color}
-      onClick={() =>
-        handleDeleteWishlistItem(item?.product_detail_id, item?.product_id)
-      }
+    <DeleteButton
+      variant="error"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        handleDeleteWishlistItem(item?.product_detail_id, item?.product_id);
+      }}
     >
-      <DeleteForeverIcon />
-    </ButtonWrapper>
+      <DeleteForeverIcon className="svgIcon" />
+    </DeleteButton>
   );
 }
 
