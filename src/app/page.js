@@ -1,7 +1,6 @@
 "use server"
 import ImageCarousel from "@/components/ImageCarousel";
 import { Box } from "@mui/material";
-import { cache } from "react"; // ✅ React Server Cache
 import CategoryCarousel from "@/pageComponents/homePageContent/catagoryComponentContainer/CatagoryComponent";
 import ReviewComponent from "@/components/reviewComponent/ReviewComponent";
 import BestSellerComponent from "@/pageComponents/homePageContent/bestSellerContainer/bestSellerComponent";
