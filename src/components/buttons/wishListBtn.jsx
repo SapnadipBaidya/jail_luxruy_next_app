@@ -64,6 +64,7 @@ function WishListButton({ item,accessToken }) {
     e.preventDefault();
 
     if (accessToken) {
+     
       setIsChecked((prev) => !prev);
       await addOrEditWishlist(item?.product_detail_id , item?.product_id)
     } else {
