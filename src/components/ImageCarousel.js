@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
 import useDebounce from "@/utils/customHooks/useDebounce";
 import removeWhiteSpaceFromMiddle from "@/utils/attachProperNavName";
+import { AppContext } from "@/context/applicationContext";
 
 const CarouselContainer = styled(Box)(({ theme }) => ({
   position: "relative",
@@ -84,6 +85,9 @@ const Dot = styled("div")(({ theme, active }) => ({
 export default function ImageCarousel({ images }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const router = useRouter();
+
+  const { categoryItems, setCategoryItems, state2, setState2} = useContext(AppContext);
+  setCategoryItems(images)
 
   const autoSlide = useDebounce(() => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);

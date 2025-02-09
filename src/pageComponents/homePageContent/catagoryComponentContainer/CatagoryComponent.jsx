@@ -1,10 +1,11 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import { Box, Typography, IconButton, useTheme } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CircleComponent from "./CircleComponent";
+import { AppContext } from "@/context/applicationContext";
 
 // ✅ Styled Components
 const CardContainer = styled(Box)(({ theme, mode }) => ({
@@ -46,8 +47,10 @@ const CircleWrapper = styled(Box)(({ theme }) => ({
   minHeight:"35vh"
 }));
 
-export default function CategoryCarousel({ categories, mode = "light" }) {
-  const totalCards = categories?.length || 0;
+export default function CategoryCarousel({ mode = "light" }) {
+    const { categoryItems, setCategoryItems, state2, setState2} = useContext(AppContext);
+
+  const totalCards = categoryItems?.length || 0;
   const scrollRef = useRef(null);
 
   // ✅ Function to Scroll Left
@@ -98,7 +101,7 @@ export default function CategoryCarousel({ categories, mode = "light" }) {
 
           {totalCards > 0 ? (
             <CircleWrapper ref={scrollRef}>
-              {categories.map((item, index) => (
+              {categoryItems?.map((item, index) => (
                 <CircleComponent key={item.category_id || index} data={item} />
               ))}
             </CircleWrapper>
