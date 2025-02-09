@@ -26,7 +26,8 @@ const useDeviceType = () => {
 // ── Styled Components ──────────────────────────────────────────────────
 
 // StyledCard accepts a custom prop "deviceType" and, on PC devices,
-// applies a hover effect that reveals the wishlist button (targeted by ".wishlist-btn").
+// applies a hover effect that reveals the wishlist button (inside the card footer)
+// and hides the product info.
 const StyledCard = styled(Card, {
   shouldForwardProp: (prop) => prop !== "deviceType",
 })(({ theme, deviceType }) => ({
@@ -35,7 +36,7 @@ const StyledCard = styled(Card, {
   padding: theme.spacing(1),
   backgroundColor: theme.custom?.cardBg || "#fff",
   boxShadow: "0 4px 8px rgba(164, 180, 112, 0.1)",
-  borderRadius: theme.shape.borderRadius,
+  borderRadius: "15px",
   transition:
     "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out !important",
   display: "flex",
@@ -46,16 +47,24 @@ const StyledCard = styled(Card, {
   maxHeight: theme.typography.pxToRem(350),
   margin: "1vh",
 
-  // On PC, on hover reveal the wishlist button (which is inside the cart footer)
+  // Only apply these hover styles for PC devices.
   ...(deviceType === "pc" && {
     "&:hover": {
+      boxShadow: "none", // Removes the box shadow on hover
+      backgroundColor: theme.palette.background.paper,
+      paddingBottom:"0",
+      borderRadius:"0",
       transform: "scale(1.02) !important",
-      boxShadow:
-        "rgba(0, 0, 0, 0.25) 0px 13px 47px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
       "& .wishlist-btn": {
         display: "block",
-        width:"100%",
         
+        width: "100%",
+        marginTop: "1.5vh",
+        transform: "scale(1.09)",
+        transition: "transform 0.3s ease-in-out",
+      },
+      "& .product-info": {
+        display: "none",
       },
     },
   }),
@@ -71,7 +80,7 @@ const StyledCard = styled(Card, {
   },
 }));
 
-// Responsive Product Image (unchanged)
+// Responsive Product Image
 const ProductImage = styled("img")(({ theme }) => ({
   objectFit: "cover",
   borderRadius: theme.shape.borderRadius,
@@ -103,24 +112,24 @@ const ProductImage = styled("img")(({ theme }) => ({
 const CardFooter = styled(Box)(({ theme }) => ({
   width: "100%",
   display: "flex",
-  justifyContent: "space-between",
+  justifyContent: "center",
   alignItems: "center",
-  border: "1px solid #ddd",
+  borderRadius: "150px",
   [theme.breakpoints.down("sm")]: {
     paddingTop: "5px",
     flexDirection: "column",
     gap: theme.spacing(1),
   },
+  
 }));
 
 // WishListButtonWrapper controls the visibility of the wishlist button.
-// On touch devices, it is always visible, but on PC devices it starts hidden and
-// is revealed when the card is hovered.
+// It is modified here to take the full width.
 const WishListButtonWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== "deviceType",
 })(({ theme, deviceType }) => ({
-  // On touch devices, always visible; on PC, hidden by default.
   display: deviceType === "touch" ? "block" : "none",
+  width: "100%", // Full width
 }));
 
 // ── Main Component ───────────────────────────────────────────────────
@@ -145,7 +154,7 @@ const StyledCardWrapper = React.memo(
 
     return (
       <Slide direction="up" in={show} mountOnEnter unmountOnExit>
-        {/* Pass deviceType to StyledCard so its hover effect works appropriately */}
+        {/* Pass deviceType to StyledCard so its hover effects work appropriately */}
         <StyledCard deviceType={deviceType}>
           <Fade in={show} timeout={500}>
             <ProductImage
@@ -161,25 +170,33 @@ const StyledCardWrapper = React.memo(
             />
           </Fade>
 
-          {/* Responsive Text */}
-          <TruncatedText maxWidth="90%" fontSize="2vh">
-            {item?.product_name || "No Name"}
-          </TruncatedText>
-          <TruncatedText maxWidth="90%">
-            ₹{item?.product_data?.price || "N/A"}
-          </TruncatedText>
+          {/* Product Info: Name and Price.
+              Wrapped in a container with the "product-info" class.
+              On PC devices, this info is hidden on hover.
+              On touch devices, it remains visible.
+          */}
+          <Box className="product-info" width="100%" height="70%">
+            <TruncatedText fontSize="2vh" maxWidth="100%">
+              {item?.product_name || "No Name"}
+            </TruncatedText>
+            <TruncatedText>
+              ₹{item?.product_data?.price || "N/A"}
+            </TruncatedText>
+          </Box>
 
           {/* Cart Footer: Always visible */}
           <CardFooter>
             {type === "Product" ? (
               // For products, include the wishlist button inside the footer.
-              // On PC, the wishlist button (wrapped here) is hidden by default and
-              // becomes visible when the card is hovered. On touch devices it is always visible.
-              <WishListButtonWrapper
+              // On PC devices, the wishlist button is hidden by default and
+              // becomes visible (with a full width and scale effect) when the card is hovered.
+              // On touch devices, it is always visible.
+              <WishListButtonWrapper 
                 className="wishlist-btn"
                 deviceType={deviceType}
+                backgroundColor="#503434"
               >
-                <WishListButton item={item} accessToken={accessToken} />
+                <WishListButton item={item} accessToken={accessToken} backgroundColor="#503434" />
               </WishListButtonWrapper>
             ) : (
               // For non-product types, show Cart and Delete buttons.
@@ -203,7 +220,6 @@ const StyledCardWrapper = React.memo(
   }
 );
 
-// ── Prop Type Validation ─────────────────────────────────────────────
 StyledCardWrapper.propTypes = {
   type: PropTypes.string.isRequired,
   item: PropTypes.shape({

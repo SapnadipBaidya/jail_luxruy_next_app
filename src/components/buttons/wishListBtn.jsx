@@ -20,7 +20,7 @@ import { addOrEditWishlist, useWishlistApi } from "@/utils/API_lib";
 const AnimatedIcon = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  justifyContent: "center",
+  justifyContent: "space-between",
   gap: "8px",
   transition: "opacity 0.3s ease-in-out",
   width: "100%",
@@ -89,11 +89,12 @@ function WishListButton({ item,accessToken }) {
         type="secondary"
         btnText={
           <AnimatedIcon className={isChecked ? "checked" : ""}>
-            <FavoriteBorderIcon className="inactive" fontSize="medium" />
-            <FavoriteIcon className="active" fontSize="medium" />
             <Typography sx={{ fontSize: "14px", fontWeight: "bold", color: "black" }}>
               WISHLIST
             </Typography>
+            <FavoriteBorderIcon className="inactive" fontSize="medium" />
+            <FavoriteIcon className="active" fontSize="medium" />
+            
           </AnimatedIcon>
         }
         executableFunction={handleWishlistToggle}
