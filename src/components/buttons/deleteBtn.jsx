@@ -22,7 +22,7 @@ const DeleteButton = styled(Button)(({ theme }) => ({
   minWidth: "50px", // Ensure the button doesn't shrink further
   minHeight:"40px",
   padding: "0", // Remove padding to make the container thinner
-  border: `solid 0.2vh ${theme.palette.primary.main}`,
+  border: `solid 0.1vh ${theme.palette.primary.main}`,
   "&:hover": {
     borderRadius: "1vh",
     transitionDuration: "0.3s",
@@ -32,11 +32,13 @@ const DeleteButton = styled(Button)(({ theme }) => ({
   "& .svgIcon": {
     fontSize: "4vh",
     transitionDuration: "0.3s",
+    color:theme.palette.primary.main,
   },
   "&:hover .svgIcon": {
     maxWidth: theme.typography.pxToRem(20),
     transitionDuration: "0.3s",
     transform: "translateY(60%)",
+    display:"none"
   },
   "&::before": {
     position: "absolute",
@@ -44,7 +46,8 @@ const DeleteButton = styled(Button)(({ theme }) => ({
     content: '"Delete"',
     color: theme.palette.common.white, // Use theme for text color
     transitionDuration: "0.3s",
-    fontSize: "1px",
+    fontSize: "10px",
+    opacity: 0,
   },
   "&:hover::before": {
     fontSize: "10px",

@@ -63,9 +63,10 @@ const StyledCard = styled(Card, {
 const CardActionsContainer = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "row",
-  justifyContent: "center",
+  justifyContent: "space-evenly",
   alignItems: "center",
   margin: "1vh",
+  width:"9vw"
 }));
 
 const ProductImage = styled("img")(({ theme }) => ({
