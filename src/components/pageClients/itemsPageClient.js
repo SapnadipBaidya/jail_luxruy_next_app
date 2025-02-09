@@ -24,7 +24,9 @@ const PageContainer = styled("div")(({ theme }) => ({
 const ContentContainer = styled("div")(({ theme, isMobileOrTablet }) => ({
   display: "flex",
   flexDirection: isMobileOrTablet ? "column" : "row",
-  width: "100%",
+  width: "90vw",
+  marginRight: "5vw",
+  marginLeft: "5vw",
   
   flexGrow: 1,
   padding: theme.spacing(2), // Use theme spacing
