@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -31,6 +29,7 @@ import ThemeToggle from "./themeToggle";
 import { useTheme } from "@emotion/react";
 import useDebounce from "@/utils/customHooks/useDebounce";
 import { AppContext } from "@/context/applicationContext";
+import CategoryDropdown from "@/components/catogeryComponent/CategoryDropdown"; // Import the CategoryDropdown component
 
 // ✅ Mocked user for now
 const user = { id: "111", name: "sapnadip" };
@@ -40,13 +39,10 @@ const StyledButton = styled(Button)(({ theme }) => ({
   textTransform: "none",
   fontSize: "10px",
   color: theme.custom.primaryButtonFontColor,
-  backgroundColor:"red",
-  [theme.breakpoints.down("md")]: {
-    
-  },
+  backgroundColor: "red",
+  [theme.breakpoints.down("md")]: {},
 }));
 
-// Update the logo wrapper to make the logo image smaller on tablet view.
 const HomeLogoWrapper = styled("div")(({ theme }) => ({
   backgroundColor: "red",
   display: "flex",
@@ -56,13 +52,12 @@ const HomeLogoWrapper = styled("div")(({ theme }) => ({
   left: "50%",
   transform: "translateX(-50%)",
   cursor: "pointer",
-  // Responsive image sizing
   "& img": {
     width: "200px",
     height: "50px",
     [theme.breakpoints.down("md")]: {
-      width: "150px", // smaller width for tablet
-      height: "40px", // smaller height for tablet
+      width: "150px",
+      height: "40px",
     },
   },
 }));
@@ -78,9 +73,7 @@ const SearchBox = styled(Box)(({ theme }) => ({
   padding: 2,
   borderTop: 1,
   borderColor: "divider",
-  [theme.breakpoints.down("sm")]: {
-    
-  },
+  [theme.breakpoints.down("sm")]: {},
 }));
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
@@ -100,34 +93,33 @@ const StyledInput = styled("input")(({ theme }) => ({
   outline: "none",
 }));
 
-export default function Navbar({carouselImages}) {
+const NavLinksContainer = styled(Box)(({ theme }) => ({
+  display: "flex",
+  gap: 2,
+  alignItems: "center",
+}));
+
+export default function Navbar({ carouselImages }) {
   const theme = useTheme();
   const router = useRouter();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { categoryItems, setCategoryItems, state2, setState2} = useContext(AppContext);
-  setCategoryItems(carouselImages)
+  const { categoryItems, setCategoryItems, state2, setState2 } = useContext(AppContext);
+  setCategoryItems(carouselImages);
 
-  // Hooks for responsive behavior:
-  // isTablet: true for screen sizes md and below.
-  // isMobile: true for screen sizes sm and below.
   const isTablet = useMediaQuery(theme.breakpoints.down("sm"));
-  
 
   const [anchorEl, setAnchorEl] = useState(null);
 
-  // ✅ Handlers
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
   const toggleMobileNav = () => setMobileOpen((prev) => !prev);
 
-  // Prefetch the products page
   useEffect(() => {
     router.prefetch("/products");
   }, [router]);
 
-  // ✅ Debounced search handler
   const handleSearch = useDebounce((query) => {
     if (query.trim()) {
       const searchPath = `/search?userInput=${encodeURIComponent(query)}`;
@@ -136,14 +128,12 @@ export default function Navbar({carouselImages}) {
     }
   }, 500);
 
-  // ✅ Handle search input change
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
     handleSearch(query);
   };
 
-  // ✅ Handle search submission
   const handleSearchSubmit = () => {
     if (searchQuery.trim()) {
       const searchPath = `/search?userInput=${encodeURIComponent(searchQuery)}`;
@@ -152,13 +142,10 @@ export default function Navbar({carouselImages}) {
     }
   };
 
-   
-
-    console.log("navBar category items" ,categoryItems);
+  console.log("navBar category items", categoryItems);
 
   return (
     <>
-      {/* ✅ Top AppBar */}
       <StyledAppBar position="sticky">
         <Toolbar
           sx={{
@@ -167,7 +154,6 @@ export default function Navbar({carouselImages}) {
             position: "relative",
           }}
         >
-          {/* ✅ Mobile/Tablet Menu Button: visible on md and below */}
           {isTablet && (
             <IconButton
               edge="start"
@@ -180,56 +166,29 @@ export default function Navbar({carouselImages}) {
             </IconButton>
           )}
 
-          {/* ✅ Desktop Navigation: visible only on larger screens */}
           {!isTablet && (
-            <Box sx={{ display: "flex", gap: 2 }}>
-              <StyledButton onClick={handleMenuOpen}>
-                Category <ChevronDownIcon fontSize="small" />
-              </StyledButton>
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleMenuClose}
-              >
-                {!user?.id ? (
-                  <MenuItem onClick={() => router.push("/login-signup")}>
-                    <Card sx={{ padding: "1vw" }}>
-                      <h2>Welcome</h2>
-                      <h6>
-                        To access account and <br /> manage orders...
-                      </h6>
-                      Login / Signup
-                    </Card>
-                  </MenuItem>
-                ) : (
-                  [
-                    <MenuItem
-                      key="profile"
-                      onClick={() => router.push("/userContact")}
-                    >
-                      Profile
-                    </MenuItem>,
-                    <MenuItem
-                      key="logout"
-                      onClick={() => {
-                        // logout();
-                      }}
-                    >
-                      Logout
-                    </MenuItem>,
-                  ]
-                )}
-              </Menu>
+            <NavLinksContainer>
+              <CategoryDropdown
+                categories={[
+                  { name: "Bag", slug: "bag" },
+                  { name: "Belt", slug: "belt" },
+                  { name: "Duffle Bag", slug: "duffle-bag" },
+                  { name: "Gloves", slug: "gloves" },
+                  { name: "Jacket", slug: "jacket" },
+                  { name: "Shoes", slug: "shoes" },
+                  { name: "Trolley", slug: "trolley" },
+                  { name: "Wallet", slug: "wallet" },
+                ]}
+              />
               <StyledButton component={Link} href="/about">
                 About Us
               </StyledButton>
               <StyledButton component={Link} href="/contact">
                 Contact Us
               </StyledButton>
-            </Box>
+            </NavLinksContainer>
           )}
 
-          {/* ✅ Logo (always centered) */}
           <HomeLogoWrapper onClick={() => router.push("/")}>
             <img
               src={
@@ -242,9 +201,7 @@ export default function Navbar({carouselImages}) {
             />
           </HomeLogoWrapper>
 
-          {/* ✅ Right Side Icons */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            {/* Grouping Search, Wishlist and Cart together */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <StyledButton
                 color="inherit"
@@ -269,7 +226,6 @@ export default function Navbar({carouselImages}) {
               </StyledButton>
             </Box>
 
-            {/* On Desktop and Tablet (but not mobile) show the Profile and ThemeToggle */}
             {!isTablet && (
               <>
                 <ProfileBtn
@@ -288,7 +244,6 @@ export default function Navbar({carouselImages}) {
           </Box>
         </Toolbar>
 
-        {/* ✅ Search Bar: Visible when search is open */}
         {isSearchOpen && (
           <SearchBox>
             <StyledInput
@@ -306,7 +261,6 @@ export default function Navbar({carouselImages}) {
         )}
       </StyledAppBar>
 
-      {/* ✅ Mobile/Tablet Drawer Navigation */}
       <MobileNav anchor="left" open={mobileOpen} onClose={toggleMobileNav}>
         <IconButton onClick={toggleMobileNav} sx={{ alignSelf: "flex-end" }}>
           <CloseIcon />
@@ -322,7 +276,6 @@ export default function Navbar({carouselImages}) {
               {item.label}
             </StyledButton>
           ))}
-          {/* ✅ In tablet/mobile view, include the profile/login link */}
           {isTablet &&
             (user?.id ? (
               <StyledButton
