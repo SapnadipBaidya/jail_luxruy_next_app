@@ -45,13 +45,13 @@ export default GenericBtns;
 
 // Styled Components
 
-const StyledButton = styled(Button)(({ theme, minwidth }) => ({
+const StyledButton = styled(Button)(({ theme, minwidth , borderRadius = 10}) => ({
   padding: theme.spacing(1.5, 3),
   minWidth: minwidth, // ✅ Dynamic width based on breakpoints
   fontSize: theme.typography.pxToRem(14),
   fontWeight: theme.typography.fontWeightMedium,
   textTransform: 'none', // ✅ Disable uppercase transformation
-  borderRadius: theme.shape.borderRadius,
+  borderRadius: theme.typography.pxToRem(borderRadius),
   boxShadow: theme.shadows[2],
   transition: 'all 0.3s ease',
   padding:"1vh",

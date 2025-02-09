@@ -105,8 +105,13 @@ export default function Navbar({ carouselImages }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { categoryItems, setCategoryItems, state2, setState2 } = useContext(AppContext);
-  setCategoryItems(carouselImages);
+  const { setCategoryItems } = useContext(AppContext);
+  
+  useEffect(() => {
+    setCategoryItems(carouselImages);
+  }, [carouselImages?.length])
+  
+
 
   const isTablet = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -142,7 +147,6 @@ export default function Navbar({ carouselImages }) {
     }
   };
 
-  console.log("navBar category items", categoryItems);
 
   return (
     <>
@@ -168,18 +172,7 @@ export default function Navbar({ carouselImages }) {
 
           {!isTablet && (
             <NavLinksContainer>
-              <CategoryDropdown
-                categories={[
-                  { name: "Bag", slug: "bag" },
-                  { name: "Belt", slug: "belt" },
-                  { name: "Duffle Bag", slug: "duffle-bag" },
-                  { name: "Gloves", slug: "gloves" },
-                  { name: "Jacket", slug: "jacket" },
-                  { name: "Shoes", slug: "shoes" },
-                  { name: "Trolley", slug: "trolley" },
-                  { name: "Wallet", slug: "wallet" },
-                ]}
-              />
+              <CategoryDropdown/>
               <StyledButton component={Link} href="/about">
                 About Us
               </StyledButton>

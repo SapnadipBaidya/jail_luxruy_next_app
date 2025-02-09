@@ -31,7 +31,6 @@ async function ProductDetailPage({ params, searchParams }) {
 
   return (
     <> 
-    <div>hello world</div>
     <ProductPageClient data={data.responseData} accessToken={accessToken} />
     </>
     

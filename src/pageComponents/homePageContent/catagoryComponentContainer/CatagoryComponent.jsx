@@ -48,7 +48,7 @@ const CircleWrapper = styled(Box)(({ theme }) => ({
 }));
 
 export default function CategoryCarousel({ mode = "light" }) {
-    const { categoryItems, setCategoryItems, state2, setState2} = useContext(AppContext);
+    const { categoryItems } = useContext(AppContext);
 
   const totalCards = categoryItems?.length || 0;
   const scrollRef = useRef(null);

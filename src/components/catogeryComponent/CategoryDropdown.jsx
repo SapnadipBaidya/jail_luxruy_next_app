@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, forwardRef, useContext } from "react";
 import NextLink from "next/link";
 import { Menu, MenuItem, Button, Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -14,6 +14,7 @@ import StoreIcon from "@mui/icons-material/Store";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import zIndex from "@mui/material/styles/zIndex";
+import { AppContext } from "@/context/applicationContext";
 
 // ✅ Create a Link wrapper that forwards refs to Next.js's Link component
 const LinkBehavior = forwardRef(function LinkBehavior(props, ref) {
@@ -45,8 +46,8 @@ const MenuContainer = styled(Menu)(({ theme }) => ({
     borderRadius: "8px",
     background: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
-    position:"absolute",
-    top:"100%",
+    position: "absolute",
+    top: "100%",
   },
 }));
 
@@ -75,7 +76,8 @@ const iconMap = {
   wallet: <AccountBalanceWalletIcon sx={{ fontSize: "24px" }} />,
 };
 
-const CategoryDropdown = ({ categories }) => {
+const CategoryDropdown = () => {
+  const { categoryItems } = useContext(AppContext);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleOpen = (event) => {
@@ -102,9 +104,9 @@ const CategoryDropdown = ({ categories }) => {
         transformOrigin={{ vertical: "top", horizontal: "left" }}
       >
         {/* ✅ Dynamic Category List */}
-        {categories.map((category, index) => {
+        {categoryItems?.map((category, index) => {
           // Safely retrieve the icon from the map. Fallback to <ShoppingBagIcon /> if none is found.
-          const icon = iconMap[category.slug] || (
+          const icon = iconMap[category?.slug] || (
             <ShoppingBagIcon sx={{ fontSize: "24px" }} />
           );
 
@@ -114,10 +116,10 @@ const CategoryDropdown = ({ categories }) => {
               onClick={handleClose}
               // Use the custom LinkBehavior as the component and pass the href prop
               component={LinkBehavior}
-              href={`/products/${category.slug}`}
+              href={`/products/${category?.category_mapping}`}
             >
               {icon}
-              <Typography>{category.name}</Typography>
+              <Typography>{category?.catagory_name}</Typography>
             </MenuItemStyled>
           );
         })}

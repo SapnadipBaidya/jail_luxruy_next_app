@@ -13,7 +13,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 
 const SortFilterWrapper = styled("div")(({ theme }) => ({
   minWidth: "100%",
-  height: "10vh",
+  minHeight:theme.typography.pxToRem(20),
   padding: "1rem",
   display: "flex",
   justifyContent: "flex-start",

@@ -86,7 +86,7 @@ export default function ImageCarousel({ }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const router = useRouter();
 
-  const { categoryItems, setCategoryItems, state2, setState2} = useContext(AppContext);
+  const { categoryItems} = useContext(AppContext);
 
 
   const autoSlide = useDebounce(() => {
