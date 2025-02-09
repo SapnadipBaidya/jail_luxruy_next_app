@@ -44,7 +44,6 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const HomeLogoWrapper = styled("div")(({ theme }) => ({
-  backgroundColor: "red",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -53,18 +52,18 @@ const HomeLogoWrapper = styled("div")(({ theme }) => ({
   transform: "translateX(-50%)",
   cursor: "pointer",
   "& img": {
-    width: "200px",
-    height: "50px",
+    width: theme.typography.pxToRem(300),
+    height: theme.typography.pxToRem(50),
     [theme.breakpoints.down("md")]: {
-      width: "150px",
-      height: "40px",
+      width: theme.typography.pxToRem(300),
+      height: theme.typography.pxToRem(50),
     },
   },
 }));
 
 const MobileNav = styled(Drawer)(({ theme }) => ({
   "& .MuiDrawer-paper": {
-    width: "250px",
+    width: theme.typography.pxToRem(300),
     padding: theme.spacing(2),
   },
 }));

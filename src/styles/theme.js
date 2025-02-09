@@ -20,6 +20,7 @@ export const lightTheme = createTheme({
   custom: { // ✅ Define custom properties here
     btnBgColor:"#dbd5cd",
     primaryButtonFontColor: "#363230",
+    secondaryButtonFontColor:"#ffffff",
     btnBorder:"#363230",
     cardBg:"#E4E2E0",
     banner:"#f7f33ed"
@@ -50,6 +51,7 @@ export const darkTheme = createTheme(lightTheme, {
   custom: { // ✅ Define custom properties here
     btnBgColor:"#363230",
     primaryButtonFontColor: "#dbd5cd",
+    secondaryButtonFontColor:"#ffffff",
     btnBorder:"black" ,// profile btn border
     cardBg:"#747272",
     banner:"#201d1c"

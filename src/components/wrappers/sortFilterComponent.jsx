@@ -73,6 +73,7 @@ function SortFilterComponent({ setShowFilters, showFilters }) {
           sx: {
             width: ismobile ? "100vw" : isTablet ? "36.5vw" : "10vw", // ✅ Responsive Width
             padding: "1vh",
+            
           },
         }}
         anchorOrigin={{
@@ -99,6 +100,9 @@ function SortFilterComponent({ setShowFilters, showFilters }) {
                 ismobile ? 12 : isTablet ? 12 : 14
               ), // ✅ Adjust font size dynamically
               padding: ismobile ? "0.5vh" : "1vh", // ✅ Adjust padding dynamically
+              "&:hover": {
+              backgroundColor: theme.palette.ascentColor.main,
+            },
             }}
           >
             {item.label}

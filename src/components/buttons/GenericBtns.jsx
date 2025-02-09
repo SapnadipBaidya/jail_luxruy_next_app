@@ -64,7 +64,7 @@ const StyledButton = styled(Button)(({ theme, minwidth , borderRadius = 10}) => 
 
   '&.MuiButton-contained': {
     backgroundColor: theme.palette.primary.main,
-    color:theme.custom.primaryButtonFontColor,
+    color:theme.custom.secondaryButtonFontColor,
   },
 
   '&.MuiButton-outlined': {
