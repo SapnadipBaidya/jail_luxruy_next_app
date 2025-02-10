@@ -39,10 +39,10 @@ export default function BestSellerComponent() {
         sx={{ width: "100%", maxWidth: "1200px" }}
       >
         <Grid item xs={12} sm={6} display="flex" justifyContent="center">
-          <BestSellerCard title="LADIES" videoSrc="./elegantShe.mp4" />
+          <BestSellerCard title="LADIES" videoSrc="elegantShe.mp4" />
         </Grid>
         <Grid item xs={12} sm={6} display="flex" justifyContent="center">
-          <BestSellerCard title="GENTLEMEN" videoSrc="./elegantMan.mp4" />
+          <BestSellerCard title="GENTLEMEN" videoSrc="elegantMan.mp4" />
         </Grid>
       </Grid>
     </BestSellerContainer>

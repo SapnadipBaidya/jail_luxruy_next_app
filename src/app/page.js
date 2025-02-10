@@ -41,7 +41,7 @@ export default async function HomePage() {
         <BestSellerComponent/>
       </Box>
       <Box sx={{ m: 5, p: 2 }}>
-      <LocalVideoPlayer videoSrc="./JailLuxuryPromovid.mp4"/>
+      <LocalVideoPlayer videoSrc="JailLuxuryPromovid.mp4"/>
       </Box>
       <ReviewComponent/>
     </Box>
