@@ -22,9 +22,8 @@ const GridWrapperComponent = styled("div")(({ theme }) => ({
   },
 }));
 
-function GridWrapper({ itemsArr, type,loading ,accessToken,setWishlistData}) {
+function GridWrapper({ itemsArr, type,loading ,accessToken,setWishlistData,setWishlistLoading}) {
   const theme = useTheme();
-  console.log("gridwrapper",accessToken)
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
   console.log("loading", itemsArr?.loading ,StyledCardWrapper);
   
@@ -60,7 +59,7 @@ function GridWrapper({ itemsArr, type,loading ,accessToken,setWishlistData}) {
               key={index} 
               style={{ display: "flex", flexGrow: 1 }} 
             >
-              <StyledCardWrapper type={type} item={item} accessToken={accessToken} setWishlistData={setWishlistData}/>
+              <StyledCardWrapper type={type} item={item} accessToken={accessToken} setWishlistData={setWishlistData} setWishlistLoading={setWishlistLoading}/>
             </Grid>
           ))
         ) : (

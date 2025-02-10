@@ -11,6 +11,7 @@ import FilterDrawerMobile from "@/components/wrappers/FilterDrawerMobile";
 import PaginationComponent from "@/components/paginationComponent/pagination";
 import { usePathname } from "next/navigation";
 import { debounce } from "lodash";
+import TruckLoader from "../loaders/truckLoader";
 
 // Styled Components
 const PageContainer = styled("div")(({ theme }) => ({
@@ -59,6 +60,8 @@ export default function ItemsPageClient({
   allColors,
   userInput,
   accessToken,
+  initialSortBy,
+  initialSortOrder,
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -71,8 +74,16 @@ export default function ItemsPageClient({
   const [selectedFilters, setSelectedFilters] = useState(initialFilters);
   const [itemsArr, setItemsArr] = useState(ItemsData?.data);
   const [page, setPage] = useState(initialPage);
-  const [sortDetail, setSortDetail] = useState({ sortBy: "", sortOrder: "" });
+  const [sortDetail, setSortDetail] = useState({
+    sortBy: initialSortBy || "",
+    sortOrder: initialSortOrder || "",
+  });
   const [sortBy, setSortBy] = useState("Sort By");
+  const [gridLoading, setGridLoading] = useState(false);
+
+  useEffect(() => {
+    setGridLoading(ItemsData?.loading);
+  }, [ItemsData?.loading]);
 
   const createQueryString = useCallback(
     (filters, page, sortBy, sortOrder) => {
@@ -81,8 +92,10 @@ export default function ItemsPageClient({
       if (page) params.push(`page=${page}`);
       if (filters.gender) params.push(`gender=${filters.gender}`);
       if (filters.size?.length) params.push(`size=${filters.size.join(",")}`);
-      if (filters.color?.length) params.push(`color=${filters.color.join(",")}`);
-      if (filters?.price?.length) params.push(`price=${filters?.price.join(",")}`);
+      if (filters.color?.length)
+        params.push(`color=${filters.color.join(",")}`);
+      if (filters?.price?.length)
+        params.push(`price=${filters?.price.join(",")}`);
       if (sortBy) params.push(`sortBy=${sortBy}`);
       if (sortOrder) params.push(`sortOrder=${sortOrder}`);
       return params.join("&");
@@ -92,19 +105,26 @@ export default function ItemsPageClient({
 
   const updateFilters = useCallback(
     debounce((newFilters, newPage, sortBy, sortOrder) => {
-      const queryString = createQueryString(newFilters, newPage, sortBy, sortOrder);
+      const queryString = createQueryString(
+        newFilters,
+        newPage,
+        sortBy,
+        sortOrder
+      );
       router.push(`${pathname}?${queryString}`);
     }, 300),
     [pathname, createQueryString]
   );
 
   const onApplyFilters = (newFilters) => {
+    setGridLoading(true);
     setSelectedFilters(newFilters);
     setPage(1);
     updateFilters(newFilters, 1, sortDetail.sortBy, sortDetail.sortOrder);
   };
 
   const onClearFilters = () => {
+    setGridLoading(true);
     const clearedFilters = {
       gender: "",
       size: [],
@@ -113,24 +133,35 @@ export default function ItemsPageClient({
     };
     setSelectedFilters(clearedFilters);
     setPage(1);
-    updateFilters(clearedFilters, 1, sortDetail.sortBy, sortDetail.sortOrder);
     setSortBy("Sort By");
     setSortDetail({ sortBy: "", sortOrder: "" });
+    updateFilters(clearedFilters, 1, "", "");
   };
 
   const handlePageChange = (newPage) => {
+    console.log("itemsPageClient 2", sortDetail.sortBy, sortDetail.sortOrder);
     setPage(newPage);
-    updateFilters(selectedFilters, newPage, sortDetail.sortBy, sortDetail.sortOrder);
+    updateFilters(
+      selectedFilters,
+      newPage,
+      sortDetail.sortBy,
+      sortDetail.sortOrder
+    );
   };
 
-  useEffect(() => {
-    updateFilters(selectedFilters, page, sortDetail.sortBy, sortDetail.sortOrder);
-  }, [sortDetail.sortBy, sortDetail.sortOrder]);
+  const handleSortChange = (value, sortBy, sortOrder) => {
+    setGridLoading(true);
+    if (value) {
+      setSortBy(value); // Update the selected sorting option
+    }
+    updateFilters(selectedFilters, page, sortBy, sortOrder);
+  };
 
   useEffect(() => {
     setSelectedFilters(initialFilters);
     setPage(initialPage);
     setItemsArr(ItemsData?.data);
+    setGridLoading(false);
   }, [initialFilters, initialPage, ItemsData]);
 
   const cardName = pathname.split("/").pop();
@@ -175,15 +206,20 @@ export default function ItemsPageClient({
               setSortDetail={setSortDetail}
               sortBy={sortBy}
               setSortBy={setSortBy}
+              handleSortChange={handleSortChange}
             />
           )}
-
-          <GridWrapper
-            itemsArr={itemsArr}
-            type="Product"
-            loading={ItemsData?.loading}
-            accessToken={accessToken}
-          />
+          {gridLoading ? (
+            <div style={{minHeight:"70%", display:"flex",justifyContent:"center",alignItems:"center"}}>  <TruckLoader/></div>
+          
+          ) : (
+            <GridWrapper
+              itemsArr={itemsArr}
+              type="Product"
+              loading={ItemsData?.loading}
+              accessToken={accessToken}
+            />
+          )}
           <PaginationComponent
             page={page}
             setPage={handlePageChange}

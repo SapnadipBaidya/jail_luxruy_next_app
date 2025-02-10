@@ -1,35 +1,47 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import GridWrapper from '../wrappers/GridWrapper';
 import { fetchUserWishlist } from '@/utils/API_lib';
-
+import TruckLoader from '../loaders/truckLoader';
 
 function WishListPageClient({ accessToken, itemsArr }) {
-  const [wishlistData, setWishlistData] = useState([]);
-  
+  const [wishlistData, setWishlistData] = useState(itemsArr || []); // Initialize with itemsArr if provided
+  const [wishlistLoading, setWishlistLoading] = useState(true);
+
+  // Memoize the fetchData function to avoid unnecessary re-creations
+  const fetchData = useCallback(async () => {
+    setWishlistLoading(true);
+    try {
+      const data = await fetchUserWishlist(accessToken); // Pass accessToken if required
+      setWishlistData(data);
+      console.log("WishListPageClient: Data fetched successfully", data);
+    } catch (error) {
+      console.error("WishListPageClient: Error fetching wishlist data", error);
+      // Optionally, set an error state here to display a user-friendly message
+    } finally {
+      setWishlistLoading(false); // Ensure wishlistLoading is set to false regardless of success or failure
+    }
+  }, [accessToken]); // Only recreate fetchData if accessToken changes
 
   useEffect(() => {
-    // Fetch wishlist data when the component mounts or accessToken changes
-    const fetchData = async () => {
-      try {
-        const data = await fetchUserWishlist(); // Pass necessary arguments if required
-        setWishlistData(data); // Update state with fetched data
-        console.log("WishListPageClient: Data fetched successfully",data);
-      } catch (error) {
-        console.error("WishListPageClient: Error fetching wishlist data", error);
-      }
-    };
-
     fetchData();
-  }, [fetchUserWishlist]); // Re-run effect if accessToken changes
+  }, [fetchData]); // Run effect only when fetchData changes
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" ,minHeight:"100vh" }}>
-      {/* Render GridWrapper with fetched data */}
-      <GridWrapper type="Wishlist" itemsArr={wishlistData} accessToken={accessToken} setWishlistData={setWishlistData} />
+    <div style={{ display: "flex",alignItems:"center", justifyContent: "center", minHeight: "90vh" }}>
+      {wishlistLoading ? (
+        <TruckLoader />
+      ) : (
+        <GridWrapper
+          type="Wishlist"
+          itemsArr={wishlistData}
+          accessToken={accessToken}
+          setWishlistData={setWishlistData}
+          setWishlistLoading={setWishlistLoading}
+        />
+      )}
     </div>
   );
 }
 
 export default WishListPageClient;
-

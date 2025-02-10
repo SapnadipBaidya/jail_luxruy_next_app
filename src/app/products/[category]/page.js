@@ -52,6 +52,8 @@ async function ItemsPageContent({ params, searchParams }) {
         sizeFilterArr={allSizesPerCategory}
         allColors={allColors}
         accessToken={accessToken}
+        initialSortBy={sortBy}
+        initialSortOrder={sortOrder}
       />
     </>
   );

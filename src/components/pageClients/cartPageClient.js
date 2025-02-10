@@ -4,9 +4,9 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Box, Button, styled, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import CartCartSkeleton from "@/components/wrappers/cartCartSkeleton";
 import { deleteFromUserCart, fetchUserCart } from "@/utils/API_lib";
 import CartComponent from "@/pageComponents/cartComponent";
+import TruckLoader from "../loaders/truckLoader";
 
 // ✅ Styled Components (Same as Before)
 const CheckoutContainer = styled(Box)(({ theme }) => ({
@@ -76,17 +76,17 @@ const ProceedButton = styled(Button)(({ theme }) => ({
 
 export default function CartPageClient() {
   const [cartData, setCartData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [cartLoading, setCartLoading] = useState(true);
   const router = useRouter();
 
   const fetchData = useCallback(async () => {
     try {
       const data = await fetchUserCart();
       setCartData(data);
-      setLoading(false);
+      setCartLoading(false);
     } catch (error) {
       console.error("Error fetching cart data", error);
-      setLoading(false);
+      setCartLoading(false);
     }
   }, []);
 
@@ -94,25 +94,45 @@ export default function CartPageClient() {
     fetchData();
   }, [fetchData]);
 
-  const handleDeleteFromCart = useCallback(async (productDetailsId, productId) => {
-    try {
-      await deleteFromUserCart(productId,productDetailsId);
-      await fetchData(); // Refresh cart data
-    } catch (error) {
-      console.error("Error deleting item from cart", error);
-    }
-  }, [fetchData]);
+  const handleDeleteFromCart = useCallback(
+    async (productDetailsId, productId) => {
+      try {
+        await deleteFromUserCart(productId, productDetailsId);
+        await fetchData(); // Refresh cart data
+      } catch (error) {
+        console.error("Error deleting item from cart", error);
+      }
+    },
+    [fetchData]
+  );
 
-
-  console.log("cartData",cartData)
+  console.log("cartData", cartData);
 
   return (
     <CheckoutContainer>
       <CartSection>
         <Typography variant="h5">Checkout</Typography>
-        
+
         {/* Scrollable Table */}
-       <CartComponent item={cartData} handleDeleteFromCart={handleDeleteFromCart} fetchData={fetchData}/>
+
+        {cartLoading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "60vh",
+            }}
+          >
+            <TruckLoader />
+          </div>
+        ) : (
+          <CartComponent
+            item={cartData}
+            handleDeleteFromCart={handleDeleteFromCart}
+            fetchData={fetchData}
+          />
+        )}
 
         <WishlistButton onClick={() => router.push("/wishlist")}>
           <Typography>Add More From Wishlist</Typography>

@@ -111,7 +111,7 @@ const HoverContent = styled(Box)({
 });
 
 const StyledCardWrapper = React.memo(
-  ({ type, item, accessToken, setWishlistData }) => {
+  ({ type, item, accessToken, setWishlistData,setWishlistLoading }) => {
     const pathname = usePathname();
     const router = useRouter();
     const [show, setShow] = useState(false);
@@ -163,11 +163,13 @@ const StyledCardWrapper = React.memo(
                 item={item}
                 accessToken={accessToken}
                 setWishlistData={setWishlistData}
+                setWishlistLoading={setWishlistLoading}
               />
               <DeleteBtn
                 item={item}
                 accessToken={accessToken}
                 setWishlistData={setWishlistData}
+                setWishlistLoading={setWishlistLoading}
               />
             </CardActionsContainer>
           )}

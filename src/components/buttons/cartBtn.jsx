@@ -58,12 +58,14 @@ const CartButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-function CartBtn({ item, setWishlistData }) {
+function CartBtn({ item, setWishlistData,setWishlistLoading }) {
   const handleWishlistToCartItem = async (productDetailsId, productId) => {
+    setWishlistLoading(true)
     await addToCart(productDetailsId, productId);
     await deleteFromUserWishlist(productDetailsId, productId);
     const data = await fetchUserWishlist(); // Fetch updated wishlist data
     setWishlistData(data); // Update state with fetched data
+    setWishlistLoading(false)
   };
 
   return (

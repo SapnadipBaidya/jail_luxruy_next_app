@@ -57,13 +57,15 @@ const DeleteButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-function DeleteBtn({ item, setWishlistData }) {
+function DeleteBtn({ item, setWishlistData , setWishlistLoading}) {
   const router = useRouter();
 
   const handleDeleteWishlistItem = async (productDetailsId, productId) => {
+    setWishlistLoading(true)
     await deleteFromUserWishlist(productDetailsId, productId);
     const data = await fetchUserWishlist(); // Fetch updated wishlist data
     setWishlistData(data); // Update state with fetched data
+    setWishlistLoading(false)
   };
 
   return (

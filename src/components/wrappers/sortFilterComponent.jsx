@@ -25,7 +25,7 @@ const SortFilterWrapper = styled("div")(({ theme }) => ({
   boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)", // Optional: adds slight shadow to differentiate from content
 }));
 
-function SortFilterComponent({ setShowFilters, showFilters,setSortDetail ,sortBy,setSortBy}) {
+function SortFilterComponent({ setShowFilters, showFilters,setSortDetail,handleSortChange ,sortBy,setSortBy}) {
   const theme = useTheme();
   const ismobile = useMediaQuery(theme.breakpoints.down("sm")); // ✅ Detects mobile view
   const isTablet = useMediaQuery(theme.breakpoints.down("md")); // ✅ Detects tablet view
@@ -39,10 +39,9 @@ function SortFilterComponent({ setShowFilters, showFilters,setSortDetail ,sortBy
   };
 
   const handleClose = (value,dbValue,dbSortBy) => {
-    if (value) {
-      setSortBy(value); // Update the selected sorting option
-    }
     setSortDetail({sortBy:dbValue,sortOrder:dbSortBy})
+
+    handleSortChange(value,dbValue,dbSortBy)
     console.log("handleClose",dbValue,dbSortBy)
     setAnchorEl(null);
   };

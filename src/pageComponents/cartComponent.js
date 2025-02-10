@@ -102,10 +102,13 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
   const [loading, setLoading] = useState(false); // Loading state for quantity updates
   const [deleteLoading, setDeleteLoading] = useState(null); // Loading state for delete operation
 
+  // Combined loading state for all items
+  const isGlobalLoading = loading || deleteLoading !== null;
+
   const handleQuantityChange = useCallback(
     async (productId, productDetailId, delta) => {
-      if (loading) return; // Prevent multiple clicks
-      setLoading(true); // Start loading
+      if (isGlobalLoading) return; // Prevent multiple clicks if any operation is in progress
+      setLoading(true); // Start loading for quantity update
       try {
         console.log(
           `Update quantity for item productId ${productId} and productDetailId ${productDetailId} by ${delta}`
@@ -118,13 +121,13 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
         setLoading(false); // Stop loading
       }
     },
-    [loading, fetchData]
+    [isGlobalLoading, fetchData]
   );
 
   const handleDelete = useCallback(
     async (productDetailId, productId) => {
-      if (deleteLoading === productDetailId) return; // Prevent multiple clicks
-      setDeleteLoading(productDetailId); // Start loading for this specific item
+      if (isGlobalLoading) return; // Prevent multiple clicks if any operation is in progress
+      setDeleteLoading(productDetailId); // Start loading for delete operation
       try {
         await handleDeleteFromCart(productDetailId, productId);
         await fetchData();
@@ -134,7 +137,7 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
         setDeleteLoading(null); // Stop loading
       }
     },
-    [deleteLoading, handleDeleteFromCart, fetchData]
+    [isGlobalLoading, handleDeleteFromCart, fetchData]
   );
 
   return (
@@ -152,13 +155,12 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
       {/* Items */}
       {item?.map((i) => {
         const isDeleteLoading = deleteLoading === i?.product_details?.products_details_id;
-        const isLoading = loading || isDeleteLoading;
 
         return (
           <CartRow key={i?.product_details?.products_details_id}>
             <ResponsiveBox sx={{ gap: 1, flexDirection: "column" }}>
               <ProductImage>
-                {isLoading ? (
+                {isGlobalLoading ? (
                   <Skeleton variant="rectangular" width="100%" height="100%" />
                 ) : (
                   <Image
@@ -174,7 +176,7 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
                   />
                 )}
               </ProductImage>
-              {isLoading ? (
+              {isGlobalLoading ? (
                 <Skeleton variant="text" width="80%" height={24} />
               ) : (
                 <TruncatedText maxWidth="15vw" fontSize="2vh">
@@ -184,7 +186,7 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
             </ResponsiveBox>
 
             <ResponsiveBox>
-              {isLoading ? (
+              {isGlobalLoading ? (
                 <Skeleton variant="rectangular" width={32} height={32} />
               ) : (
                 <SizeBox>
@@ -196,7 +198,7 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
             </ResponsiveBox>
 
             <ResponsiveBox>
-              {isLoading ? (
+              {isGlobalLoading ? (
                 <Skeleton variant="text" width={50} height={24} />
               ) : (
                 <Typography variant="body1">
@@ -207,12 +209,12 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
 
             <ResponsiveBox>
               <NumberControl>
-                {isLoading ? (
+                {isGlobalLoading ? (
                   <Skeleton variant="rectangular" width={20} height={20} />
                 ) : (
                   <IconButton
                     size="small"
-                    disabled={i?.cart_details?.quantity <= 1 || isLoading}
+                    disabled={i?.cart_details?.quantity <= 1 || isGlobalLoading}
                     onClick={() =>
                       handleQuantityChange(
                         i?.product_details?.product_id,
@@ -224,7 +226,7 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
                     <RemoveIcon />
                   </IconButton>
                 )}
-                {isLoading ? (
+                {isGlobalLoading ? (
                   <Skeleton variant="rectangular" width={50} height={32} />
                 ) : (
                   <NumberQuantity
@@ -234,12 +236,12 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
                     readOnly
                   />
                 )}
-                {isLoading ? (
+                {isGlobalLoading ? (
                   <Skeleton variant="rectangular" width={20} height={20} />
                 ) : (
                   <IconButton
                     size="small"
-                    disabled={isLoading}
+                    disabled={isGlobalLoading}
                     onClick={() =>
                       handleQuantityChange(
                         i?.product_details?.product_id,
@@ -255,7 +257,7 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
             </ResponsiveBox>
 
             <ResponsiveBox>
-              {isLoading ? (
+              {isGlobalLoading ? (
                 <Skeleton variant="text" width={50} height={24} />
               ) : (
                 <Typography variant="body1">
@@ -269,12 +271,12 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
             </ResponsiveBox>
 
             <ResponsiveBox>
-              {isLoading ? (
+              {isGlobalLoading ? (
                 <Skeleton variant="circular" width={32} height={32} />
               ) : (
                 <IconButton
                   size="small"
-                  disabled={isLoading}
+                  disabled={isGlobalLoading}
                   onClick={(e) =>
                     handleDelete(
                       i?.product_details?.products_details_id,
@@ -290,8 +292,7 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
         );
       })}
 
-
-      {item?.length == 0 &&  <NoDataComponent/>}
+      {item?.length === 0 && <NoDataComponent />}
     </Box>
   );
 }
