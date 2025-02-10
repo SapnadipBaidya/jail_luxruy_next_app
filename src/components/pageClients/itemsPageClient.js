@@ -18,32 +18,29 @@ const PageContainer = styled("div")(({ theme }) => ({
   flexDirection: "column",
   maxWidth: "100vw",
   overflow: "hidden",
-  backgroundColor: theme.palette.background.default, // Use theme for background
+  backgroundColor: theme.palette.background.default,
 }));
 
 const ContentContainer = styled("div")(({ theme, isMobileOrTablet }) => ({
   display: "flex",
   flexDirection: isMobileOrTablet ? "column" : "row",
   width: "90vw",
-  marginRight: "5vw",
-  marginLeft: "5vw",
-  
+  margin: "0 5vw",
   flexGrow: 1,
-  padding: theme.spacing(2), // Use theme spacing
+  padding: theme.spacing(2),
 }));
+
 const PageHeaderComp = styled("div")(({ theme, isMobileOrTablet }) => ({
   width: "100%",
   backgroundColor: theme.custom.banner,
-  color:theme.custom.primaryButtonFontColor,
+  color: theme.custom.primaryButtonFontColor,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  padding: theme.spacing(2), // Use theme spacing
-  fontSize:theme.typography.pxToRem(60),
-  fontFamily:"aboreto"
+  padding: theme.spacing(2),
+  fontSize: theme.typography.pxToRem(60),
+  fontFamily: "aboreto",
 }));
-
-
 
 const MainContent = styled("div")(({ theme }) => ({
   display: "flex",
@@ -51,8 +48,7 @@ const MainContent = styled("div")(({ theme }) => ({
   alignItems: "center",
   width: "100%",
   flexGrow: 1,
-  gap: theme.spacing(2), // Use theme spacing for gaps
-  
+  gap: theme.spacing(2),
 }));
 
 export default function ItemsPageClient({
@@ -75,75 +71,73 @@ export default function ItemsPageClient({
   const [selectedFilters, setSelectedFilters] = useState(initialFilters);
   const [itemsArr, setItemsArr] = useState(ItemsData?.data);
   const [page, setPage] = useState(initialPage);
-  console.log("params in items",params,pathname)
-  // Create query string from filters
-  const createQueryString = useCallback((filters, page) => {
-    const params = [];
-    if (userInput) params.push(`userInput=${userInput}`);
-    if (page) params.push(`page=${page}`);
-    if (filters.gender) params.push(`gender=${filters.gender}`);
-    if (filters.size?.length) params.push(`size=${filters.size.join(",")}`);
-    if (filters.color?.length) params.push(`color=${filters.color.join(",")}`);
-    if (filters?.price?.length) params.push(`price=${filters?.price?.join(",")}`);
+  const [sortDetail, setSortDetail] = useState({ sortBy: "", sortOrder: "" });
+  const [sortBy, setSortBy] = useState("Sort By");
 
-    return params.join("&");
-  }, []);
+  const createQueryString = useCallback(
+    (filters, page, sortBy, sortOrder) => {
+      const params = [];
+      if (userInput) params.push(`userInput=${userInput}`);
+      if (page) params.push(`page=${page}`);
+      if (filters.gender) params.push(`gender=${filters.gender}`);
+      if (filters.size?.length) params.push(`size=${filters.size.join(",")}`);
+      if (filters.color?.length) params.push(`color=${filters.color.join(",")}`);
+      if (filters?.price?.length) params.push(`price=${filters?.price.join(",")}`);
+      if (sortBy) params.push(`sortBy=${sortBy}`);
+      if (sortOrder) params.push(`sortOrder=${sortOrder}`);
+      return params.join("&");
+    },
+    [userInput]
+  );
 
-  // Debounced filter update
   const updateFilters = useCallback(
-    debounce((newFilters, newPage = 1) => {
-      const queryString = createQueryString(newFilters, newPage);
+    debounce((newFilters, newPage, sortBy, sortOrder) => {
+      const queryString = createQueryString(newFilters, newPage, sortBy, sortOrder);
       router.push(`${pathname}?${queryString}`);
     }, 300),
     [pathname, createQueryString]
   );
 
-  // Handle filter changes
   const onApplyFilters = (newFilters) => {
     setSelectedFilters(newFilters);
     setPage(1);
-    updateFilters(newFilters, 1);
+    updateFilters(newFilters, 1, sortDetail.sortBy, sortDetail.sortOrder);
   };
 
-  // Handle clear filters
   const onClearFilters = () => {
-    setSelectedFilters({
+    const clearedFilters = {
       gender: "",
       size: [],
       color: [],
       price: [0, 1000000],
-    });
+    };
+    setSelectedFilters(clearedFilters);
     setPage(1);
-    updateFilters(
-      {
-        gender: "",
-        size: [],
-        color: [],
-        price: [0, 1000000],
-      },
-      1
-    );
+    updateFilters(clearedFilters, 1, sortDetail.sortBy, sortDetail.sortOrder);
+    setSortBy("Sort By");
+    setSortDetail({ sortBy: "", sortOrder: "" });
   };
 
-  // Handle page changes
   const handlePageChange = (newPage) => {
     setPage(newPage);
-    updateFilters(selectedFilters, newPage);
+    updateFilters(selectedFilters, newPage, sortDetail.sortBy, sortDetail.sortOrder);
   };
 
-  // Sync state with URL parameters
+  useEffect(() => {
+    updateFilters(selectedFilters, page, sortDetail.sortBy, sortDetail.sortOrder);
+  }, [sortDetail.sortBy, sortDetail.sortOrder]);
+
   useEffect(() => {
     setSelectedFilters(initialFilters);
     setPage(initialPage);
     setItemsArr(ItemsData?.data);
   }, [initialFilters, initialPage, ItemsData]);
 
-  const cardName =  pathname.split("/")[(pathname.split("/")).length-1]
-  console.log("cardName",cardName)
+  const cardName = pathname.split("/").pop();
 
   return (
     <PageContainer>
-     {cardName &&  <PageHeaderComp >{cardName?.toUpperCase()}</PageHeaderComp>}
+      {cardName && <PageHeaderComp>{cardName.toUpperCase()}</PageHeaderComp>}
       <ContentContainer isMobileOrTablet={isMobileOrTablet}>
         {isMobileOrTablet ? (
           <FilterDrawerMobile
@@ -171,11 +165,17 @@ export default function ItemsPageClient({
           {isMobileOrTablet ? (
             <SortFilterComponentMobile
               setShowFilters={setShowFilters}
-              sizeFilterArr={sizeFilterArr}
-              allColors={allColors}
+              setSortDetail={setSortDetail}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
             />
           ) : (
-            <SortFilterComponent setShowFilters={setShowFilters} />
+            <SortFilterComponent
+              setShowFilters={setShowFilters}
+              setSortDetail={setSortDetail}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+            />
           )}
 
           <GridWrapper

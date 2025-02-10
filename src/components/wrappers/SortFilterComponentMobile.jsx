@@ -44,13 +44,12 @@ const DrawerHeader = styled(Box)(({ theme }) => ({
   paddingBottom: theme.spacing(2),
 }));
 
-const SortFilterComponentMobile = ({ setShowFilters, showFilters }) => {
+const SortFilterComponentMobile = ({ setShowFilters, showFilters ,setSortDetail, sortBy, setSortBy }) => {
   const theme = useTheme();
   const ismobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [sortBy, setSortBy] = useState("Sort By");
 
   const handleOpenDrawer = () => setDrawerOpen(true);
   const handleCloseDrawer = () => setDrawerOpen(false);

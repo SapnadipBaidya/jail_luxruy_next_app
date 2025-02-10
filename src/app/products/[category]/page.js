@@ -18,10 +18,12 @@ async function ItemsPageContent({ params, searchParams }) {
   const color = waitedSearchParams?.color || "";
   const size = waitedSearchParams?.size || "";
   const gender = waitedSearchParams?.gender || "";
+  const sortBy = waitedSearchParams?.sortBy || "";
+  const sortOrder = waitedSearchParams?.sortOrder || "";
   console.log("searchParams", page, color, size, gender, "params", category);
   // Fetch data in parallel where possible
   const [ItemsData, allSizesPerCategory, allColors] = await Promise.all([
-    fetchItemsFromAPI(category, page, color, size, gender),
+    fetchItemsFromAPI(category, page, color, size, gender,sortBy,sortOrder),
     fetchSizeFilterByCategoryName(category),
     fetchAllColors(),
   ]);
@@ -66,9 +68,9 @@ export default async function ItemsPage({ params, searchParams }) {
 }
 
 // Move data fetching functions here
-async function fetchItemsFromAPI(category, page, colors, sizes, gender) {
-  const apiUrl = `http://localhost:8080/api/products/findProductsByCategoryName?categoryName=${category}&colorFilter=${colors}&sizeFilter=${sizes}&gender=${gender}&sortBy=product_price_local&sortOrder=ASC&limit=12&page=${page}`;
-  console.log("apiUrl", apiUrl);
+async function fetchItemsFromAPI(category, page, colors, sizes, gender,sortBy,sortOrder) {
+  const apiUrl = `http://localhost:8080/api/products/findProductsByCategoryName?categoryName=${category}&colorFilter=${colors}&sizeFilter=${sizes}&gender=${gender}&sortBy=${sortBy}&sortOrder=${sortOrder}&limit=12&page=${page}`;
+  console.log("apiUrl for fetchItemsFromAPI", apiUrl);
   const response = await makeGetAPIcall(apiUrl);
   return { loading: false, data: response?.data || [] };
 }
