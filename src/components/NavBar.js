@@ -34,6 +34,8 @@ import CategoryDropdown from "@/components/catogeryComponent/CategoryDropdown"; 
 // ✅ Mocked user for now
 const user = { id: "111", name: "sapnadip" };
 
+
+
 // ✅ Styled Components
 const StyledButton = styled(Button)(({ theme }) => ({
   textTransform: "none",
@@ -112,7 +114,7 @@ export default function Navbar({ carouselImages }) {
   
 
 
-  const isTablet = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const toggleMobileNav = () => setMobileOpen((prev) => !prev);
 
   useEffect(() => {
