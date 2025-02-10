@@ -13,14 +13,12 @@ const GridWrapperComponent = styled("div")(({ theme }) => ({
   flexDirection: "column",
   justifyContent: "space-evenly",
   alignItems:"flex-start",
+  
 
   [theme.breakpoints.down("md")]: {
-    minWidth: "99vw",
-    maxWidth: "99vw",
-    height: "70vh",
-    maxHeight: "80vh",
-    padding: "0.5rem",
-    justifyContent: "space-evenly",
+    width: "100vw",
+    padding: "1rem",
+    justifyContent: "center",
   },
 }));
 
@@ -34,7 +32,7 @@ function GridWrapper({ itemsArr, type,loading ,accessToken,setWishlistData}) {
   console.log("data",Array?.isArray(data),data,data?.length,itemsArr)
   return (
     <GridWrapperComponent>
-      <Grid container spacing={2} justifyContent="flex-start" alignItems="center">
+      <Grid container spacing={2}  justifyContent="flex-start" alignItems="center" >
         {loading ? (
           // ✅ Render 8 skeleton placeholders in Grid layout
           <>
@@ -58,11 +56,7 @@ function GridWrapper({ itemsArr, type,loading ,accessToken,setWishlistData}) {
           data?.map((item, index) => (
             <Grid 
               item 
-              xs={5} 
-              sm={6} 
-              md={4} 
-              lg={3} 
-              xl={3} 
+              xs={6} sm={6} md={4} lg={3} xl={3}
               key={index} 
               style={{ display: "flex", flexGrow: 1 }} 
             >

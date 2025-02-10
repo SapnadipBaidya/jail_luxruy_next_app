@@ -52,6 +52,7 @@ const MainContent = styled("div")(({ theme }) => ({
   width: "100%",
   flexGrow: 1,
   gap: theme.spacing(2), // Use theme spacing for gaps
+  
 }));
 
 export default function ItemsPageClient({

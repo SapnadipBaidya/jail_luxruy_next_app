@@ -3,18 +3,17 @@
 import { useState, useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { Card, TextField, styled } from "@mui/material";
+import { Card, TextField, styled, useTheme, useMediaQuery } from "@mui/material";
 
 // ✅ Styled Pagination Container (Neumorphic UI)
 const StyledPaginationContainer = styled(Card)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  minHeight: "2vh",
+  minHeight: "auto",
   padding: theme.spacing(2),
   gap: theme.spacing(2),
   margin: theme.spacing(2),
-  border:"solid 2px red",
   flexDirection: "row",
   borderRadius: "50px",
   background: theme.palette.mode === "dark" ? "#252525" : "#f0f0f0",
@@ -30,16 +29,19 @@ const StyledPaginationContainer = styled(Card)(({ theme }) => ({
       : "10px 10px 30px #d1d1d1, -10px -10px 30px #ffffff",
   },
 
-  [theme.breakpoints.down("md")]: {
-    minHeight: "10vh",
+  // ✅ Mobile Responsive Styles
+  [theme.breakpoints.down("sm")]: {
     flexDirection: "column",
+    padding: theme.spacing(1),
+    gap: theme.spacing(1),
+    width: "100%",
   },
 }));
 
 // ✅ Styled Input Box for Page Number
 const StyledTextField = styled(TextField)(({ theme }) => ({
-  minWidth: "4rem",
-  maxWidth: "5rem",
+  minWidth: "3rem",
+  maxWidth: "4rem",
   textAlign: "center",
   borderRadius: "10px",
   fontWeight: "bold",
@@ -88,10 +90,20 @@ const StyledPagination = styled(Pagination)(({ theme }) => ({
       boxShadow: "none",
     },
   },
+
+  // ✅ Adjust for Small Screens
+  [theme.breakpoints.down("sm")]: {
+    "& .MuiPaginationItem-root": {
+      fontSize: "0.8rem",
+      padding: "0.3rem",
+    },
+  },
 }));
 
 export default function PaginationComponent({ page, setPage, count = 10 }) {
   const [inputValue, setInputValue] = useState(page);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     setInputValue(page); // Sync input with current page
@@ -121,7 +133,12 @@ export default function PaginationComponent({ page, setPage, count = 10 }) {
 
   return (
     <StyledPaginationContainer>
-      <Stack spacing={2} direction="row" alignItems="center">
+      <Stack
+        spacing={isMobile ? 1 : 2}
+        direction={isMobile ? "column" : "row"}
+        alignItems="center"
+        width="100%"
+      >
         {/* ✅ Page Input Box */}
         <StyledTextField
           variant="standard"
@@ -141,7 +158,7 @@ export default function PaginationComponent({ page, setPage, count = 10 }) {
           onChange={handleChange}
           variant="outlined"
           shape="rounded"
-          siblingCount={1}
+          siblingCount={isMobile ? 0 : 1}
           boundaryCount={1}
         />
       </Stack>
