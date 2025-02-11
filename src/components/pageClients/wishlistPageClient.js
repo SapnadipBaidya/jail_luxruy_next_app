@@ -4,6 +4,19 @@ import GridWrapper from '../wrappers/GridWrapper';
 import { fetchUserWishlist } from '@/utils/API_lib';
 import TruckLoader from '../loaders/truckLoader';
 import ThreeDotLoader from '../loaders/threeDotLoader';
+import {  styled } from "@mui/material";
+
+const PageHeaderComp = styled("div")(({ theme, isMobileOrTablet }) => ({
+  width: "100%",
+  backgroundColor: theme.custom.banner,
+  color: theme.custom.primaryButtonFontColor,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: theme.spacing(2),
+  fontSize: theme.typography.pxToRem(60),
+  fontFamily: "aboreto",
+}));
 
 function WishListPageClient({ itemsArr }) {
   const [wishlistData, setWishlistData] = useState(itemsArr || []); // Initialize with itemsArr if provided
@@ -29,7 +42,10 @@ function WishListPageClient({ itemsArr }) {
   }, [fetchData]); // Run effect only when fetchData changes
 
   return (
-    <div style={{ display: "flex",alignItems:"center", justifyContent: "center", minHeight: "90vh" }}>
+    <div style={{ display: "flex",alignItems:"center", justifyContent: "center", flexDirection:"column" }}>
+         <PageHeaderComp>WISHLIST</PageHeaderComp>
+      <div  style={{ display: "flex",alignItems:"center", justifyContent: "center", minHeight: "90vh", flexDirection:"column"}}>
+   
       {wishlistLoading ? (
         <ThreeDotLoader />
       ) : (
@@ -40,6 +56,7 @@ function WishListPageClient({ itemsArr }) {
           setWishlistLoading={setWishlistLoading}
         />
       )}
+      </div>
     </div>
   );
 }

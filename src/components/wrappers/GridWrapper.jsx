@@ -55,9 +55,9 @@ function GridWrapper({ itemsArr, type,loading,setWishlistData,setWishlistLoading
           data?.map((item, index) => (
             <Grid 
               item 
-              xs={6} sm={6} md={4} lg={3} xl={3}
+              xs={12} sm={6} md={4} lg={3} xl={3}
               key={index} 
-              style={{ display: "flex", flexGrow: 1 }} 
+              style={{ display: "flex" , justifyContent:"center" , alignItems:"center", flexGrow: 1 }} 
             >
               <StyledCardWrapper type={type} item={item} setWishlistData={setWishlistData} setWishlistLoading={setWishlistLoading}/>
             </Grid>

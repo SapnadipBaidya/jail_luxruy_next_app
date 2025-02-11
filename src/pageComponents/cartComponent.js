@@ -62,6 +62,7 @@ const HeaderText = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     fontSize: "0.875rem",
   },
+  color:theme.custom.primaryButtonFontColor,
 }));
 
 const ResponsiveBox = styled(Box)(({ theme }) => ({
@@ -86,10 +87,10 @@ const NumberControl = styled("div")(({ theme }) => ({
 const NumberQuantity = styled("input")(({ theme }) => ({
   padding: "0.25rem",
   border: "0",
-  width: "50px",
+  width: theme.typography.pxToRem(50),
   textAlign: "center",
-  borderTop: "1px solid black",
-  borderBottom: "1px solid black",
+  borderTop:  theme.palette.ascentColor.main,
+  borderBottom:  theme.palette.ascentColor.main,
   "-moz-appearance": "textfield",
   "&::-webkit-inner-spin-button, &::-webkit-outer-spin-button": {
     "-webkit-appearance": "none",

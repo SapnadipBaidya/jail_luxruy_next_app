@@ -75,6 +75,11 @@ const ProceedButton = styled(Button)(({ theme }) => ({
   padding: theme.spacing(2),
 }));
 
+const StyledTypography = styled(Typography)(({ theme }) => ({
+  color: theme.custom.primaryButtonFontColor,
+}));
+
+
 export default function CartPageClient() {
   const [cartData, setCartData] = useState([]);
   const [subTotalData,setSubTotalData]= useState(0);
@@ -150,14 +155,14 @@ export default function CartPageClient() {
       <SummarySection>
       {loading || cartLoading ?<TextAreaSkeleton/>:
       <>
-        <Typography variant="subtitle1">Subtotal: ₹{subTotalData}</Typography>
-        <Typography variant="subtitle1">Delivery Charge: FREE</Typography>
-        <Typography variant="h6" mt={2}>
+        <StyledTypography variant="subtitle1">Subtotal: ₹{subTotalData}</StyledTypography>
+        <StyledTypography variant="subtitle1">Delivery Charge: FREE</StyledTypography>
+        <StyledTypography variant="h6" mt={2}>
         Grand Total: ₹{subTotalData}
-        </Typography>
-        <ProceedButton variant="contained" color="primary" fullWidth  disabled={loading}>
+        </StyledTypography>
+        <StyledTypography variant="contained" color="primary" fullWidth  disabled={loading}>
           Proceed to Payment
-        </ProceedButton>
+        </StyledTypography>
         </>
       }
       </SummarySection>
