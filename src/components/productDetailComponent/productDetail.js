@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Box, Typography, Button, IconButton, styled } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useRouter, usePathname, useParams } from "next/navigation";
+import { addOrEditWishlist, addToCart } from "@/utils/API_lib";
 
 // Optimized styled components (moved outside main component)
 const ColorCircle = styled(Box)(({ bgcolor, selected, theme }) => ({
@@ -27,7 +28,7 @@ const SizeButton = styled(Button)(({ selected }) => ({
 }));
 
 const AddToCartButton = styled(Button)(({ theme }) => ({
-  maxHeight:"7vh",
+  maxHeight:"5.5vh",
   minWidth:theme.typography.pxToRem(300),
   maxWidth:theme.typography.pxToRem(300),
   position: "relative",
@@ -37,7 +38,7 @@ const AddToCartButton = styled(Button)(({ theme }) => ({
   borderRadius: "1vh",
   background: theme.custom.cardBg,
   fontFamily: '"Montserrat", sans-serif',
-  boxShadow: "0px 6px 24px 0px rgba(0, 0, 0, 0.2)",
+  boxShadow:"none",
   overflow: "hidden",
   cursor: "pointer",
   border: "none",
@@ -71,6 +72,51 @@ const AddToCartButton = styled(Button)(({ theme }) => ({
 
 }));
 
+//
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+  maxHeight:"5.5vh",
+  maxWidth:"5.5vh",
+  borderColor: "primary.main",
+  borderRadius: "1vh",
+  background: theme.custom.cardBg,
+  color: theme.custom.primaryButtonFontColor,
+
+
+  "&:after": {
+    content: '""',
+    width: "0%",
+    height: "100%",
+    background: "#483030",
+    position: "absolute",
+    transition: "all 0.4s ease-in-out",
+    right: 0,
+  },
+  "&:hover::after": {
+    borderRadius: "1vh",
+    right: 0,
+    left: "auto",
+    width: "100%",
+    backgroundColor:theme.palette.ascentColor.main,
+    boxShadow: "0px 0.1vh 3vh 0 rgb(75, 65, 65)",
+  },
+  "& span": {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    textDecoration: "none",
+    width: "100%",
+    padding: "18px 25px",
+    color: theme.custom.primaryButtonFontColor,
+    fontSize: "1.125em",
+    fontWeight: 700,
+    letterSpacing: "0.3em",
+    zIndex: 20,
+    transition: "all 0.3s ease-in-out",
+  },
+}));
+
 const ProductDetails = ({ data, accessToken }) => {
   const router = useRouter();
   const params = useParams();
@@ -80,6 +126,7 @@ const ProductDetails = ({ data, accessToken }) => {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
 
   const productInfo = useMemo(() => data?.product_info || {}, [data]);
+  console.log("productInfo",productInfo)
 
   useEffect(() => {
     if (productInfo.sizesPerProductId) {
@@ -123,10 +170,15 @@ const ProductDetails = ({ data, accessToken }) => {
     []
   );
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async(productDetailsId, productId) => {
     setIsAddedToCart(true);
+    await addToCart(productDetailsId, productId);
     // Add your logic to add the product to the cart here
   };
+
+  const handleAddToWishList = async(productDetailsId, productId)=>{
+    await addOrEditWishlist(productDetailsId , productId)
+  }
 
   return (
     <Box component="section" aria-labelledby="product-details-heading">
@@ -176,20 +228,23 @@ const ProductDetails = ({ data, accessToken }) => {
         mt: 3,
         flexDirection: { xs: "column", sm: "row" }
       }}>
-        <IconButton
+        <StyledIconButton
           aria-label="Add to favorites"
-          sx={{
-            border: "1px solid",
-            borderColor: "primary.main",
-            borderRadius: "50%"
-          }}
+          onClick={(e)=>{
+            e.preventDefault();
+            e.stopPropagation();
+            handleAddToWishList(productInfo?.productDetailsId,productInfo?.productId)}}
         >
-          <FavoriteBorderIcon />
-        </IconButton>
+         
+          <span>{ <FavoriteBorderIcon />}</span>
+        </StyledIconButton>
         <AddToCartButton
           variant="contained"
           color="primary"
-          onClick={handleAddToCart}
+          onClick={(e)=>{
+            e.preventDefault();
+            e.stopPropagation();
+            handleAddToCart(productInfo?.productDetailsId,productInfo?.productId)}}
           sx={{
             flex: 1,
             py: 1.5,

@@ -28,7 +28,7 @@ const FilterColorWrapper = styled("div")(({ theme }) => ({
     width: "8px", // Width of the scrollbar
   },
   "&::-webkit-scrollbar-track": {
-    background: theme.palette.background.default, // Background color of the track
+    background: "transperant", // Background color of the track
   },
   "&::-webkit-scrollbar-thumb": {
     background: theme.palette.ascentColor.main, // Color of the scrollbar thumb
