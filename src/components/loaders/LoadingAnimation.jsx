@@ -89,9 +89,9 @@ export default function LoadingAnimation() {
       <Loader>
         <>loading</>
         <Words>
-          <Word>Design</Word>
+          <Word>Premium</Word>
           <Word>Quality</Word>
-          <Word>Status</Word>
+          <Word>Premium</Word>
         </Words>
       </Loader>
     </Card>

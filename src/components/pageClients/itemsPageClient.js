@@ -150,14 +150,15 @@ export default function ItemsPageClient({
     );
   };
 
-  const handleSortChange = (value, sortBy, sortOrder) => {
+  const handleSortChange = useCallback((value, sortBy, sortOrder) => {
     setGridLoading(true);
     if (value) {
       setSortBy(value); // Update the selected sorting option
     }
     updateFilters(selectedFilters, page, sortBy, sortOrder);
-  };
+  }, [sortBy]);
 
+  
   useEffect(() => {
     setSelectedFilters(initialFilters);
     setPage(initialPage);

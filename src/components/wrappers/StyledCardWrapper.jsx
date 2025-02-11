@@ -18,7 +18,7 @@ const useDeviceType = () => {
 const StyledCard = styled(Card, {
   shouldForwardProp: (prop) => prop !== "deviceType",
 })(({ theme, deviceType }) => ({
-  margin: "1vw",
+  margin: "0.1vw",
   minWidth: `clamp(${theme.typography.pxToRem(200)}, 15vw, ${theme.typography.pxToRem(300)})`, // Responsive min-width
   minHeight:`clamp(${theme.typography.pxToRem(250)}, 40vh, ${theme.typography.pxToRem(400)})`, // Responsive min-height
   maxWidth: "50vh",
