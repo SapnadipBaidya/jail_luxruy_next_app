@@ -34,15 +34,15 @@ import CategoryDropdown from "@/components/catogeryComponent/CategoryDropdown"; 
 // ✅ Mocked user for now
 const user = { id: "111", name: "sapnadip" };
 
-
-
 // ✅ Styled Components
 const StyledButton = styled(Button)(({ theme }) => ({
   textTransform: "none",
   fontSize: "10px",
   color: theme.custom.primaryButtonFontColor,
   backgroundColor: "red",
-  [theme.breakpoints.down("md")]: {},
+  [theme.breakpoints.down("md")]: {
+    
+  },
 }));
 
 const HomeLogoWrapper = styled("div")(({ theme }) => ({
@@ -54,10 +54,10 @@ const HomeLogoWrapper = styled("div")(({ theme }) => ({
   transform: "translateX(-50%)",
   cursor: "pointer",
   "& img": {
-    maxWidth: theme.typography.pxToRem(250),
-    maxHeight: theme.typography.pxToRem(40),
+    width: theme.typography.pxToRem(300),
+    height: theme.typography.pxToRem(50),
     [theme.breakpoints.down("md")]: {
-      maxWidth: theme.typography.pxToRem(220),
+      width: theme.typography.pxToRem(300),
       height: theme.typography.pxToRem(50),
     },
   },
@@ -104,17 +104,29 @@ export default function Navbar({ carouselImages }) {
   const theme = useTheme();
   const router = useRouter();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("md");
   const [mobileOpen, setMobileOpen] = useState(false);
   const { setCategoryItems } = useContext(AppContext);
-  
+
   useEffect(() => {
     setCategoryItems(carouselImages);
-  }, [carouselImages?.length])
-  
+  }, [carouselImages?.length]);
 
+  const useDeviceType = () => {
+    const isTouchDevice = useMediaQuery('(hover: none) and (pointer: coarse)');
+    const isIpadPro = useMediaQuery(
+      '(min-width: 1024px) and (max-width: 1366px) and (orientation: portrait), (min-width: 1366px) and (max-width: 1024px) and (orientation: landscape)'
+    );
 
-  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
+    if (isIpadPro) {
+      return 'touch';
+    }
+
+    return isTouchDevice ? 'touch' : 'pc';
+  };
+
+  const deviceType = useDeviceType();
+
   const toggleMobileNav = () => setMobileOpen((prev) => !prev);
 
   useEffect(() => {
@@ -143,7 +155,6 @@ export default function Navbar({ carouselImages }) {
     }
   };
 
-
   return (
     <>
       <StyledAppBar position="sticky">
@@ -154,21 +165,23 @@ export default function Navbar({ carouselImages }) {
             position: "relative",
           }}
         >
-          {isTablet && (
+          {/* Show mobile menu button for touch devices (including iPad Pro) */}
+          {deviceType === 'touch' && (
             <IconButton
               edge="start"
               color="inherit"
               aria-label="menu"
               onClick={toggleMobileNav}
-              sx={{ display: { md: "none" } }}
+              sx={{ display: { md: "" } }}
             >
               <MenuIcon />
             </IconButton>
           )}
 
-          {!isTablet && (
+          {/* Show desktop navigation for non-touch devices */}
+          {deviceType === 'pc' && (
             <NavLinksContainer>
-              <CategoryDropdown/>
+              <CategoryDropdown />
               <StyledButton component={Link} href="/about">
                 About Us
               </StyledButton>
@@ -215,7 +228,7 @@ export default function Navbar({ carouselImages }) {
               </StyledButton>
             </Box>
 
-            {!isTablet && (
+            {deviceType === 'pc' && (
               <>
                 <ProfileBtn
                   text={
@@ -249,6 +262,7 @@ export default function Navbar({ carouselImages }) {
         )}
       </StyledAppBar>
 
+      {/* Mobile Navigation Drawer */}
       <MobileNav anchor="left" open={mobileOpen} onClose={toggleMobileNav}>
         <IconButton onClick={toggleMobileNav} sx={{ alignSelf: "flex-end" }}>
           <CloseIcon />
@@ -264,8 +278,8 @@ export default function Navbar({ carouselImages }) {
               {item.label}
             </StyledButton>
           ))}
-          {isTablet &&
-            (user?.id ? (
+          {deviceType === 'touch' && (
+            user?.id ? (
               <StyledButton
                 onClick={() => {
                   toggleMobileNav();
@@ -283,7 +297,8 @@ export default function Navbar({ carouselImages }) {
               >
                 Login / Signup
               </StyledButton>
-            ))}
+            )
+          )}
         </Box>
       </MobileNav>
     </>
