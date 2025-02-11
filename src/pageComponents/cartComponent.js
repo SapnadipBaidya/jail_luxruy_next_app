@@ -97,9 +97,9 @@ const NumberQuantity = styled("input")(({ theme }) => ({
   },
 }));
 
-export default function CartComponent({ item, handleDeleteFromCart, fetchData }) {
+export default function CartComponent({ item, handleDeleteFromCart, fetchData ,loading, setLoading }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false); // Loading state for quantity updates
+
   const [deleteLoading, setDeleteLoading] = useState(null); // Loading state for delete operation
 
   // Combined loading state for all items

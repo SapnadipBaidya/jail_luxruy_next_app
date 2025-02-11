@@ -11,7 +11,7 @@ const protectedRoutes = [
   "/payment",
   "/profile",
 ];
-const greyList = ["/products", "/item"];
+const greyList = ["/products", "/item","/"];
 
 const apiClient = axios.create({
   baseURL: "http://localhost:8080",

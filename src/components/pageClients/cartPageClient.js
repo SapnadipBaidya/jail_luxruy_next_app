@@ -7,6 +7,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { deleteFromUserCart, fetchUserCart } from "@/utils/API_lib";
 import CartComponent from "@/pageComponents/cartComponent";
 import ThreeDotLoader from "../loaders/threeDotLoader";
+import TextAreaSkeleton from "../wrappers/textAreaSkeleton.jsx"
 
 // ✅ Styled Components (Same as Before)
 const CheckoutContainer = styled(Box)(({ theme }) => ({
@@ -78,6 +79,7 @@ export default function CartPageClient() {
   const [cartData, setCartData] = useState([]);
   const [subTotalData,setSubTotalData]= useState(0);
   const [cartLoading, setCartLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // Loading state for quantity updates
   const router = useRouter();
 
   const fetchData = useCallback(async () => {
@@ -133,6 +135,8 @@ export default function CartPageClient() {
             item={cartData}
             handleDeleteFromCart={handleDeleteFromCart}
             fetchData={fetchData}
+            loading={loading} 
+            setLoading={setLoading}
           />
         )}
 
@@ -144,14 +148,18 @@ export default function CartPageClient() {
 
       {/* Summary Section */}
       <SummarySection>
+      {loading ?<TextAreaSkeleton/>:
+      <>
         <Typography variant="subtitle1">Subtotal: ₹{subTotalData}</Typography>
         <Typography variant="subtitle1">Delivery Charge: FREE</Typography>
         <Typography variant="h6" mt={2}>
-          Grand Total: ₹{subTotalData}
+        Grand Total: ₹{subTotalData}
         </Typography>
-        <ProceedButton variant="contained" color="primary" fullWidth>
+        <ProceedButton variant="contained" color="primary" fullWidth  disabled={loading}>
           Proceed to Payment
         </ProceedButton>
+        </>
+      }
       </SummarySection>
     </CheckoutContainer>
   );

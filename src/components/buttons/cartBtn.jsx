@@ -18,9 +18,8 @@ const CartButton = styled(Button)(({ theme }) => ({
   transitionDuration: "0.3s",
   overflow: "hidden",
   position: "relative",
-  maxWidth: "50px", // Adjusted to make the container thinner
-  minWidth: "50px", // Ensure the button doesn't shrink further
-  minHeight: "40px",
+  maxWidth: "4vh", // Adjusted to make the container thinner
+  maxHeight: "40px",
   padding: "0", // Remove padding to make the container thinner
   border: `solid 0.1vh ${theme.palette.primary.main}`,
   "&:hover": {
@@ -35,24 +34,24 @@ const CartButton = styled(Button)(({ theme }) => ({
     color: theme.palette.primary.main,
   },
   "&:hover .svgIcon": {
-    maxWidth: theme.typography.pxToRem(20),
+    maxWidth: theme.typography.pxToRem(15),
     transitionDuration: "0.3s",
-    transform: "translateY(60%)",
+
     display: "none",
   },
   "&::before": {
-    position: "absolute",
-    top: "-4vh",
+    // position: "absolute",
     content: '"Add to Cart"', // Change text to "Add to Cart"
     color: theme.palette.common.white, // Use theme for text color
     transitionDuration: "0.3s",
     fontSize: "12px",
+    display:"none",
     opacity: 0,
   },
   "&:hover::before": {
     fontSize: "10px",
     opacity: 1,
-    transform: "translateY(30px)",
+    display:"view",
     transitionDuration: "0.3s",
  
   },
