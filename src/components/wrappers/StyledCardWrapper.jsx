@@ -37,7 +37,7 @@ const StyledCard = styled(Card, {
   willChange: "transform, box-shadow, opacity", // Hint to the browser for optimization
 
   "&:hover": {
-    boxShadow: "0 1vh 1.7vw rgba(0, 0, 0, 0.8)", // Adjusted shadow for smoother transition
+    boxShadow: "0 1vh 1.7vw #000000", // Adjusted shadow for smoother transition
     ...(deviceType === "pc" && {
       "& .hover-content": {
         opacity: 1,
@@ -80,7 +80,7 @@ const ProductImage = styled("img")(({ theme }) => ({
   "&:hover": {
     transform: "scale(110%)",
   },
-  border: "solid 2px red",
+  // border: "solid 2px red",
 }));
 
 const ProductInfo = styled(Box)(({ theme }) => ({
@@ -90,7 +90,7 @@ const ProductInfo = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "flex-start",
-  border:"solid 2px blue",
+  // border:"solid 2px blue",
   minWidth:"100%"
 }));
 

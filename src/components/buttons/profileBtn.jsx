@@ -3,60 +3,52 @@ import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import { Menu, MenuItem } from "@mui/material";
 
-// Styled button component
+// Styled button component using MUI theme
 const StyledButton = styled("button")(({ theme }) => ({
-  all: "unset",
-  display: "flex",
-  alignItems: "center",
   position: "relative",
-  padding: "0.2vh 1em",
-  border: "#483030 solid 0.15em",
-  borderRadius: "2vh",
-  borderWidth: "0.125em",
-  color: "#c6bbab",
-  fontFamily: "Almarai, sans-serif",
-  fontSize: "1.5em",
-  fontWeight: "600",
+  display: "inline-block",
+  padding: "1vh 3vh",
+  border: `0.4vh solid ${theme.palette.primary.main}`, // Use theme primary color
+  borderRadius:"0.5vh",
+  textTransform: "uppercase",
+  color: theme.palette.text.primary, // Use theme text color
+  textDecoration: "none",
+  fontWeight: 600,
+  fontSize: "20px",
+  backgroundColor: "transparent",
   cursor: "pointer",
-  overflow: "hidden",
-  transition: "border 300ms, color 300ms",
-  userSelect: "none",
-  maxHeight:"5vh",
-  "& p": {
-    zIndex: 1,
-  },
-  "&:hover": {
-    color: "#c6bbab",
-  },
-  "&:active": {
-    borderColor: "#c6bbab",
-  },
-  "&::after, &::before": {
+  "&::before": {
     content: '""',
     position: "absolute",
-    width: "9em",
-    aspectRatio: "1",
-    background: "#483030",
-    opacity: "50%",
-    borderRadius: "50%",
-    transition: "transform 500ms, background 300ms",
-  },
-  "&::before": {
-    left: 0,
-    transform: "translateX(-9em)",
-  },
-  "&::after": {
-    right: 0,
-    transform: "translateX(9em)",
+    top: "6px",
+    left: "-2px",
+    width: "calc(90%)",
+    height: "calc(100% - 12px)",
+    backgroundColor: theme.palette.background.default, // Use theme background color
+    transition: "transform 0.2s ease-in-out",
+    transform: "scaleY(1)",
   },
   "&:hover::before": {
-    transform: "translateX(0em)",
+    transform: "scaleY(0)",
+  },
+  "&::after": {
+    content: '""',
+    position: "absolute",
+    left: "6px",
+    top: "-2px",
+    height: "calc(100% + 4px)",
+    width: "calc(100% - 12px)",
+    backgroundColor: theme.palette.background.default, // Use theme background color
+    transition: "transform 0.2s ease-in-out",
+    transform: "scaleX(1)",
+    transitionDelay: "0.3s",
   },
   "&:hover::after": {
-    transform: "translateX(0em)",
+    transform: "scaleX(0)",
   },
-  "&:active::before, &:active::after": {
-    background: "#483030",
+  "& span": {
+    position: "relative",
+    zIndex: 3,
   },
 }));
 
@@ -78,7 +70,7 @@ const ProfileBtn = ({ text }) => {
     <>
       {/* Styled Button */}
       <StyledButton onClick={handleClick}>
-        <p>{text}</p>
+        <span>{text}</span>
       </StyledButton>
 
       {/* MUI Menu */}

@@ -13,8 +13,8 @@ export const lightTheme = createTheme({
       main: "#bba3a3",
     },
     background: {
-      default: "#f3ece3",
-      paper: "#ffffff",
+      default: "#f9f8f6",
+      paper: "#dbd5cd",
     },
   },
   custom: { // ✅ Define custom properties here
@@ -22,8 +22,8 @@ export const lightTheme = createTheme({
     primaryButtonFontColor: "#363230",
     secondaryButtonFontColor:"#ffffff",
     btnBorder:"#363230",
-    cardBg:"#E4E2E0",
-    banner:"#f7f33ed"
+    cardBg:"#fdf4ee",
+    banner:"#f3ece3"
   },
   typography: {
     fontFamily: "Roboto, Arial, sans-serif",
@@ -44,8 +44,8 @@ export const darkTheme = createTheme(lightTheme, {
       main: "#CCB878",
     },
     background: {
-      default: "#312d2b",
-      paper: "#1d1d1d",
+      default: "#302d2b",
+      paper: "#1b1a1a",
     },
   },
   custom: { // ✅ Define custom properties here
@@ -53,7 +53,7 @@ export const darkTheme = createTheme(lightTheme, {
     primaryButtonFontColor: "#dbd5cd",
     secondaryButtonFontColor:"#ffffff",
     btnBorder:"black" ,// profile btn border
-    cardBg:"#747272",
+    cardBg:"#161615",
     banner:"#201d1c"
   },
 });

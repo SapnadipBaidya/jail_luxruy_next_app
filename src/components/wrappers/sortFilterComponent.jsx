@@ -20,9 +20,11 @@ const SortFilterWrapper = styled("div")(({ theme }) => ({
   alignItems: "center",
   position: "sticky",
   top: 0, // Ensures it sticks at the top
-  backgroundColor: theme.palette.background.paper, // Ensures visibility over content
+  backgroundColor: theme.palette.background.default, // Ensures visibility over content
   zIndex: 1000, // Keeps it above other elements
   boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)", // Optional: adds slight shadow to differentiate from content
+  border:"none",
+  boxShadow:"none"
 }));
 
 function SortFilterComponent({ setShowFilters, showFilters,setSortDetail,handleSortChange ,sortBy,setSortBy}) {
