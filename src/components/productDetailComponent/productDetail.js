@@ -142,6 +142,7 @@ const AnimatedIcon = styled(IconButton)(({ theme, iswishlisted }) => ({
 }));
 
 const ProductDetails = ({ data }) => {
+  console.log("productDetails ",data)
   const productInfo = useMemo(() => data?.product_info || {}, [data]);
   const router = useRouter();
   const params = useParams();

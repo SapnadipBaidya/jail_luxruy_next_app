@@ -56,6 +56,22 @@ const StyledButton = styled("button")(({ theme }) => ({
   },
 }));
 
+
+const MenuContainer = styled(Menu)(({ theme }) => ({
+  "& .MuiPaper-root": {
+  
+    minWidth: theme.typography.pxToRem(155),
+    maxWidth:  theme.typography.pxToRem(200),
+    padding:  theme.typography.pxToRem(8),
+    borderRadius: theme.typography.pxToRem(8),
+    backgroundColor: theme.palette.background.paper,
+    color: theme.custom.primaryButtonFontColor,
+    boxShadow: theme.shadows[5],
+    position: "absolute",
+    top: "100%",
+  },
+}));
+
 const ProfileBtn = ({ text }) => {
   const [anchorEl, setAnchorEl] = useState(null); // State to manage menu anchor
   const open = Boolean(anchorEl); // Check if menu is open
@@ -78,7 +94,7 @@ const ProfileBtn = ({ text }) => {
       </StyledButton>
 
       {/* MUI Menu */}
-      <Menu
+      <MenuContainer
         anchorEl={anchorEl} // Anchor the menu to the button
         open={open} // Control menu visibility
         onClose={handleClose} // Close menu on item click or outside click
@@ -97,7 +113,7 @@ const ProfileBtn = ({ text }) => {
         {/* Menu Items */}
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>Logout</MenuItem>
-      </Menu>
+      </MenuContainer>
     </>
   );
 };

@@ -148,7 +148,7 @@ export default function CartPageClient() {
 
       {/* Summary Section */}
       <SummarySection>
-      {loading ?<TextAreaSkeleton/>:
+      {loading || cartLoading ?<TextAreaSkeleton/>:
       <>
         <Typography variant="subtitle1">Subtotal: ₹{subTotalData}</Typography>
         <Typography variant="subtitle1">Delivery Charge: FREE</Typography>

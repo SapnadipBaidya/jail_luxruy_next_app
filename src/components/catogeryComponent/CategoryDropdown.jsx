@@ -43,11 +43,13 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 const MenuContainer = styled(Menu)(({ theme }) => ({
   "& .MuiPaper-root": {
-    minWidth: "200px",
-    maxWidth: "260px",
-    padding: "8px",
-    borderRadius: "8px",
-    background: theme.palette.background.paper,
+    marginTop:theme.typography.pxToRem(18),
+    minWidth: theme.typography.pxToRem(200),
+    maxWidth:  theme.typography.pxToRem(260),
+    padding:  theme.typography.pxToRem(8),
+    borderRadius: theme.typography.pxToRem(8),
+    backgroundColor: theme.palette.background.paper,
+    color: theme.custom.primaryButtonFontColor,
     boxShadow: theme.shadows[5],
     position: "absolute",
     top: "100%",

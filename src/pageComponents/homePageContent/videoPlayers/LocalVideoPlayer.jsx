@@ -62,6 +62,7 @@ const TextContainer = styled(Typography)(({ theme }) => ({
   lineHeight: "1.6",
   textAlign: "justify",
   marginBottom: theme.spacing(2),
+  color: theme.custom.primaryButtonFontColor,
 }));
 
 const TitleText = styled(Typography)(({ theme }) => ({
