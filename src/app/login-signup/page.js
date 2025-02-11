@@ -112,7 +112,10 @@ const LoginSignupPage = () => {
           <Typography>{dialogMessage}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDialogOpen(false)} color="primary">
+          <Button onClick={(e) => 
+           {  e.preventDefault();
+             e.stopPropagation();
+            setDialogOpen(false)}} color="primary">
             OK
           </Button>
         </DialogActions>

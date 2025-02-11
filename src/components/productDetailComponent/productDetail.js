@@ -1,10 +1,11 @@
-"use client"
+"use client";
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { Box, Typography, Button, IconButton, styled } from "@mui/material";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useRouter, usePathname, useParams } from "next/navigation";
 import { addOrEditWishlist, addToCart } from "@/utils/API_lib";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 // Optimized styled components (moved outside main component)
 const ColorCircle = styled(Box)(({ bgcolor, selected, theme }) => ({
@@ -28,9 +29,9 @@ const SizeButton = styled(Button)(({ selected }) => ({
 }));
 
 const AddToCartButton = styled(Button)(({ theme }) => ({
-  maxHeight:"5.5vh",
-  minWidth:theme.typography.pxToRem(300),
-  maxWidth:theme.typography.pxToRem(300),
+  maxHeight: "5.5vh",
+  minWidth: theme.typography.pxToRem(300),
+  maxWidth: theme.typography.pxToRem(300),
   position: "relative",
   display: "flex",
   justifyContent: "center",
@@ -38,7 +39,7 @@ const AddToCartButton = styled(Button)(({ theme }) => ({
   borderRadius: "1vh",
   background: theme.custom.cardBg,
   fontFamily: '"Montserrat", sans-serif',
-  boxShadow:"none",
+  boxShadow: "none",
   overflow: "hidden",
   cursor: "pointer",
   border: "none",
@@ -55,7 +56,7 @@ const AddToCartButton = styled(Button)(({ theme }) => ({
     right: "auto",
     left: 0,
     width: "100%",
-    backgroundColor:theme.palette.ascentColor.main
+    backgroundColor: theme.palette.ascentColor.main,
   },
   "& span": {
     textAlign: "center",
@@ -69,20 +70,15 @@ const AddToCartButton = styled(Button)(({ theme }) => ({
     zIndex: 20,
     transition: "all 0.3s ease-in-out",
   },
-
 }));
 
-//
-
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
-  maxHeight:"5.5vh",
-  maxWidth:"5.5vh",
+  maxHeight: "5.5vh",
+  maxWidth: "5.5vh",
   borderColor: "primary.main",
   borderRadius: "1vh",
   background: theme.custom.cardBg,
   color: theme.custom.primaryButtonFontColor,
-
-
   "&:after": {
     content: '""',
     width: "0%",
@@ -97,48 +93,60 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
     right: 0,
     left: "auto",
     width: "100%",
-    backgroundColor:theme.palette.ascentColor.main,
+    backgroundColor: theme.palette.ascentColor.main,
     boxShadow: "0px 0.1vh 3vh 0 rgb(75, 65, 65)",
   },
-  "& span": {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-    textDecoration: "none",
-    width: "100%",
-    padding: "18px 25px",
+}));
+
+const AnimatedIcon = styled(StyledIconButton)(({ theme, iswishlisted }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  transition: "all 0.3s ease-in-out",
+  width: "100%",
+  height: "100%",
+  position: "relative",
+
+  "& .active": {
+    display: iswishlisted ? "inline-block" : "none",
+    color: "#f52121",
+    animation: iswishlisted ? "wiggle 0.5s ease-in-out" : "none",
+  },
+
+  "& .inactive": {
+    display: iswishlisted ? "none" : "inline-block",
     color: theme.custom.primaryButtonFontColor,
-    fontSize: "1.125em",
-    fontWeight: 700,
-    letterSpacing: "0.3em",
-    zIndex: 20,
-    transition: "all 0.3s ease-in-out",
+  },
+
+  "@keyframes wiggle": {
+    "0%, 100%": { transform: "rotate(0deg)" },
+    "25%": { transform: "rotate(-10deg)" },
+    "50%": { transform: "rotate(10deg)" },
+    "75%": { transform: "rotate(-10deg)" },
   },
 }));
 
 const ProductDetails = ({ data, accessToken }) => {
+  const productInfo = useMemo(() => data?.product_info || {}, [data]);
   const router = useRouter();
   const params = useParams();
   const pathName = usePathname();
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
-  const [isAddedToCart, setIsAddedToCart] = useState(false);
-
-  const productInfo = useMemo(() => data?.product_info || {}, [data]);
-  console.log("productInfo",productInfo)
+  const [isAddedToCart, setIsAddedToCart] = useState(productInfo?.is_carted);
+  const [iswishlisted, setIsWishlisted] = useState(productInfo?.is_wishlisted);
 
   useEffect(() => {
-    if (productInfo.sizesPerProductId) {
+    if (productInfo?.sizesPerProductId) {
       const initialSize = productInfo.sizesPerProductId.find(
-        item => item?.productDetailId === productInfo.productDetailsId
+        (item) => item?.productDetailId === productInfo.productDetailsId
       )?.sizeId;
       setSelectedSize(initialSize);
     }
 
-    if (productInfo.allColorProducts) {
+    if (productInfo?.allColorProducts) {
       const initialColor = productInfo.allColorProducts.find(
-        item => item?.productId === productInfo.productId
+        (item) => item?.productId === productInfo.productId
       )?.colorId;
       setSelectedColor(initialColor);
     }
@@ -154,31 +162,25 @@ const ProductDetails = ({ data, accessToken }) => {
     [productInfo.sizesPerProductId]
   );
 
-  const handleColorSelect = useCallback(
-    (color) => {
-      router.push(`/item/${params['item-name']}?pid=${color?.productId}`)
-      setSelectedColor(color?.colorId)
-    },
-    []
-  );
+  const handleColorSelect = useCallback((color) => {
+    router.push(`/item/${params["item-name"]}?pid=${color?.productId}`);
+    setSelectedColor(color?.colorId);
+  }, []);
 
-  const handleSizeSelect = useCallback(
-    (size) => {
-      router.push(`/item/${params['item-name']}?pid=${size?.productId}&pdid=${size?.productDetailId}`)
-      setSelectedSize(size?.sizeId)
-    },
-    []
-  );
+  const handleSizeSelect = useCallback((size) => {
+    router.push(`/item/${params["item-name"]}?pid=${size?.productId}&pdid=${size?.productDetailId}`);
+    setSelectedSize(size?.sizeId);
+  }, []);
 
-  const handleAddToCart = async(productDetailsId, productId) => {
+  const handleAddToCart = async (productDetailsId, productId) => {
     setIsAddedToCart(true);
     await addToCart(productDetailsId, productId);
-    // Add your logic to add the product to the cart here
   };
 
-  const handleAddToWishList = async(productDetailsId, productId)=>{
-    await addOrEditWishlist(productDetailsId , productId)
-  }
+  const handleAddToWishList = async (productDetailsId, productId) => {
+    await addOrEditWishlist(productDetailsId, productId);
+    setIsWishlisted((prev) => !prev); // Toggle wishlist state
+  };
 
   return (
     <Box component="section" aria-labelledby="product-details-heading">
@@ -221,34 +223,44 @@ const ProductDetails = ({ data, accessToken }) => {
         Height of model: 189 cm / 6'2", Size: 41
       </Typography>
 
-      <Box sx={{
-        display: "flex",
-        alignItems: "center",
-        gap: 2,
-        mt: 3,
-        flexDirection: { xs: "column", sm: "row" }
-      }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          mt: 3,
+          flexDirection: { xs: "column", sm: "row" },
+        }}
+      >
         <StyledIconButton
           aria-label="Add to favorites"
-          onClick={(e)=>{
+          onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            handleAddToWishList(productInfo?.productDetailsId,productInfo?.productId)}}
+            handleAddToWishList(productInfo?.productDetailsId, productInfo?.productId);
+          }}
         >
-         
-          <span>{ <FavoriteBorderIcon />}</span>
+          <AnimatedIcon iswishlisted={iswishlisted}>
+            <FavoriteBorderIcon className="inactive" fontSize="medium" />
+            <FavoriteIcon className="active" fontSize="medium" />
+          </AnimatedIcon>
         </StyledIconButton>
         <AddToCartButton
           variant="contained"
           color="primary"
-          onClick={(e)=>{
+          onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            handleAddToCart(productInfo?.productDetailsId,productInfo?.productId)}}
+            if (isAddedToCart) {
+              router.push("/cart");
+            } else {
+              handleAddToCart(productInfo?.productDetailsId, productInfo?.productId);
+            }
+          }}
           sx={{
             flex: 1,
             py: 1.5,
-            width: { xs: "100%", sm: "auto" }
+            width: { xs: "100%", sm: "auto" },
           }}
         >
           <span>{isAddedToCart ? "Go to Cart" : "Add to Cart"}</span>
@@ -265,7 +277,7 @@ const ColorSelector = React.memo(({ colors, selectedColor, onSelect }) => (
       Color
     </Typography>
     <Box display="flex" gap={2} mb={3}>
-      {colors.map((color) => (
+      {colors?.map((color) => (
         <ColorCircle
           key={`${color.productId}_${color.colorId}`}
           bgcolor={color.colorHex}
@@ -286,7 +298,7 @@ const SizeSelector = React.memo(({ sizes, selectedSize, onSelect }) => (
       Size
     </Typography>
     <Box display="flex" gap={2} mb={2}>
-      {sizes.map((size) => (
+      {sizes?.map((size) => (
         <SizeButton
           key={`${size.productDetailId}_${size.sizeId}`}
           selected={selectedSize === size.sizeId}
