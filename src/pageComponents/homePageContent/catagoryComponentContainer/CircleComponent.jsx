@@ -42,7 +42,7 @@ const CircleContainer = styled(Box)(({ theme, radius = "13vh" }) => ({
   position: "relative", // For positioning the spinner
   transition: "all 0.3s ease-in-out", // Smooth transition effect
   "&:hover": {
-    transform: "scale(1.2)", // Grows slightly on hover
+    transform: "scale(1.1)", // Grows slightly on hover
     boxShadow: `0 0 1vw ${theme.palette.secondary.main}`, // Adds a smooth shadow
   },
   [theme.breakpoints.down("sm")]: {

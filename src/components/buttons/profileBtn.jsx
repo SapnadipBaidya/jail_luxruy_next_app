@@ -1,48 +1,63 @@
 "use client";
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
-import { Button, Menu, MenuItem } from "@mui/material";
+import { Menu, MenuItem } from "@mui/material";
 
-const ProfileButton = styled(Button)(({ theme }) => ({
-  "--button_radius": "0.75em",
-  "--button_color": theme.custom?.btnBgColor || "#ccc",
-  "--button_outline_color": theme.custom?.btnBorder || "#444",
-  fontSize: theme.typography.pxToRem(14),
-  border: "none",
-  cursor: "pointer",
-  borderRadius: "var(--button_radius)",
-  background: "var(--button_outline_color)",
-  padding: "0",
+// Styled button component
+const StyledButton = styled("button")(({ theme }) => ({
+  all: "unset",
+  display: "flex",
+  alignItems: "center",
   position: "relative",
+  padding: "0.2vh 1em",
+  border: "#483030 solid 0.15em",
+  borderRadius: "2vh",
+  borderWidth: "0.125em",
+  color: "#c6bbab",
+  fontFamily: "Almarai, sans-serif",
+  fontSize: "1.5em",
+  fontWeight: "600",
+  cursor: "pointer",
   overflow: "hidden",
-  fontFamily: `"Bona Nova SC", serif !important`, // ✅ Force MUI to use this font
-  "& .button_top": {
-    display: "block",
-    boxSizing: "border-box",
-    border: "2px solid var(--button_outline_color)",
-    borderRadius: "var(--button_radius)",
-    padding: `${theme.typography.pxToRem(15)} ${theme.typography.pxToRem(40)}`,
-    background: "var(--button_color)",
-    color: theme.custom?.primaryButtonFontColor || "#fff",
-    transform: "translateY(-0.2em)",
-    transition: "transform 0.1s ease",
-    width: "100%",
-    textAlign: "center",
-    height: theme.typography.pxToRem(50),
-    marginTop: theme.typography.pxToRem(2),
+  transition: "border 300ms, color 300ms",
+  userSelect: "none",
+  maxHeight:"5vh",
+  "& p": {
+    zIndex: 1,
   },
-  ".MuiTypography-root": {
-    fontFamily: '"Bona Nova SC", serif !important',
-    fontWeight: "700 !important",
-    fontStyle: "normal !important",
+  "&:hover": {
+    color: "#c6bbab",
   },
-  "&:hover .button_top": {
-    transform: "translateY(-0.40em)",
+  "&:active": {
+    borderColor: "#c6bbab",
   },
-  "&:active .button_top": {
-    transform: "translateY(0)",
+  "&::after, &::before": {
+    content: '""',
+    position: "absolute",
+    width: "9em",
+    aspectRatio: "1",
+    background: "#483030",
+    opacity: "50%",
+    borderRadius: "50%",
+    transition: "transform 500ms, background 300ms",
   },
-  maxHeight: theme.typography.pxToRem(80),
+  "&::before": {
+    left: 0,
+    transform: "translateX(-9em)",
+  },
+  "&::after": {
+    right: 0,
+    transform: "translateX(9em)",
+  },
+  "&:hover::before": {
+    transform: "translateX(0em)",
+  },
+  "&:hover::after": {
+    transform: "translateX(0em)",
+  },
+  "&:active::before, &:active::after": {
+    background: "#483030",
+  },
 }));
 
 const ProfileBtn = ({ text }) => {
@@ -61,9 +76,10 @@ const ProfileBtn = ({ text }) => {
 
   return (
     <>
-      <ProfileButton onClick={handleClick}>
-        <span className="button_top">{text}</span>
-      </ProfileButton>
+      {/* Styled Button */}
+      <StyledButton onClick={handleClick}>
+        <p>{text}</p>
+      </StyledButton>
 
       {/* MUI Menu */}
       <Menu

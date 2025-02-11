@@ -15,8 +15,8 @@ import GenericBtns from "../buttons/GenericBtns";
 import FilterSizeComponent from "./generics/filterSizeComponent";
 import FilterColorComponent from "./generics/filterColorComponent";
 const FilterWrapperComponent = styled(Box)(({ theme }) => ({
-  minWidth: theme.typography.pxToRem(260),
-  maxWidth: theme.typography.pxToRem(350),
+  minWidth: theme.typography.pxToRem(300),
+  maxWidth: theme.typography.pxToRem(300),
   minHeight: "100vh",
   maxHeight: "85vh",
   overflow: "auto",
@@ -35,6 +35,7 @@ const FilterWrapperComponent = styled(Box)(({ theme }) => ({
     maxHeight: "80vh",
     padding: theme.spacing(1),
   },
+  borderRadius:"1vh"
 }));
 
 const FilterHeader = styled(Box)(({ theme }) => ({
