@@ -59,9 +59,9 @@ const MenuContainer = styled(Menu)(({ theme }) => ({
 const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  padding: "12px 16px",
-  borderRadius: "6px",
-  gap: "12px",
+  padding: `${theme.typography.pxToRem(12)} ${theme.typography.pxToRem(16)}`,
+  borderRadius: theme.typography.pxToRem(7),
+  gap: theme.typography.pxToRem(12),
   transition: "all 0.3s ease",
   "&:hover": {
     backgroundColor: theme.palette.ascentColor.main,

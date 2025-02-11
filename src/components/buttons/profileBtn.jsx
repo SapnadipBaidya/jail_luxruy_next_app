@@ -72,6 +72,18 @@ const MenuContainer = styled(Menu)(({ theme }) => ({
   },
 }));
 
+
+const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  padding: `${theme.typography.pxToRem(12)} ${theme.typography.pxToRem(16)}`,
+  borderRadius: theme.typography.pxToRem(7),
+  gap: theme.typography.pxToRem(12),
+  transition: "all 0.3s ease",
+  "&:hover": {
+    backgroundColor: theme.palette.ascentColor.main,
+  },
+}));
 const ProfileBtn = ({ text }) => {
   const [anchorEl, setAnchorEl] = useState(null); // State to manage menu anchor
   const open = Boolean(anchorEl); // Check if menu is open
@@ -111,8 +123,8 @@ const ProfileBtn = ({ text }) => {
         }}
       >
         {/* Menu Items */}
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItemStyled onClick={handleClose}>Profile</MenuItemStyled>
+        <MenuItemStyled onClick={handleClose}>Logout</MenuItemStyled>
       </MenuContainer>
     </>
   );
