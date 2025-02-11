@@ -3,6 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import GridWrapper from '../wrappers/GridWrapper';
 import { fetchUserWishlist } from '@/utils/API_lib';
 import TruckLoader from '../loaders/truckLoader';
+import ThreeDotLoader from '../loaders/threeDotLoader';
 
 function WishListPageClient({ accessToken, itemsArr }) {
   const [wishlistData, setWishlistData] = useState(itemsArr || []); // Initialize with itemsArr if provided
@@ -30,7 +31,7 @@ function WishListPageClient({ accessToken, itemsArr }) {
   return (
     <div style={{ display: "flex",alignItems:"center", justifyContent: "center", minHeight: "90vh" }}>
       {wishlistLoading ? (
-        <TruckLoader />
+        <ThreeDotLoader />
       ) : (
         <GridWrapper
           type="Wishlist"

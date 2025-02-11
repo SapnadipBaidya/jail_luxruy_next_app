@@ -12,6 +12,7 @@ import PaginationComponent from "@/components/paginationComponent/pagination";
 import { usePathname } from "next/navigation";
 import { debounce } from "lodash";
 import TruckLoader from "../loaders/truckLoader";
+import ThreeDotLoader from "../loaders/threeDotLoader";
 
 // Styled Components
 const PageContainer = styled("div")(({ theme }) => ({
@@ -210,7 +211,7 @@ export default function ItemsPageClient({
             />
           )}
           {gridLoading ? (
-            <div style={{minHeight:"70%", display:"flex",justifyContent:"center",alignItems:"center"}}>  <TruckLoader/></div>
+            <div style={{minHeight:"70%", display:"flex",justifyContent:"center",alignItems:"center"}}>  <ThreeDotLoader/></div>
           
           ) : (
             <GridWrapper
