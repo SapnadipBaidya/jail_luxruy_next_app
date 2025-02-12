@@ -169,7 +169,8 @@ const HoverContent = styled(Box)(({ theme }) => ({
   alignItems: "center", // Vertically center items
   backgroundColor: "rgba(0, 0, 0, 0.7)", // Semi-transparent background
   borderRadius: "0 0 1rem 1rem", // Rounded corners at the bottom
-  paddingLeft: "0.5rem", // Add padding for spacing
+  paddingLeft:"1vh",
+  paddingRight:"1vh"
 }));
 
 // ── Main Component ───────────────────────────────────────────────────
@@ -217,10 +218,10 @@ const StyledCardWrapper = React.memo(
 
           {type === "Product" ? (
             <HoverContent className="hover-content">
-              <Typography className="viewProduct" sx={{ whiteSpace: "nowrap", marginRight: "1rem" }}>
+              <Typography className="viewProduct" sx={{ whiteSpace: "nowrap"}}>
                 View Product
               </Typography>
-              <WishListButton item={item} backgroundColor="yellow" />
+              <WishListButton item={item}  />
             </HoverContent>
           ) : (
             // For non-product types, show Cart and Delete buttons.

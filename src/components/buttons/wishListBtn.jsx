@@ -24,7 +24,8 @@ const AnimatedIcon = styled(Box)(({ theme }) => ({
   justifyContent: "space-between",
   gap: "8px",
   transition: "opacity 0.3s ease-in-out",
-  width: "100%",
+  minWidth: theme.typography.pxToRem(20),
+  maxWidth: theme.typography.pxToRem(20),
 
   "& .active": {
     display: "none",
