@@ -16,12 +16,12 @@ import {
 } from "@mui/material";
 import {
   Menu as MenuIcon,
-  Search as SearchIcon,
   ShoppingCart,
   Favorite,
   Close as CloseIcon,
   KeyboardArrowDown as ChevronDownIcon,
 } from "@mui/icons-material";
+import SearchIcon from '@mui/icons-material/Search';
 import { navigationConfig } from "@/app/configs/navigationConfig";
 import ProfileBtn from "./buttons/profileBtn";
 import TruncatedText from "./wrappers/TruncatedText";
@@ -31,18 +31,18 @@ import useDebounce from "@/utils/customHooks/useDebounce";
 import { AppContext } from "@/context/applicationContext";
 import CategoryDropdown from "@/components/catogeryComponent/CategoryDropdown"; // Import the CategoryDropdown component
 
-// ✅ Mocked user for now
-const user = { id: "111", name: "sapnadip" };
+
+
 
 // ✅ Styled Components
-const StyledButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled("span")(({ theme }) => ({
   textTransform: "none",
-  fontSize: theme.typography.pxToRem(16),
+  margin:"1vh",
+  // fontSize: theme.typography.pxToRem(16),
   color: theme.custom.primaryButtonFontColor,
-
-  [theme.breakpoints.down("md")]: {
-    
-  },
+  fontSize:theme.typography.pxToRem(15),
+  maxWidth:theme.typography.pxToRem(80),
+  cursor:"pointer"
 }));
 
 const HomeLogoWrapper = styled("div")(({ theme }) => ({
@@ -186,10 +186,25 @@ export default function Navbar({ carouselImages,userData }) {
           {deviceType === 'pc' && (
             <NavLinksContainer>
               <CategoryDropdown />
-              <StyledButton component={Link} href="/about">
+              <StyledButton 
+              onClick={(e)=>{
+                e.preventDefault();
+                e.stopPropagation();
+                router.push("/about");
+               }
+              }
+              >
                 About Us
               </StyledButton>
-              <StyledButton component={Link} href="/contact">
+              <StyledButton
+               onClick={(e)=>{
+                e.preventDefault();
+                e.stopPropagation();
+                router.push("/contact");
+               }
+              }
+              
+              >
                 Contact Us
               </StyledButton>
             </NavLinksContainer>
@@ -283,7 +298,7 @@ export default function Navbar({ carouselImages,userData }) {
             </StyledButton>
           ))}
           {deviceType === 'touch' && (
-            user?.id ? (
+            userData?.id ? (
               <StyledButton
                 onClick={() => {
                   toggleMobileNav();

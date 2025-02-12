@@ -5,11 +5,8 @@ import { Box, useMediaQuery, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import TruncatedText from "@/components/wrappers/TruncatedText";
 
-const VideoContainer = styled(Box)(({ theme, ismobile, mode }) => ({
-  
-
-  
-  
+const VideoContainer = styled(Box)(({ theme, ismobile }) => ({
+  minWidth: ismobile ? "80vw" : "70%",
   display: "flex",
   flexDirection: ismobile ? "column" : "row",
   alignItems: "center",
@@ -17,12 +14,14 @@ const VideoContainer = styled(Box)(({ theme, ismobile, mode }) => ({
   overflow: "hidden",
   borderRadius: "12px",
   boxShadow: "0 4px 15px rgba(0, 0, 0, 0.3)",
-  padding: theme.spacing(2),
-  gap: theme.spacing(2),
+  padding: theme.spacing(4),
+  gap: theme.spacing(4),
   backgroundImage:
-  theme.palette.mode === "dark"
-    ? "url('./webps/darkmodeBackgroundImg.webp')"
-    : "url('./webps/lightmodeBackgroundImg.webp')",
+    theme.palette.mode === "dark"
+      ? "url('./webps/darkmodeBackgroundImg.webp')"
+      : "url('./webps/lightmodeBackgroundImg.webp')",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
   position: "relative",
   "&::before": {
     content: '""',
@@ -31,33 +30,41 @@ const VideoContainer = styled(Box)(({ theme, ismobile, mode }) => ({
     left: 0,
     width: "100%",
     height: "100%",
-    backgroundSize: "cover", // or "contain" depending on your preference
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    zIndex: -1,
+    backgroundColor: theme.palette.mode === "dark" ? "rgba(0, 0, 0, 0.7)" : "rgba(255, 255, 255, 0.7)",
+    zIndex: 1,
   },
 }));
 
 const StyledVideo = styled("video")(({ ismobile }) => ({
-  width: ismobile ? "100%" : "20%",
-  height: ismobile ? "auto" : "100%",
+  minWidth: ismobile ? "120vw" : "20%",
+  maxHeight: ismobile ? "50vh" : "300px",
   objectFit: "cover",
-  borderRadius: "1vh",
+  borderRadius: "12px",
+  zIndex: 2,
 }));
 
-const VideoDescContainer = styled(Typography)(({ theme }) => ({
-  maxWidth: "90%",
-  wordWrap: "break-word",
-  textAlign: "justify",
+const VideoDescContainer = styled(Box)(({ theme ,ismobile}) => ({
+  minWidth: ismobile ? "65vw" : "70%",
+  maxHeight:ismobile ? "70vh" : "70%",
   width: "100%",
   color: theme.palette.secondary.main,
+  zIndex: 2,
 }));
 
-const TextContainer  = styled(Typography)(({ theme }) => ({
- 
-  color: theme.custom.primaryButtonFontColor,
+const TextContainer = styled(Typography)(({ theme }) => ({
+  color: theme.palette.text.primary,
+  fontSize: "1.1rem",
+  lineHeight: "1.6",
+  textAlign: "justify",
+  marginBottom: theme.spacing(2),
 }));
 
+const TitleText = styled(Typography)(({ theme }) => ({
+  fontSize: "2.5rem",
+  fontWeight: "bold",
+  color: theme.palette.primary.main,
+  marginBottom: theme.spacing(2),
+}));
 
 const LocalVideoPlayer = ({ videoSrc }) => {
   const theme = useTheme();
@@ -81,30 +88,28 @@ const LocalVideoPlayer = ({ videoSrc }) => {
   }, [videoSrc]);
 
   return (
-    <VideoContainer ismobile={ismobile} mode={theme.palette.mode}>
+    <VideoContainer ismobile={ismobile}>
       {videoSrcState ? (
         <StyledVideo autoPlay loop muted playsInline ismobile={ismobile}>
           <source src={videoSrcState} type="video/mp4" />
           Your browser does not support the video tag.
         </StyledVideo>
       ) : (
-        <span>Loading video...</span> // Placeholder while fetching video
+        <Typography variant="body1" color="textSecondary">
+          Loading video...
+        </Typography>
       )}
 
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
-        <VideoDescContainer component="div">
-          <TextContainer>
-          <TruncatedText style={{ margin: 0 }}>WHY JAIL ?</TruncatedText>
-          <span>
-            The name “Jail” is more {"\n"} than just a brand .  it’s a nod to our roots.
-            The original shop was located on Jail Road in Banka, and the name was born
-            out of the simplicity of directions—“Jail Road, Jail Road.”  Today, it
-            stands as a symbol of our journey, from a small shop in Bihar to a
-            luxury brand that resonates with customers around the world.
-          </span>
-          </TextContainer>
-        </VideoDescContainer>
-      </div>
+      <VideoDescContainer ismobile={ismobile}>
+        <TitleText>WHY JAIL?</TitleText>
+        <TextContainer>
+          The name “Jail” is more than just a brand. It’s a nod to our roots. The
+          original shop was located on Jail Road in Banka, and the name was born
+          out of the simplicity of directions—“Jail Road, Jail Road.” Today, it
+          stands as a symbol of our journey, from a small shop in Bihar to a
+          luxury brand that resonates with customers around the world.
+        </TextContainer>
+      </VideoDescContainer>
     </VideoContainer>
   );
 };

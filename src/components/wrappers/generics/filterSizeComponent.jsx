@@ -13,20 +13,7 @@ const FilterWrapper = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "row",
   gap: theme.spacing(1),
-  overflowY: "scroll",
-  scrollbarWidth: "thin", // For Firefox
-  scrollbarColor: "transparent transparent", // Hide scrollbar track and thumb
-  "&::-webkit-scrollbar": {
-      width: "0px", // Hide scrollbar track for Webkit browsers
-      background: "transparent"
-  },
-  "&::-webkit-scrollbar-thumb": {
-      background: "#aaa", // Visible thumb
-      borderRadius: "5px"
-  },
-  "&::-webkit-scrollbar-thumb:hover": {
-      background: "#888"
-  }
+  flexWrap:"wrap"
 }));
 
 
