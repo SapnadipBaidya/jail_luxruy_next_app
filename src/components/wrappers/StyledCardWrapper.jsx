@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import WishListButton from "../buttons/wishListBtn.jsx";
 import CartBtn from "../buttons/cartBtn.jsx";
 import DeleteBtn from "../buttons/deleteBtn.jsx";
+import TruncatedText from "./TruncatedText.jsx";
 
 // ── Custom Hook: useDeviceType ─────────────────────────────────────────
 const pixelToRem = (px, base = 16) => `${px / base}rem`;
@@ -95,9 +96,10 @@ const ProductImage = styled("img")(({ theme }) => ({
   objectFit: "cover", // Ensure the image covers the area without distortion
   borderRadius: "1rem 1rem 0 0", // Rounded corners only at the top
   transition: "transform 0.3s ease-in-out",
-  "&:hover": {
-    transform: "scale(1.05)", // Subtle zoom effect on hover
-  },
+"&:hover": {
+  transform: "scaleY(1.15)", // Increases only the height on hover
+  transition: "transform 0.3s ease-in-out !important",
+},
   [theme.breakpoints.down('xl')]: {
     height: "16rem",
   },
@@ -113,7 +115,7 @@ const ProductImage = styled("img")(({ theme }) => ({
 }));
 
 const ProductInfo = styled(Box)(({ theme }) => ({
-  paddingLeft:"0.2rem",
+  padding:"0.2rem",
   opacity: 1, // Always visible
   transition: "opacity 0.3s ease-in-out",
   display: "flex",
@@ -205,12 +207,12 @@ const StyledCardWrapper = React.memo(
           </Fade>
 
           <ProductInfo className="product-info">
-            <Typography variant="body1" className="product-name">
+            <TruncatedText maxWidth="90%" variant="body1" className="product-name">
               {item?.product_name || "No Name"}
-            </Typography>
-            <Typography variant="body1" className="product-price">
+            </TruncatedText>
+            <TruncatedText maxWidth="50%" variant="body1" className="product-price">
               ₹{item?.product_data?.price || "N/A"}
-            </Typography>
+            </TruncatedText>
           </ProductInfo>
 
           {type === "Product" ? (

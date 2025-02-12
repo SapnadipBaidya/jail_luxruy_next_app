@@ -16,7 +16,6 @@ const StyledTypography = styled("span")(({ theme ,fontSizeNumber}) => ({
   textOverflow: "ellipsis",
   display: "block",
   cursor: "pointer",
-  padding:"0.5vh",
   color: theme.custom.primaryButtonFontColor
 }));
 
