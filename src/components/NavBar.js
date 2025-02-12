@@ -37,9 +37,9 @@ const user = { id: "111", name: "sapnadip" };
 // ✅ Styled Components
 const StyledButton = styled(Button)(({ theme }) => ({
   textTransform: "none",
-  fontSize: "10px",
+  fontSize: theme.typography.pxToRem(16),
   color: theme.custom.primaryButtonFontColor,
-  backgroundColor: "red",
+
   [theme.breakpoints.down("md")]: {
     
   },
@@ -100,17 +100,21 @@ const NavLinksContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
 }));
 
-export default function Navbar({ carouselImages }) {
+export default function Navbar({ carouselImages,userData }) {
   const theme = useTheme();
   const router = useRouter();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("md");
+  const [searchQuery, setSearchQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { setCategoryItems } = useContext(AppContext);
+  const { setCategoryItems,setUser } = useContext(AppContext);
 
   useEffect(() => {
+    console.log("userData",userData)
     setCategoryItems(carouselImages);
-  }, [carouselImages?.length]);
+    setUser(userData)
+  }, [carouselImages?.length,userData]);
+
+
 
   const useDeviceType = () => {
     const isTouchDevice = useMediaQuery('(hover: none) and (pointer: coarse)');
@@ -232,10 +236,10 @@ export default function Navbar({ carouselImages }) {
               <>
                 <ProfileBtn
                   text={
-                    user?.id ? (
-                      <TruncatedText maxWidth="9vw">{user.name}</TruncatedText>
+                    userData?.name ? (
+                      <TruncatedText maxWidth="9vw">{userData.name}</TruncatedText>
                     ) : (
-                      "Profile"
+                      <TruncatedText maxWidth="9vw">{"Profile"}</TruncatedText>
                     )
                   }
                 />
@@ -249,7 +253,7 @@ export default function Navbar({ carouselImages }) {
           <SearchBox>
             <StyledInput
               type="text"
-              placeholder="Search for products..."
+              placeholder="S E A R C H"
               value={searchQuery || ""}
               onChange={handleSearchChange}
               onKeyPress={(e) => {

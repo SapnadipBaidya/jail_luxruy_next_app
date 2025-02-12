@@ -29,6 +29,7 @@ const CardContainer = styled(Box)(({ theme, mode }) => ({
   [theme.breakpoints.down("sm")]: {
     height: "40vh", // Adjust height for smaller screens
   },
+  opacity:"1"
 }));
 
 const CircleWrapper = styled(Box)(({ theme }) => ({

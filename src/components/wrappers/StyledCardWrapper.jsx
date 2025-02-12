@@ -127,7 +127,7 @@ const StyledCardWrapper = React.memo(
       item?.product_data?.gallery?.images?.[0] || "/placeholder.jpg";
 
     return (
-      <Slide direction="up" in={show} mountOnEnter unmountOnExit>
+      <Slide direction="up" in={show} mountOnEnter unmountOnExit key={item?.product_id+item?.product_detail_id+Date.now()}>
         <StyledCard
           deviceType={deviceType}
           onClick={(e) => {
@@ -154,20 +154,18 @@ const StyledCardWrapper = React.memo(
           {type === "Product" ? (
             <HoverContent className="hover-content">
               <TruncatedText fontSize="16px">View Product</TruncatedText>
-              <WishListButton item={item} accessToken={accessToken} />
+              <WishListButton item={item} />
             </HoverContent>
           ) : (
             // For non-product types, show Cart and Delete buttons.
             <CardActionsContainer>
               <CartBtn
                 item={item}
-                accessToken={accessToken}
                 setWishlistData={setWishlistData}
                 setWishlistLoading={setWishlistLoading}
               />
               <DeleteBtn
                 item={item}
-                accessToken={accessToken}
                 setWishlistData={setWishlistData}
                 setWishlistLoading={setWishlistLoading}
               />

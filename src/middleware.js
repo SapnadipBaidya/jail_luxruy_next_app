@@ -39,6 +39,20 @@ export async function validateAndRefresh({ accessToken, refreshToken, request, r
     if (verifyResponse.status !== 200) {
       throw new Error("Unauthorized");
     }
+
+    // Store the /success route data in a cookie
+    const successData = verifyResponse.data;
+    const response = NextResponse.next();
+
+    console.log("successData",successData)
+    response.cookies.set("successData", JSON.stringify(successData), {
+      httpOnly: false,
+      secure: true,
+      sameSite: "lax",
+      maxAge: 15 * 60 * 1000, // 15 minutes
+    });
+
+    return response;
   } catch (error) {
     console.error("Access token validation failed:", error);
     console.log("Attempting refresh...");

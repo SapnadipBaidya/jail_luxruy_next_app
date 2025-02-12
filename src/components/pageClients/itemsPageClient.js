@@ -218,7 +218,6 @@ export default function ItemsPageClient({
               itemsArr={itemsArr}
               type="Product"
               loading={ItemsData?.loading}
-              accessToken={accessToken}
             />
           )}
           <PaginationComponent

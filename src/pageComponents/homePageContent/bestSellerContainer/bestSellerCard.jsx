@@ -12,15 +12,16 @@ const BestSellerComp = styled(Card)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "space-between",
   width: "100%",
-  maxWidth: "400px",
-  padding: "2vw",
+  maxWidth: theme.typography.pxToRem(600),
+  margin: "2vw",
   borderRadius: "10px",
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.background.default,
+  boxShadow:"none",
   textAlign: "center",
   transition: "transform 0.3s ease-in-out, box-shadow 0.3s",
   "&:hover": {
     transform: "scale(1.03)",
-    boxShadow: `0 0 20px ${theme.palette.secondary.main}`,
+   
   },
   [theme.breakpoints.down("sm")]: {
     width: "95vw", // Makes it bigger on mobile
@@ -28,7 +29,7 @@ const BestSellerComp = styled(Card)(({ theme }) => ({
   },
 }));
 
-const StyledVideo = styled("video")(({ theme }) => ({
+const StyledImg = styled("img")(({ theme }) => ({
   borderRadius: "8px",
   width: "100%",
   height: "auto",
@@ -43,23 +44,24 @@ const StyledVideo = styled("video")(({ theme }) => ({
   },
 }));
 
-function BestSellerCard({ title, videoSrc }) {
+const StyledText = styled(Typography)(({ theme }) => ({
+  color:theme.custom.primaryButtonFontColor
+}));
+
+function BestSellerCard({ title, imgSrc ,dbMapping }) {
   const theme = useTheme();
   const ismobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <BestSellerComp>
-      <Link href="/product-category" passHref style={{ textDecoration: "none", color: "inherit" }}>
-        <Typography
+      <Link href={`/bestsellers?gender=${dbMapping}`} passHref style={{ textDecoration: "none", color: "inherit" }}>
+        <StyledText
           variant={ismobile ? "h5" : "h6"} // Bigger text on mobile
           sx={{ fontWeight: "bold", marginBottom: "10px" }}
         >
           {title}
-        </Typography>
-        <StyledVideo autoPlay loop muted playsInline>
-          <source src={videoSrc} type="video/mp4" />
-          Your browser does not support the video tag.
-        </StyledVideo>
+        </StyledText>
+        <StyledImg src={imgSrc}/>
       </Link>
     </BestSellerComp>
   );

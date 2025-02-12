@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Box,
   Typography,
@@ -16,6 +16,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import GenericBtns from "./GenericBtns";
 import { useRouter } from "next/navigation";
 import { addOrEditWishlist, useWishlistApi } from "@/utils/API_lib";
+import { AppContext } from "@/context/applicationContext";
 // ✅ Styled Animated Icon Wrapper
 const AnimatedIcon = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -52,11 +53,11 @@ const AnimatedIcon = styled(Box)(({ theme }) => ({
 }));
 
 // ✅ WishList Button Component
-function WishListButton({ item,accessToken }) {
+function WishListButton({ item }) {
   const [isChecked, setIsChecked] = useState(item?.product_data?.isWishlisted);
   const [openDialog, setOpenDialog] = useState(false); // Control login dialog
   const router = useRouter(); // ✅ Next.js Router
-
+  const { user } = useContext(AppContext);
 
 
   // ✅ Wishlist Toggle with Authentication Check
@@ -64,7 +65,7 @@ function WishListButton({ item,accessToken }) {
     e.preventDefault();
     e.stopPropagation();
 
-    if (accessToken) {
+    if (user?.id) {
      
       setIsChecked((prev) => !prev);
       await addOrEditWishlist(item?.product_detail_id , item?.product_id)

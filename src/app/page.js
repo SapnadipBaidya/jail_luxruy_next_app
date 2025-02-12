@@ -43,7 +43,7 @@ export default async function HomePage() {
       <Box sx={{ m: 5, p: 2 }}>
       <LocalVideoPlayer videoSrc="JailLuxuryPromovid.mp4"/>
       </Box>
-      <ReviewComponent/>
+      {/* <ReviewComponent/> */}
     </Box>
   );
 }

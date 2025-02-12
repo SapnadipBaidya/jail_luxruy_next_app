@@ -5,7 +5,7 @@ import { fetchUserWishlist } from '@/utils/API_lib';
 import TruckLoader from '../loaders/truckLoader';
 import ThreeDotLoader from '../loaders/threeDotLoader';
 
-function WishListPageClient({ accessToken, itemsArr }) {
+function WishListPageClient({ itemsArr }) {
   const [wishlistData, setWishlistData] = useState(itemsArr || []); // Initialize with itemsArr if provided
   const [wishlistLoading, setWishlistLoading] = useState(true);
 
@@ -13,7 +13,7 @@ function WishListPageClient({ accessToken, itemsArr }) {
   const fetchData = useCallback(async () => {
     setWishlistLoading(true);
     try {
-      const data = await fetchUserWishlist(accessToken); // Pass accessToken if required
+      const data = await fetchUserWishlist(); // Pass accessToken if required
       setWishlistData(data);
       console.log("WishListPageClient: Data fetched successfully", data);
     } catch (error) {
@@ -22,7 +22,7 @@ function WishListPageClient({ accessToken, itemsArr }) {
     } finally {
       setWishlistLoading(false); // Ensure wishlistLoading is set to false regardless of success or failure
     }
-  }, [accessToken]); // Only recreate fetchData if accessToken changes
+  }, []); // Only recreate fetchData if accessToken changes
 
   useEffect(() => {
     fetchData();
@@ -36,7 +36,6 @@ function WishListPageClient({ accessToken, itemsArr }) {
         <GridWrapper
           type="Wishlist"
           itemsArr={wishlistData}
-          accessToken={accessToken}
           setWishlistData={setWishlistData}
           setWishlistLoading={setWishlistLoading}
         />

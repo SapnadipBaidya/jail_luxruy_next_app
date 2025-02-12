@@ -3,7 +3,7 @@ import ProductDetailsTabComponent from "../productDetailsTabComponent/ProductDet
 import ProductImage from "../productDetailComponent/ProductImage";
 import ProductDetails from "../productDetailComponent/productDetail";
 
-const ProductPageClient = ({data,accessToken}) => {
+const ProductPageClient = ({data}) => {
 
 
   return (
@@ -34,12 +34,12 @@ const ProductPageClient = ({data,accessToken}) => {
 
           {/* Product Details Section */}
           <Grid item xs={12} md={6}>
-            <ProductDetails data={data} accessToken={accessToken}
+            <ProductDetails data={data} 
             />
           </Grid>
         </Grid>
       </Box>
-      <ProductDetailsTabComponent />
+      {/* <ProductDetailsTabComponent /> */}
       {/* <RecommandationCard /> */}
     </>
   );

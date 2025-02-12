@@ -36,6 +36,9 @@ const StyledButton = styled(Button)(({ theme }) => ({
   "&:hover": {
     backgroundColor: theme.palette.action.hover,
   },
+
+    color:theme.custom.primaryButtonFontColor
+ 
 }));
 
 const MenuContainer = styled(Menu)(({ theme }) => ({

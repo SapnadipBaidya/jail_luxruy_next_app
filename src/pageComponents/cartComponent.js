@@ -30,8 +30,8 @@ const CartRow = styled(Box)(({ theme }) => ({
 }));
 
 const ProductImage = styled(Box)(({ theme }) => ({
-  width: "14vh",
-  height: "14vh",
+  width: "20vh",
+  height: "20vh",
   aspectRatio: "1/1",
   backgroundColor: "#fff",
   borderRadius: 8,
@@ -46,8 +46,8 @@ const ProductImage = styled(Box)(({ theme }) => ({
 }));
 
 const SizeBox = styled(Box)(({ theme }) => ({
-  width: 32,
-  height: 32,
+  width: 60,
+  height: 60,
   border: "1px solid #ddd",
   borderRadius: 4,
   display: "flex",
@@ -190,7 +190,7 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
                 <Skeleton variant="rectangular" width={32} height={32} />
               ) : (
                 <SizeBox>
-                  <Typography variant="body2">
+                  <Typography variant="h6">
                     {i?.size_details?.size_name}
                   </Typography>
                 </SizeBox>
@@ -201,7 +201,7 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
               {isGlobalLoading ? (
                 <Skeleton variant="text" width={50} height={24} />
               ) : (
-                <Typography variant="body1">
+                <Typography variant="h6">
                   ${i?.product_details?.product_price_inr}
                 </Typography>
               )}
@@ -260,7 +260,7 @@ export default function CartComponent({ item, handleDeleteFromCart, fetchData })
               {isGlobalLoading ? (
                 <Skeleton variant="text" width={50} height={24} />
               ) : (
-                <Typography variant="body1">
+                <Typography variant="h6">
                   $
                   {(
                     i?.product_details?.product_price_inr *

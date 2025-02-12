@@ -31,7 +31,7 @@ async function ProductDetailPage({ params, searchParams }) {
 
   return (
     <> 
-    <ProductPageClient data={data.responseData} accessToken={accessToken} />
+    <ProductPageClient data={data.responseData}  />
     </>
     
   );

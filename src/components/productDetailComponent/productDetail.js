@@ -98,7 +98,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
-const AnimatedIcon = styled(StyledIconButton)(({ theme, iswishlisted }) => ({
+const AnimatedIcon = styled(IconButton)(({ theme, iswishlisted }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -106,7 +106,6 @@ const AnimatedIcon = styled(StyledIconButton)(({ theme, iswishlisted }) => ({
   width: "100%",
   height: "100%",
   position: "relative",
-
   "& .active": {
     display: iswishlisted ? "inline-block" : "none",
     color: "#f52121",
@@ -117,16 +116,32 @@ const AnimatedIcon = styled(StyledIconButton)(({ theme, iswishlisted }) => ({
     display: iswishlisted ? "none" : "inline-block",
     color: theme.custom.primaryButtonFontColor,
   },
-
   "@keyframes wiggle": {
     "0%, 100%": { transform: "rotate(0deg)" },
     "25%": { transform: "rotate(-10deg)" },
     "50%": { transform: "rotate(10deg)" },
     "75%": { transform: "rotate(-10deg)" },
   },
+  "&:after": {
+    content: '""',
+    width: "0%",
+    height: "100%",
+    background: "#483030",
+    position: "absolute",
+    transition: "all 0.4s ease-in-out",
+    right: 0,
+  },
+  "&:hover::after": {
+    borderRadius: "1vh",
+    right: 0,
+    left: "auto",
+    width: "100%",
+    backgroundColor: theme.palette.ascentColor.main,
+    boxShadow: "0px 0.1vh 3vh 0 rgb(75, 65, 65)",
+  },
 }));
 
-const ProductDetails = ({ data, accessToken }) => {
+const ProductDetails = ({ data }) => {
   const productInfo = useMemo(() => data?.product_info || {}, [data]);
   const router = useRouter();
   const params = useParams();
@@ -135,6 +150,12 @@ const ProductDetails = ({ data, accessToken }) => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [isAddedToCart, setIsAddedToCart] = useState(productInfo?.is_carted);
   const [iswishlisted, setIsWishlisted] = useState(productInfo?.is_wishlisted);
+
+  useEffect(() => {
+    setIsAddedToCart(productInfo?.is_carted);
+    setIsWishlisted(productInfo?.is_wishlisted);
+  }, [productInfo?.is_carted, productInfo?.is_wishlisted]);
+  
 
   useEffect(() => {
     if (productInfo?.sizesPerProductId) {
@@ -175,11 +196,13 @@ const ProductDetails = ({ data, accessToken }) => {
   const handleAddToCart = async (productDetailsId, productId) => {
     setIsAddedToCart(true);
     await addToCart(productDetailsId, productId);
+    router.refresh(); 
   };
 
   const handleAddToWishList = async (productDetailsId, productId) => {
-    await addOrEditWishlist(productDetailsId, productId);
     setIsWishlisted((prev) => !prev); // Toggle wishlist state
+    await addOrEditWishlist(productDetailsId, productId);
+    router.refresh(); 
   };
 
   return (
