@@ -23,7 +23,7 @@ export const navigationConfig = [
     text:"Orders",
     path: '/orders',
     component: 'Orders',
-    render:false
+    render:true
   },
   {
     label: "Home",
@@ -37,56 +37,56 @@ export const navigationConfig = [
     text:"Login Signup",
     path: '/login-signup',
     component: 'LoginSignup',
-    render:false
+    render:true
   },
   {
     label:"About Us",
     text:"About Us",
     path: '/about-us',
     component: 'AboutUs',
-    render:false
+    render:true
   },
   {
     label: "Contact Us",
     text:"Contact Us",
     path: "contact",
     component: 'ContactUs',
-    render:false
+    render:true
   },
   {
     label: "Term Condition",
     text:"Term Condition",
     path: "termcondition",
     component: 'TermCondition',
-    render:false
+    render:true
   },
   {
     label: "Privacy Policy",
     text:"Privacy Policy",
     path: "privacypolicy",
     component: 'PrivacyPolicy',
-    render:false
+    render:true
   },
   {
     label: "Return Refund",
     text:"Return and Refund Policy",
     path: "returnrefund",
     component: 'ReturnRefund',
-    render:false
+    render:true
   },
   {
     label: "Shipping Policy",
     text: "Shipping Policy",
     path: "shippingpolicy",
     component: 'ShippingPolicy',
-    render:false
+    render:true
   },
   {
     label: "Cancellation Policy",
     text: "Cancellation Policy",
     path: "cancellationpolicy",
     component: 'CancellationPolicy',
-    render:false
+    render:true
   }
 
 

@@ -21,7 +21,7 @@ import {
   Close as CloseIcon,
   KeyboardArrowDown as ChevronDownIcon,
 } from "@mui/icons-material";
-import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from "@mui/icons-material/Search";
 import { navigationConfig } from "@/app/configs/navigationConfig";
 import ProfileBtn from "./buttons/profileBtn";
 import TruncatedText from "./wrappers/TruncatedText";
@@ -31,20 +31,15 @@ import useDebounce from "@/utils/customHooks/useDebounce";
 import { AppContext } from "@/context/applicationContext";
 import CategoryDropdown from "@/components/catogeryComponent/CategoryDropdown"; // Import the CategoryDropdown component
 
-
-
-
 // ✅ Styled Components
 const StyledButton = styled("span")(({ theme }) => ({
   textTransform: "none",
-  margin:"1vh",
+  margin: "1vh",
   // fontSize: theme.typography.pxToRem(16),
   color: theme.custom.primaryButtonFontColor,
-  fontSize:theme.typography.pxToRem(15),
-  maxWidth:theme.typography.pxToRem(190),
-  cursor:"pointer",
-  
-  
+  fontSize: theme.typography.pxToRem(15),
+  maxWidth: theme.typography.pxToRem(190),
+  cursor: "pointer",
 }));
 
 const HomeLogoWrapper = styled("div")(({ theme }) => ({
@@ -69,11 +64,6 @@ const MobileNav = styled(Drawer)(({ theme }) => ({
   "& .MuiDrawer-paper": {
     width: theme.typography.pxToRem(300),
     padding: theme.spacing(2),
-    
-    
-    
-    
-    
   },
 }));
 
@@ -107,33 +97,31 @@ const NavLinksContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
 }));
 
-export default function Navbar({ carouselImages,userData }) {
+export default function Navbar({ carouselImages, userData }) {
   const theme = useTheme();
   const router = useRouter();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { setCategoryItems,setUser } = useContext(AppContext);
+  const { setCategoryItems, setUser } = useContext(AppContext);
 
   useEffect(() => {
-    console.log("userData",userData)
+    console.log("userData", userData);
     setCategoryItems(carouselImages);
-    setUser(userData)
-  }, [carouselImages?.length,userData]);
-
-
+    setUser(userData);
+  }, [carouselImages?.length, userData]);
 
   const useDeviceType = () => {
-    const isTouchDevice = useMediaQuery('(hover: none) and (pointer: coarse)');
+    const isTouchDevice = useMediaQuery("(hover: none) and (pointer: coarse)");
     const isIpadPro = useMediaQuery(
-      '(min-width: 1024px) and (max-width: 1366px) and (orientation: portrait), (min-width: 1366px) and (max-width: 1024px) and (orientation: landscape)'
+      "(min-width: 1024px) and (max-width: 1366px) and (orientation: portrait), (min-width: 1366px) and (max-width: 1024px) and (orientation: landscape)"
     );
 
     if (isIpadPro) {
-      return 'touch';
+      return "touch";
     }
 
-    return isTouchDevice ? 'touch' : 'pc';
+    return isTouchDevice ? "touch" : "pc";
   };
 
   const deviceType = useDeviceType();
@@ -176,9 +164,9 @@ export default function Navbar({ carouselImages,userData }) {
             position: "relative",
           }}
         >
-         {/* Show mobile menu button for touch devices (including iPad Pro) */}
           {/* Show mobile menu button for touch devices (including iPad Pro) */}
-          {deviceType === 'touch' && (
+          {/* Show mobile menu button for touch devices (including iPad Pro) */}
+          {deviceType === "touch" && (
             <IconButton
               edge="start"
               color="inherit"
@@ -191,27 +179,24 @@ export default function Navbar({ carouselImages,userData }) {
           )}
 
           {/* Show desktop navigation for non-touch devices */}
-          {deviceType === 'pc' && (
+          {deviceType === "pc" && (
             <NavLinksContainer>
               <CategoryDropdown />
-              <StyledButton 
-              onClick={(e)=>{
-                e.preventDefault();
-                e.stopPropagation();
-                router.push("/about");
-               }
-              }
+              <StyledButton
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  router.push("/about");
+                }}
               >
                 About Us
               </StyledButton>
               <StyledButton
-               onClick={(e)=>{
-                e.preventDefault();
-                e.stopPropagation();
-                router.push("/contact");
-               }
-              }
-              
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  router.push("/contact");
+                }}
               >
                 Contact Us
               </StyledButton>
@@ -231,42 +216,43 @@ export default function Navbar({ carouselImages,userData }) {
           </HomeLogoWrapper>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2,  mt:1}}>
-            
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 1 }}>
               <StyledButton
-              sx={{ }}
+                sx={{}}
                 color="inherit"
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 aria-label="search"
               >
                 {isSearchOpen ? <CloseIcon /> : <SearchIcon />}
               </StyledButton>
-              {deviceType === 'pc' && (
+              {deviceType === "pc" && (
                 <>
-              <StyledButton
-              color="inherit"
-              onClick={() => router.push("/wishlist")}
-              aria-label="wishlist"
-              >
-          <Favorite />
-        </StyledButton>
-        <StyledButton
-          color="inherit"
-          onClick={() => router.push("/cart")}
-          aria-label="cart"
-        >
-          <ShoppingCart />
-        </StyledButton>
-      </>
-    )}
+                  <StyledButton
+                    color="inherit"
+                    onClick={() => router.push("/wishlist")}
+                    aria-label="wishlist"
+                  >
+                    <Favorite />
+                  </StyledButton>
+                  <StyledButton
+                    color="inherit"
+                    onClick={() => router.push("/cart")}
+                    aria-label="cart"
+                  >
+                    <ShoppingCart />
+                  </StyledButton>
+                </>
+              )}
             </Box>
 
-            {deviceType === 'pc' && (
+            {deviceType === "pc" && (
               <>
                 <ProfileBtn
                   text={
                     userData?.name ? (
-                      <TruncatedText maxWidth="9vw">{userData.name}</TruncatedText>
+                      <TruncatedText maxWidth="9vw">
+                        {userData.name}
+                      </TruncatedText>
                     ) : (
                       <TruncatedText maxWidth="9vw">{"Profile"}</TruncatedText>
                     )
@@ -301,20 +287,23 @@ export default function Navbar({ carouselImages,userData }) {
           <CloseIcon />
         </IconButton>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        <ThemeToggle />
-          {navigationConfig.map((item) => (
-            <StyledButton
-            key={item.path}
-            onClick={() => {
-                toggleMobileNav();
-                router.push(item.path);
-            }}
-          >
-            {item.text}
-          </StyledButton>
-          ))}
-          {deviceType === 'touch' && (
-            userData?.id ? (
+          <ThemeToggle />
+          {navigationConfig.map(
+            (item) =>
+              item?.render === true && (
+                <StyledButton
+                  key={item.path}
+                  onClick={() => {
+                    toggleMobileNav();
+                    router.push(item.path);
+                  }}
+                >
+                  {item.text}
+                </StyledButton>
+              )
+          )}
+          {deviceType === "touch" &&
+            (userData?.id ? (
               <StyledButton
                 onClick={() => {
                   toggleMobileNav();
@@ -332,8 +321,7 @@ export default function Navbar({ carouselImages,userData }) {
               >
                 Login / Signup
               </StyledButton>
-            )
-          )}
+            ))}
         </Box>
       </MobileNav>
     </>
