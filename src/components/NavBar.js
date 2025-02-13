@@ -41,8 +41,10 @@ const StyledButton = styled("span")(({ theme }) => ({
   // fontSize: theme.typography.pxToRem(16),
   color: theme.custom.primaryButtonFontColor,
   fontSize:theme.typography.pxToRem(15),
-  maxWidth:theme.typography.pxToRem(80),
-  cursor:"pointer"
+  maxWidth:theme.typography.pxToRem(190),
+  cursor:"pointer",
+  
+  
 }));
 
 const HomeLogoWrapper = styled("div")(({ theme }) => ({
@@ -67,6 +69,11 @@ const MobileNav = styled(Drawer)(({ theme }) => ({
   "& .MuiDrawer-paper": {
     width: theme.typography.pxToRem(300),
     padding: theme.spacing(2),
+    
+    
+    
+    
+    
   },
 }));
 
@@ -223,8 +230,8 @@ export default function Navbar({ carouselImages,userData }) {
             />
           </HomeLogoWrapper>
 
-          <Box sx={{ display: "flex", alignItems: "center",justifyContent:"center", gap: 2 }}>
-            <Box sx={{ display: "flex", alignItems: "center",justifyContent:"center", gap: 2,  mt:1}}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2,  mt:1}}>
             
               <StyledButton
               sx={{ }}
@@ -294,15 +301,17 @@ export default function Navbar({ carouselImages,userData }) {
           <CloseIcon />
         </IconButton>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <ThemeToggle />
           {navigationConfig.map((item) => (
             <StyledButton
-              key={item.path}
-              component={Link}
-              href={item.path}
-              onClick={toggleMobileNav}
-            >
-              {item.label}
-            </StyledButton>
+            key={item.path}
+            onClick={() => {
+                toggleMobileNav();
+                router.push(item.path);
+            }}
+          >
+            {item.text}
+          </StyledButton>
           ))}
           {deviceType === 'touch' && (
             userData?.id ? (
