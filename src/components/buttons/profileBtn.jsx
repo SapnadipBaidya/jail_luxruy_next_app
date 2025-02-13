@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import { Menu, MenuItem } from "@mui/material";
+import { useRouter } from 'next/navigation';
 
 // Styled button component using MUI theme
 const StyledButton = styled("button")(({ theme }) => ({
@@ -93,6 +94,14 @@ const ProfileBtn = ({ text }) => {
     setAnchorEl(event.currentTarget);
   };
 
+  const router = useRouter(); // Initialize the router
+  
+    const handleProfileNavigation = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      router.push("/userContact"); // Programmatically navigate to the path
+    };
+
   // Handle menu close
   const handleClose = () => {
     setAnchorEl(null);
@@ -123,7 +132,7 @@ const ProfileBtn = ({ text }) => {
         }}
       >
         {/* Menu Items */}
-        <MenuItemStyled onClick={handleClose}>Profile</MenuItemStyled>
+        <MenuItemStyled onClick={(e)=>{handleClose();handleProfileNavigation(e)}}>Profile</MenuItemStyled>
         <MenuItemStyled onClick={handleClose}>Logout</MenuItemStyled>
       </MenuContainer>
     </>
