@@ -7,7 +7,10 @@ import TruncatedText from "@/components/wrappers/TruncatedText";
 
 const VideoContainer = styled(Box)(({ theme, ismobile }) => ({
   minWidth: ismobile ? "80vw" : "70%",
+  minHeight: ismobile? "80vh":"70vh",
   display: "flex",
+  marginLeft: ismobile? "0vw" : "5vw",
+  marginRight: ismobile? "0vw" : "5vw",
   flexDirection: ismobile ? "column" : "row",
   alignItems: "center",
   justifyContent: ismobile ? "center" : "space-evenly",
@@ -23,6 +26,9 @@ const VideoContainer = styled(Box)(({ theme, ismobile }) => ({
   backgroundSize: "cover",
   backgroundPosition: "center",
   position: "relative",
+  backgroundSize: "cover", // or "contain" depending on your preference
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
   "&::before": {
     content: '""',
     position: "absolute",
@@ -36,24 +42,23 @@ const VideoContainer = styled(Box)(({ theme, ismobile }) => ({
 }));
 
 const StyledVideo = styled("video")(({ ismobile }) => ({
-  minWidth: ismobile ? "120vw" : "20%",
-  maxHeight: ismobile ? "50vh" : "300px",
+  minWidth: ismobile ? "120vw" : "35vw",
+  maxHeight: ismobile ? "50vh" : "60vh",
   objectFit: "cover",
   borderRadius: "12px",
   zIndex: 2,
 }));
 
 const VideoDescContainer = styled(Box)(({ theme ,ismobile}) => ({
-  minWidth: ismobile ? "65vw" : "70%",
-  maxHeight:ismobile ? "70vh" : "70%",
-  width: "100%",
+ 
+  
   color: theme.palette.secondary.main,
   zIndex: 2,
 }));
 
 const TextContainer = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
-  fontSize: "1.1rem",
+  fontSize: "1.6rem",
   lineHeight: "1.6",
   textAlign: "justify",
   marginBottom: theme.spacing(2),
