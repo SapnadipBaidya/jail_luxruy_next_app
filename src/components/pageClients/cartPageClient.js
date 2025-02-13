@@ -6,7 +6,7 @@ import { Box, Button, styled, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { deleteFromUserCart, fetchUserCart } from "@/utils/API_lib";
 import CartComponent from "@/pageComponents/cartComponent";
-import { ThreeDRotation } from "@mui/icons-material";
+import ThreeDotLoader from "../loaders/threeDotLoader";
 
 // ✅ Styled Components (Same as Before)
 const CheckoutContainer = styled(Box)(({ theme }) => ({
@@ -126,7 +126,7 @@ export default function CartPageClient() {
               minHeight: "60vh",
             }}
           >
-            <ThreeDRotation />
+            <ThreeDotLoader/>
           </div>
         ) : (
           <CartComponent
