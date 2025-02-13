@@ -57,8 +57,8 @@ const HomeLogoWrapper = styled("div")(({ theme }) => ({
     width: theme.typography.pxToRem(300),
     height: theme.typography.pxToRem(50),
     [theme.breakpoints.down("md")]: {
-      width: theme.typography.pxToRem(300),
-      height: theme.typography.pxToRem(50),
+      width: theme.typography.pxToRem(200),
+      height: theme.typography.pxToRem(45),
     },
   },
 }));
@@ -158,7 +158,7 @@ export default function Navbar({ carouselImages,userData }) {
       router.push(searchPath);
     }
   };
-
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <>
       <StyledAppBar position="sticky">
@@ -169,6 +169,7 @@ export default function Navbar({ carouselImages,userData }) {
             position: "relative",
           }}
         >
+         {/* Show mobile menu button for touch devices (including iPad Pro) */}
           {/* Show mobile menu button for touch devices (including iPad Pro) */}
           {deviceType === 'touch' && (
             <IconButton
@@ -222,29 +223,35 @@ export default function Navbar({ carouselImages,userData }) {
             />
           </HomeLogoWrapper>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center",justifyContent:"center", gap: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center",justifyContent:"center", gap: 1}}>
+            
               <StyledButton
+              sx={{ fontSize: "1.5rem", padding: "10px" }}
                 color="inherit"
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 aria-label="search"
               >
                 {isSearchOpen ? <CloseIcon /> : <SearchIcon />}
               </StyledButton>
+              {deviceType === 'pc' && (
+                <>
               <StyledButton
-                color="inherit"
-                onClick={() => router.push("/wishlist")}
-                aria-label="wishlist"
+              color="inherit"
+              onClick={() => router.push("/wishlist")}
+              aria-label="wishlist"
               >
-                <Favorite />
-              </StyledButton>
-              <StyledButton
-                color="inherit"
-                onClick={() => router.push("/cart")}
-                aria-label="cart"
-              >
-                <ShoppingCart />
-              </StyledButton>
+          <Favorite />
+        </StyledButton>
+        <StyledButton
+          color="inherit"
+          onClick={() => router.push("/cart")}
+          aria-label="cart"
+        >
+          <ShoppingCart />
+        </StyledButton>
+      </>
+    )}
             </Box>
 
             {deviceType === 'pc' && (
