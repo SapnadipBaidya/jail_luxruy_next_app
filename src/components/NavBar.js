@@ -153,7 +153,6 @@ export default function Navbar({ carouselImages, userData }) {
       router.push(searchPath);
     }
   };
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <>
       <StyledAppBar position="sticky">
@@ -167,15 +166,14 @@ export default function Navbar({ carouselImages, userData }) {
           {/* Show mobile menu button for touch devices (including iPad Pro) */}
           {/* Show mobile menu button for touch devices (including iPad Pro) */}
           {deviceType === "touch" && (
-            <IconButton
+            <StyledButton
               edge="start"
               color="inherit"
               aria-label="menu"
               onClick={toggleMobileNav}
-              sx={{ display: { md: "" } }}
             >
               <MenuIcon />
-            </IconButton>
+            </StyledButton>
           )}
 
           {/* Show desktop navigation for non-touch devices */}
@@ -286,8 +284,8 @@ export default function Navbar({ carouselImages, userData }) {
         <IconButton onClick={toggleMobileNav} sx={{ alignSelf: "flex-end" }}>
           <CloseIcon />
         </IconButton>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          <ThemeToggle />
+        <Box sx={{ display: "flex", justifyContent:"flex-start",alignItems:"flex-start",flexDirection: "column", gap: 2 }}>
+          <CategoryDropdown/>
           {navigationConfig.map(
             (item) =>
               item?.render === true && (
@@ -302,6 +300,7 @@ export default function Navbar({ carouselImages, userData }) {
                 </StyledButton>
               )
           )}
+          <ThemeToggle />
           {deviceType === "touch" &&
             (userData?.id ? (
               <StyledButton
