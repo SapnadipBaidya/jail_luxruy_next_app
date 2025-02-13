@@ -224,10 +224,10 @@ export default function Navbar({ carouselImages,userData }) {
           </HomeLogoWrapper>
 
           <Box sx={{ display: "flex", alignItems: "center",justifyContent:"center", gap: 2 }}>
-            <Box sx={{ display: "flex", alignItems: "center",justifyContent:"center", gap: 1}}>
+            <Box sx={{ display: "flex", alignItems: "center",justifyContent:"center", gap: 2,  mt:1}}>
             
               <StyledButton
-              sx={{ fontSize: "1.5rem", padding: "10px" }}
+              sx={{ }}
                 color="inherit"
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 aria-label="search"
