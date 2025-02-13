@@ -6,7 +6,7 @@ import { Box, Button, styled, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { deleteFromUserCart, fetchUserCart } from "@/utils/API_lib";
 import CartComponent from "@/pageComponents/cartComponent";
-import TruckLoader from "../loaders/truckLoader";
+import { ThreeDRotation } from "@mui/icons-material";
 
 // ✅ Styled Components (Same as Before)
 const CheckoutContainer = styled(Box)(({ theme }) => ({
@@ -76,13 +76,15 @@ const ProceedButton = styled(Button)(({ theme }) => ({
 
 export default function CartPageClient() {
   const [cartData, setCartData] = useState([]);
+  const [subTotalData,setSubTotalData]= useState(0);
   const [cartLoading, setCartLoading] = useState(true);
   const router = useRouter();
 
   const fetchData = useCallback(async () => {
     try {
       const data = await fetchUserCart();
-      setCartData(data);
+      setCartData(data?.cartResult);
+      setSubTotalData(data?.subTotal)
       setCartLoading(false);
     } catch (error) {
       console.error("Error fetching cart data", error);
@@ -124,7 +126,7 @@ export default function CartPageClient() {
               minHeight: "60vh",
             }}
           >
-            <TruckLoader />
+            <ThreeDRotation />
           </div>
         ) : (
           <CartComponent
@@ -142,11 +144,10 @@ export default function CartPageClient() {
 
       {/* Summary Section */}
       <SummarySection>
-        <Typography variant="subtitle1">Subtotal: ₹3300</Typography>
-        <Typography variant="subtitle1">Discount: ₹300</Typography>
-        <Typography variant="subtitle1">Delivery Charge: ₹50</Typography>
+        <Typography variant="subtitle1">Subtotal: ₹{subTotalData}</Typography>
+        <Typography variant="subtitle1">Delivery Charge: FREE</Typography>
         <Typography variant="h6" mt={2}>
-          Grand Total: ₹3050
+          Grand Total: ₹{subTotalData}
         </Typography>
         <ProceedButton variant="contained" color="primary" fullWidth>
           Proceed to Payment
