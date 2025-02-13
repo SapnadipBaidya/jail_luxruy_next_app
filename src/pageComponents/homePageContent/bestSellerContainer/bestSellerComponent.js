@@ -10,6 +10,7 @@ import { useTheme } from "@mui/material/styles";
 const BestSellerContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
+  
   alignItems: "center",
   width: "100%",
   padding: theme.spacing(2),
