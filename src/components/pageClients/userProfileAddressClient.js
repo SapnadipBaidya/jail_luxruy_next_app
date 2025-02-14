@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import {
   Box,
   TextField,
@@ -31,15 +31,17 @@ import {
   addOrEditUserAddress,
   getUserAddresses,
   deleteUserAddress,
+  updateUserData, // Added for user data update
 } from "@/utils/API_lib";
 import ThreeDotLoader from "../loaders/threeDotLoader";
 import { useRouter } from "next/navigation";
+import { AppContext } from "@/context/applicationContext";
 
-// Styled Components
+// Styled Components (keep existing styles the same)
 const StyledAccordion = styled(Accordion)(({ theme }) => ({
   marginBottom: theme.spacing(3),
   backgroundColor: theme.palette.background.paper,
-  color:theme.custom.primaryButtonFontColor,
+  color: theme.custom.primaryButtonFontColor,
 }));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -47,48 +49,56 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
   position: "relative",
   backgroundColor: theme.palette.background.paper,
-  color:theme.custom.primaryButtonFontColor,
+  color: theme.custom.primaryButtonFontColor,
 }));
 
 const StyledFormContainer = styled(Paper)(({ theme }) => ({
+  margin: theme.spacing(3),
   padding: theme.spacing(3),
   borderRadius: theme.shape.borderRadius,
   position: "relative",
   backgroundColor: theme.palette.background.paper,
-  color:theme.custom.primaryButtonFontColor,
+  color: theme.custom.primaryButtonFontColor,
 }));
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   marginTop: theme.spacing(2),
-  backgroundColor: theme.palette.background.paper,
-  color:theme.custom.primaryButtonFontColor,
+  "& .MuiInputBase-input": {
+    color: theme.custom.primaryButtonFontColor,
+    "&::placeholder": {
+      color: theme.custom.primaryButtonFontColor,
+      opacity: 1,
+    },
+  },
+  "& .MuiInputLabel-root": {
+    color: theme.custom.primaryButtonFontColor,
+  },
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(3),
   backgroundColor: theme.palette.background.paper,
-  color:theme.custom.primaryButtonFontColor,
+  color: theme.custom.primaryButtonFontColor,
 }));
 
 const StyledChip = styled(Chip)(({ theme }) => ({
   marginBottom: theme.spacing(1),
   backgroundColor: theme.palette.background.paper,
-  color:theme.custom.primaryButtonFontColor,
+  color: theme.custom.primaryButtonFontColor,
 }));
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   position: "absolute",
   top: 8,
   right: 8,
-  color:theme.custom.primaryButtonFontColor,
-  
+  color: theme.custom.primaryButtonFontColor,
 }));
 
 const StyledEditIconButton = styled(IconButton)(({ theme }) => ({
   position: "absolute",
   top: 8,
   right: 40,
-  color:theme.custom.primaryButtonFontColor,
+  color: theme.custom.primaryButtonFontColor,
 }));
 
 const StyledLoaderContainer = styled("div")(({ theme }) => ({
@@ -96,11 +106,22 @@ const StyledLoaderContainer = styled("div")(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  color:theme.custom.primaryButtonFontColor,
+  color: theme.custom.primaryButtonFontColor,
+}));
+
+const StyledExpandMore = styled(ExpandMoreIcon)(({ theme }) => ({
+  color: theme.custom.primaryButtonFontColor,
 }));
 
 export default function UserProfileAddressClient() {
   const router = useRouter();
+  const { user } = useContext(AppContext);
+  const [userFormData, setUserFormData] = useState({
+    first_name: "",
+    last_name: "",
+    phone: "",
+  });
+
   const [formData, setFormData] = useState({
     addressLine1: "",
     addressLine2: "",
@@ -117,6 +138,17 @@ export default function UserProfileAddressClient() {
   const [isEditing, setIsEditing] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [editingAddressId, setEditingAddressId] = useState(null);
+
+  // Initialize user form data
+  useEffect(() => {
+    if (user) {
+      setUserFormData({
+        first_name: user.first_name || "",
+        last_name: user.last_name || "",
+        phone: user.phone || "",
+      });
+    }
+  }, [user]);
 
   // Fetch addresses
   const fetchAddresses = useCallback(async () => {
@@ -135,6 +167,31 @@ export default function UserProfileAddressClient() {
     fetchAddresses();
   }, [fetchAddresses]);
 
+  // Handler for user data changes
+  const handleUserDataChange = (e) => {
+    const { name, value } = e.target;
+    setUserFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Handler for user data submission
+  const handleUserDataSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await updateUserData({
+        first_name: userFormData.first_name,
+        last_name: userFormData.last_name,
+        phone: userFormData.phone,
+      });
+      router.refresh();
+      if (response.success) {
+        console.log("User data updated successfully");
+      }
+    } catch (err) {
+      setError("Failed to update user data");
+    }
+  };
+
+  // Handler for address changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -213,54 +270,53 @@ export default function UserProfileAddressClient() {
 
   return (
     <Box sx={{ maxWidth: 600, mx: "auto", p: 2 }}>
-      <StyledAccordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Saved Addresses ({savedAddresses?.length})</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Stack spacing={2}>
-            {savedAddresses?.map((address) => (
-              <StyledPaper key={address?.address_id}>
-                <StyledIconButton
-                  onClick={() => handleDeleteAddress(address?.address_id)}
-                  aria-label="delete address"
-                >
-                  <DeleteIcon fontSize="small" />
-                </StyledIconButton>
-                <StyledEditIconButton
-                  onClick={() => handleEditAddress(address)}
-                  aria-label="edit address"
-                >
-                  <EditIcon fontSize="small" />
-                </StyledEditIconButton>
-
-                <StyledChip
-                  label={`${address?.address_name} ${
-                    address?.is_default ? "(Default)" : ""
-                  }`}
-                />
-
-                <Typography>{address?.adress_line1}</Typography>
-                {address?.adress_line2 && (
-                  <Typography>{address?.adress_line2}</Typography>
-                )}
-                <Typography>
-                  {address?.state}, {address?.country} - {address?.pincode}
-                </Typography>
-              </StyledPaper>
-            ))}
-          </Stack>
-        </AccordionDetails>
-      </StyledAccordion>
-
+      {/* User Data Update Form */}
       <StyledFormContainer>
-        <IconButton
+        <Typography variant="h6" gutterBottom>
+          Personal Information
+        </Typography>
+        <form onSubmit={handleUserDataSubmit}>
+          <StyledTextField
+            label="First Name"
+            name="first_name"
+            value={userFormData.first_name}
+            onChange={handleUserDataChange}
+            required
+            fullWidth
+          />
+          <StyledTextField
+            label="Last Name"
+            name="last_name"
+            value={userFormData.last_name}
+            onChange={handleUserDataChange}
+            required
+            fullWidth
+          />
+          <StyledTextField
+            label="Phone Number"
+            name="phone"
+            value={userFormData.phone}
+            onChange={handleUserDataChange}
+            required
+            fullWidth
+          />
+          <StyledButton type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
+            UPDATE INFORMATION
+          </StyledButton>
+        </form>
+      </StyledFormContainer>
+
+
+
+      {/* Address Form */}
+      <StyledFormContainer>
+        <StyledIconButton
           sx={{ position: "absolute", top: 16, right: 16 }}
           onClick={resetForm}
           aria-label="reset form"
         >
           {isEditing ? <CloseIcon /> : <EditIcon />}
-        </IconButton>
+        </StyledIconButton>
 
         <Box>
           <Typography variant="h6" gutterBottom>
@@ -353,7 +409,48 @@ export default function UserProfileAddressClient() {
           </StyledButton>
         </Box>
       </StyledFormContainer>
+            {/* Existing Address Section */}
+            <StyledAccordion>
+        <AccordionSummary expandIcon={<StyledExpandMore />}>
+          <Typography>Saved Addresses ({savedAddresses?.length})</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Stack spacing={2}>
+            {savedAddresses?.map((address) => (
+              <StyledPaper key={address?.address_id}>
+                <StyledIconButton
+                  onClick={() => handleDeleteAddress(address?.address_id)}
+                  aria-label="delete address"
+                >
+                  <DeleteIcon fontSize="small" />
+                </StyledIconButton>
+                <StyledEditIconButton
+                  onClick={() => handleEditAddress(address)}
+                  aria-label="edit address"
+                >
+                  <EditIcon fontSize="small" />
+                </StyledEditIconButton>
 
+                <StyledChip
+                  label={`${address?.address_name} ${
+                    address?.is_default ? "(Default)" : ""
+                  }`}
+                />
+
+                <Typography>{address?.adress_line1}</Typography>
+                {address?.adress_line2 && (
+                  <Typography>{address?.adress_line2}</Typography>
+                )}
+                <Typography>
+                  {address?.state}, {address?.country} - {address?.pincode}
+                </Typography>
+              </StyledPaper>
+            ))}
+          </Stack>
+        </AccordionDetails>
+      </StyledAccordion>
+
+      {/* Dialog for Custom Address Type */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Custom Address Type</DialogTitle>
         <DialogContent>

@@ -192,5 +192,18 @@ export const deleteUserAddress = async ({ addressId }) => {
   });
 };
 
-
-//addOrEditUserAddress,getUserAddresses,deleteUserAddress
+export const updateUserData = async ({
+  phone = null,
+  first_name = null,
+  last_name = null,
+}) => {
+  "use server";
+  console.log("deleteFromUserCart");
+  return serverApiRequest("/api/users/updateUserData", "POST", {
+    payloadObj: {
+      phone,
+      first_name,
+      last_name,
+    },
+  });
+};
