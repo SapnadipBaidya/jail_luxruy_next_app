@@ -177,7 +177,7 @@ export default function CartPageClient() {
       <SummarySection>
       {loading || cartLoading ?<TextAreaSkeleton/>:
       <>
-      <ChooseAddress savedAddresses={savedAddresses} addressesLoading={addressesLoading} toDeliverAddress={toDeliverAddress}/>
+      <ChooseAddress savedAddresses={savedAddresses} addressesLoading={addressesLoading} toDeliverAddress={toDeliverAddress} setToDeliverAddress={setToDeliverAddress}/>
       <hr/>
         <StyledTypography variant="subtitle1">Subtotal: ₹{subTotalData}</StyledTypography>
         <StyledTypography variant="subtitle1">Delivery Charge: FREE</StyledTypography>
