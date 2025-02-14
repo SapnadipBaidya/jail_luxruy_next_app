@@ -20,6 +20,8 @@ import {
   DialogContent,
   DialogActions,
   IconButton,
+  Chip,
+  styled,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EditIcon from "@mui/icons-material/Edit";
@@ -32,7 +34,70 @@ import {
 } from "@/utils/API_lib";
 import ThreeDotLoader from "../loaders/threeDotLoader";
 import { useRouter } from "next/navigation";
-import Chip from "@mui/material/Chip";
+
+// Styled Components
+const StyledAccordion = styled(Accordion)(({ theme }) => ({
+  marginBottom: theme.spacing(3),
+  backgroundColor: theme.palette.background.paper,
+  color:theme.custom.primaryButtonFontColor,
+}));
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderRadius: theme.shape.borderRadius,
+  position: "relative",
+  backgroundColor: theme.palette.background.paper,
+  color:theme.custom.primaryButtonFontColor,
+}));
+
+const StyledFormContainer = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  borderRadius: theme.shape.borderRadius,
+  position: "relative",
+  backgroundColor: theme.palette.background.paper,
+  color:theme.custom.primaryButtonFontColor,
+}));
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  backgroundColor: theme.palette.background.paper,
+  color:theme.custom.primaryButtonFontColor,
+}));
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  marginTop: theme.spacing(3),
+  backgroundColor: theme.palette.background.paper,
+  color:theme.custom.primaryButtonFontColor,
+}));
+
+const StyledChip = styled(Chip)(({ theme }) => ({
+  marginBottom: theme.spacing(1),
+  backgroundColor: theme.palette.background.paper,
+  color:theme.custom.primaryButtonFontColor,
+}));
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+  position: "absolute",
+  top: 8,
+  right: 8,
+  color:theme.custom.primaryButtonFontColor,
+  
+}));
+
+const StyledEditIconButton = styled(IconButton)(({ theme }) => ({
+  position: "absolute",
+  top: 8,
+  right: 40,
+  color:theme.custom.primaryButtonFontColor,
+}));
+
+const StyledLoaderContainer = styled("div")(({ theme }) => ({
+  minHeight: "90vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  color:theme.custom.primaryButtonFontColor,
+}));
 
 export default function UserProfileAddressClient() {
   const router = useRouter();
@@ -53,7 +118,7 @@ export default function UserProfileAddressClient() {
   const [openDialog, setOpenDialog] = useState(false);
   const [editingAddressId, setEditingAddressId] = useState(null);
 
-  // Wrap fetchAddresses in useCallback to make it stable and callable on demand
+  // Fetch addresses
   const fetchAddresses = useCallback(async () => {
     setLoading(true);
     try {
@@ -89,7 +154,6 @@ export default function UserProfileAddressClient() {
       const response = await addOrEditUserAddress(payload);
       if (response.success) {
         resetForm();
-        // Instead of router.refresh(), simply re-fetch the addresses.
         fetchAddresses();
       }
     } catch (err) {
@@ -99,27 +163,24 @@ export default function UserProfileAddressClient() {
 
   const handleEditAddress = (address) => {
     setFormData({
-      addressLine1: address.address_line1,
-      addressLine2: address.address_line2,
-      state: address.state,
-      country: address.country,
-      pincode: address.pincode,
-      addressName: address.address_name,
-      isDefault: address.is_default,
+      addressLine1: address?.adress_line1,
+      addressLine2: address?.adress_line2,
+      state: address?.state,
+      country: address?.country,
+      pincode: address?.pincode,
+      addressName: address?.address_name,
+      isDefault: address?.is_default,
     });
-    setEditingAddressId(address.address_id);
+    setEditingAddressId(address?.address_id);
     setIsEditing(true);
   };
 
   const handleDeleteAddress = async (addressId) => {
     try {
       await deleteUserAddress({ addressId });
-      // Option 1: Update local state immediately
       setSavedAddresses((prev) =>
         prev.filter((addr) => addr.address_id !== addressId)
       );
-      // Option 2: Re-fetch addresses to ensure consistency:
-      // fetchAddresses();
     } catch (err) {
       setError("Failed to delete address");
     }
@@ -144,67 +205,55 @@ export default function UserProfileAddressClient() {
 
   if (loading)
     return (
-      <div
-        style={{
-          minHeight: "90vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <StyledLoaderContainer>
         <ThreeDotLoader />
-      </div>
+      </StyledLoaderContainer>
     );
   if (error) return <Typography color="error">{error}</Typography>;
 
   return (
     <Box sx={{ maxWidth: 600, mx: "auto", p: 2 }}>
-      <Accordion sx={{ mb: 3 }}>
+      <StyledAccordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography>Saved Addresses ({savedAddresses?.length})</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Stack spacing={2}>
             {savedAddresses?.map((address) => (
-              <Paper
-                key={address.address_id}
-                sx={{ p: 2, position: "relative" }}
-              >
-                <IconButton
-                  sx={{ position: "absolute", top: 8, right: 8 }}
-                  onClick={() => handleDeleteAddress(address.address_id)}
+              <StyledPaper key={address?.address_id}>
+                <StyledIconButton
+                  onClick={() => handleDeleteAddress(address?.address_id)}
                   aria-label="delete address"
                 >
                   <DeleteIcon fontSize="small" />
-                </IconButton>
-                <IconButton
-                  sx={{ position: "absolute", top: 8, right: 40 }}
+                </StyledIconButton>
+                <StyledEditIconButton
                   onClick={() => handleEditAddress(address)}
                   aria-label="edit address"
                 >
                   <EditIcon fontSize="small" />
-                </IconButton>
+                </StyledEditIconButton>
 
-                <Chip
-                  label={`${address.address_name} ${
-                    address.is_default ? "(Default)" : ""
+                <StyledChip
+                  label={`${address?.address_name} ${
+                    address?.is_default ? "(Default)" : ""
                   }`}
                 />
 
-                <Typography>{address.address_line1}</Typography>
-                {address.adress_line2 && (
-                  <Typography>{address.adress_line2}</Typography>
+                <Typography>{address?.adress_line1}</Typography>
+                {address?.adress_line2 && (
+                  <Typography>{address?.adress_line2}</Typography>
                 )}
                 <Typography>
-                  {address.state}, {address.country} - {address.pincode}
+                  {address?.state}, {address?.country} - {address?.pincode}
                 </Typography>
-              </Paper>
+              </StyledPaper>
             ))}
           </Stack>
         </AccordionDetails>
-      </Accordion>
+      </StyledAccordion>
 
-      <Paper sx={{ p: 3, borderRadius: 2, position: "relative" }}>
+      <StyledFormContainer>
         <IconButton
           sx={{ position: "absolute", top: 16, right: 16 }}
           onClick={resetForm}
@@ -218,22 +267,20 @@ export default function UserProfileAddressClient() {
             {editingAddressId ? "Edit Address" : "Add New Address"}
           </Typography>
 
-          <TextField
+          <StyledTextField
             label="Address Line 1"
             name="addressLine1"
             value={formData.addressLine1}
             onChange={handleChange}
             required
             fullWidth
-            sx={{ mt: 2 }}
           />
-          <TextField
+          <StyledTextField
             label="Address Line 2"
             name="addressLine2"
             value={formData.addressLine2}
             onChange={handleChange}
             fullWidth
-            sx={{ mt: 2 }}
           />
           <Box
             sx={{
@@ -243,14 +290,14 @@ export default function UserProfileAddressClient() {
               mt: 2,
             }}
           >
-            <TextField
+            <StyledTextField
               label="State"
               name="state"
               value={formData.state}
               onChange={handleChange}
               required
             />
-            <TextField
+            <StyledTextField
               label="Country"
               name="country"
               value={formData.country}
@@ -258,14 +305,13 @@ export default function UserProfileAddressClient() {
               required
             />
           </Box>
-          <TextField
+          <StyledTextField
             label="Postal Code"
             name="pincode"
             value={formData.pincode}
             onChange={handleChange}
             required
             fullWidth
-            sx={{ mt: 2 }}
           />
 
           <Typography sx={{ mt: 2 }}>Address Type</Typography>
@@ -298,16 +344,15 @@ export default function UserProfileAddressClient() {
             sx={{ mt: 1 }}
           />
 
-          <Button
+          <StyledButton
             onClick={handleSaveAddress}
             variant="contained"
             fullWidth
-            sx={{ mt: 3 }}
           >
             {editingAddressId ? "UPDATE ADDRESS" : "SAVE ADDRESS"}
-          </Button>
+          </StyledButton>
         </Box>
-      </Paper>
+      </StyledFormContainer>
 
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Custom Address Type</DialogTitle>
