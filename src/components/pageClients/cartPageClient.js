@@ -4,10 +4,11 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Box, Button, styled, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { deleteFromUserCart, fetchUserCart } from "@/utils/API_lib";
+import { deleteFromUserCart, fetchUserCart, getUserAddresses } from "@/utils/API_lib";
 import CartComponent from "@/pageComponents/cartComponent";
 import ThreeDotLoader from "../loaders/threeDotLoader";
 import TextAreaSkeleton from "../wrappers/textAreaSkeleton.jsx"
+import ChooseAddress from "../wrappers/chooseAddress";
 
 // ✅ Styled Components (Same as Before)
 const CheckoutContainer = styled(Box)(({ theme }) => ({
@@ -86,6 +87,24 @@ export default function CartPageClient() {
   const [cartLoading, setCartLoading] = useState(true);
   const [loading, setLoading] = useState(false); // Loading state for quantity updates
   const router = useRouter();
+  const [savedAddresses, setSavedAddresses] = useState([]);
+  const [addressesLoading, setAddressesLoading] = useState(true);
+  const [toDeliverAddress,setToDeliverAddress] = useState({})
+
+  const fetchAddresses = useCallback(async () => {
+      setAddressesLoading(true);
+      try {
+        const response = await getUserAddresses();
+        console.log("savedAddresses response",response)
+        setSavedAddresses(response.data || []);
+        setToDeliverAddress(response?.data?.find((address)=>address?.is_default == 1))
+       
+      } catch (err) {
+        console.log("err savedAddresses",err);
+      } finally {
+          setAddressesLoading(false);
+      }
+    }, []);
 
   const fetchData = useCallback(async () => {
     try {
@@ -101,6 +120,7 @@ export default function CartPageClient() {
 
   useEffect(() => {
     fetchData();
+    fetchAddresses();
   }, [fetchData]);
 
   const handleDeleteFromCart = useCallback(
@@ -114,6 +134,7 @@ export default function CartPageClient() {
     },
     [fetchData]
   );
+
 
   console.log("cartData", cartData);
 
@@ -149,20 +170,23 @@ export default function CartPageClient() {
           <Typography>Add More From Wishlist</Typography>
           <FavoriteIcon fontSize="medium" />
         </WishlistButton>
+
       </CartSection>
 
       {/* Summary Section */}
       <SummarySection>
       {loading || cartLoading ?<TextAreaSkeleton/>:
       <>
+      <ChooseAddress savedAddresses={savedAddresses} addressesLoading={addressesLoading} toDeliverAddress={toDeliverAddress}/>
+      <hr/>
         <StyledTypography variant="subtitle1">Subtotal: ₹{subTotalData}</StyledTypography>
         <StyledTypography variant="subtitle1">Delivery Charge: FREE</StyledTypography>
         <StyledTypography variant="h6" mt={2}>
         Grand Total: ₹{subTotalData}
         </StyledTypography>
-        <StyledTypography variant="contained" color="primary" fullWidth  disabled={loading}>
+        <ProceedButton variant="contained" color="primary" fullWidth  disabled={loading}>
           Proceed to Payment
-        </StyledTypography>
+        </ProceedButton>
         </>
       }
       </SummarySection>

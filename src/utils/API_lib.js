@@ -161,6 +161,8 @@ export const addOrEditUserAddress = async ({
   pincode,
   defaultAddress,
   addressName,
+  deliverTo,
+  phoneNumber
 }) => {
   "use server";
   return serverApiRequest("/api/users/addOrEditUserAddress", "POST", {
@@ -173,12 +175,15 @@ export const addOrEditUserAddress = async ({
       pincode,
       defaultAddress,
       addressName,
+      deliverTo,
+      phoneNumber
     },
   });
 };
 
 export const getUserAddresses = async () => {
   "use server";
+  console.log("initaite chooseAddress")
   return serverApiRequest("/api/users/getUserAddresses", "POST");
 };
 
@@ -198,7 +203,7 @@ export const updateUserData = async ({
   last_name = null,
 }) => {
   "use server";
-  console.log("deleteFromUserCart");
+  console.log("updateUserData",phone,first_name,last_name);
   return serverApiRequest("/api/users/updateUserData", "POST", {
     payloadObj: {
       phone,

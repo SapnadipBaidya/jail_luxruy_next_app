@@ -22,6 +22,8 @@ import {
   IconButton,
   Chip,
   styled,
+  CircularProgress,
+  Snackbar,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EditIcon from "@mui/icons-material/Edit";
@@ -31,7 +33,7 @@ import {
   addOrEditUserAddress,
   getUserAddresses,
   deleteUserAddress,
-  updateUserData, // Added for user data update
+  updateUserData,
 } from "@/utils/API_lib";
 import ThreeDotLoader from "../loaders/threeDotLoader";
 import { useRouter } from "next/navigation";
@@ -123,6 +125,8 @@ export default function UserProfileAddressClient() {
   });
 
   const [formData, setFormData] = useState({
+    deliverTo: "",
+    phoneNumber: "",
     addressLine1: "",
     addressLine2: "",
     state: "",
@@ -135,6 +139,7 @@ export default function UserProfileAddressClient() {
   const [savedAddresses, setSavedAddresses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [editingAddressId, setEditingAddressId] = useState(null);
@@ -167,27 +172,47 @@ export default function UserProfileAddressClient() {
     fetchAddresses();
   }, [fetchAddresses]);
 
+  // Phone number validation
+  const validatePhoneNumber = (number) => {
+    return /^\d{10}$/.test(number);
+  };
+
   // Handler for user data changes
   const handleUserDataChange = (e) => {
     const { name, value } = e.target;
-    setUserFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "phone") {
+      const sanitizedValue = value.replace(/\D/g, "").slice(0, 10);
+      setUserFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
+    } else {
+      setUserFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   // Handler for user data submission
   const handleUserDataSubmit = async (e) => {
     e.preventDefault();
+    if (!validatePhoneNumber(userFormData.phone)) {
+      setError("Please enter a valid 10-digit phone number");
+      return;
+    }
+
     try {
       const response = await updateUserData({
         first_name: userFormData.first_name,
         last_name: userFormData.last_name,
         phone: userFormData.phone,
       });
-      router.refresh();
+
       if (response.success) {
-        console.log("User data updated successfully");
+        setSuccess("User data updated successfully!");
+        setError("");
+        router.refresh();
+      } else {
+        setError(response.message || "Failed to update user data");
       }
     } catch (err) {
-      setError("Failed to update user data");
+      setError(err.message || "Failed to update user data");
     }
   };
 
@@ -207,11 +232,15 @@ export default function UserProfileAddressClient() {
         addressId: editingAddressId,
         defaultAddress: formData.isDefault,
       };
-
+debugger
+      console.log("addOrEditUserAddress payload",payload)
       const response = await addOrEditUserAddress(payload);
       if (response.success) {
+        setSuccess("Address saved successfully!");
         resetForm();
         fetchAddresses();
+      } else {
+        setError(response.message || "Failed to save address");
       }
     } catch (err) {
       setError("Failed to save address");
@@ -220,6 +249,8 @@ export default function UserProfileAddressClient() {
 
   const handleEditAddress = (address) => {
     setFormData({
+      deliverTo: address?.deliver_to,
+      phoneNumber: address?.phone_number,
       addressLine1: address?.adress_line1,
       addressLine2: address?.adress_line2,
       state: address?.state,
@@ -238,6 +269,7 @@ export default function UserProfileAddressClient() {
       setSavedAddresses((prev) =>
         prev.filter((addr) => addr.address_id !== addressId)
       );
+      setSuccess("Address deleted successfully!");
     } catch (err) {
       setError("Failed to delete address");
     }
@@ -245,6 +277,8 @@ export default function UserProfileAddressClient() {
 
   const resetForm = () => {
     setFormData({
+      deliverTo: "",
+      phoneNumber: "",
       addressLine1: "",
       addressLine2: "",
       state: "",
@@ -266,10 +300,20 @@ export default function UserProfileAddressClient() {
         <ThreeDotLoader />
       </StyledLoaderContainer>
     );
-  if (error) return <Typography color="error">{error}</Typography>;
 
   return (
     <Box sx={{ maxWidth: 600, mx: "auto", p: 2 }}>
+      {/* Snackbar for success/error messages */}
+      <Snackbar
+        open={!!success || !!error}
+        autoHideDuration={6000}
+        onClose={() => {
+          setSuccess("");
+          setError("");
+        }}
+        message={success || error}
+      />
+
       {/* User Data Update Form */}
       <StyledFormContainer>
         <Typography variant="h6" gutterBottom>
@@ -299,14 +343,30 @@ export default function UserProfileAddressClient() {
             onChange={handleUserDataChange}
             required
             fullWidth
+            type="tel"
+            inputProps={{
+              pattern: "[0-9]{10}",
+              maxLength: 10,
+              title: "Please enter a valid 10-digit mobile number",
+            }}
+            error={!!error}
+            helperText={error}
           />
-          <StyledButton type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
+          <StyledButton
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{ mt: 2 }}
+            disabled={
+              !userFormData.first_name ||
+              !userFormData.last_name ||
+              !userFormData.phone
+            }
+          >
             UPDATE INFORMATION
           </StyledButton>
         </form>
       </StyledFormContainer>
-
-
 
       {/* Address Form */}
       <StyledFormContainer>
@@ -323,6 +383,29 @@ export default function UserProfileAddressClient() {
             {editingAddressId ? "Edit Address" : "Add New Address"}
           </Typography>
 
+          <StyledTextField
+            label="Deliver To"
+            name="deliverTo"
+            value={formData.deliverTo}
+            onChange={handleChange}
+            required
+            fullWidth
+          />
+
+          <StyledTextField
+            label="Contact Number"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            required
+            fullWidth
+            type="tel"
+            inputProps={{
+              pattern: "[0-9]{10}",
+              maxLength: 10,
+              title: "Please enter a valid 10-digit mobile number",
+            }}
+          />
           <StyledTextField
             label="Address Line 1"
             name="addressLine1"
@@ -409,8 +492,9 @@ export default function UserProfileAddressClient() {
           </StyledButton>
         </Box>
       </StyledFormContainer>
-            {/* Existing Address Section */}
-            <StyledAccordion>
+
+      {/* Existing Address Section */}
+      <StyledAccordion>
         <AccordionSummary expandIcon={<StyledExpandMore />}>
           <Typography>Saved Addresses ({savedAddresses?.length})</Typography>
         </AccordionSummary>
