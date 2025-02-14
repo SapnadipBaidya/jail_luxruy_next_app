@@ -1,8 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { Menu, MenuItem } from "@mui/material";
 import { useRouter } from 'next/navigation';
+import { logout } from "@/utils/API_lib";
+import { AppContext } from "@/context/applicationContext";
 
 // Styled button component using MUI theme
 const StyledButton = styled("button")(({ theme }) => ({
@@ -86,6 +88,7 @@ const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
   },
 }));
 const ProfileBtn = ({ text }) => {
+    const { setUser } = useContext(AppContext);
   const [anchorEl, setAnchorEl] = useState(null); // State to manage menu anchor
   const open = Boolean(anchorEl); // Check if menu is open
 
@@ -101,6 +104,12 @@ const ProfileBtn = ({ text }) => {
       e.stopPropagation();
       router.push("/userContact"); // Programmatically navigate to the path
     };
+
+    const handleLogout = async (e)=>{
+    setUser({});
+    await  logout()
+
+    }
 
   // Handle menu close
   const handleClose = () => {
@@ -133,7 +142,7 @@ const ProfileBtn = ({ text }) => {
       >
         {/* Menu Items */}
         <MenuItemStyled onClick={(e)=>{handleClose();handleProfileNavigation(e)}}>Profile</MenuItemStyled>
-        <MenuItemStyled onClick={handleClose}>Logout</MenuItemStyled>
+        <MenuItemStyled onClick={(e)=>{handleClose();handleLogout()}}>Logout</MenuItemStyled>
       </MenuContainer>
     </>
   );

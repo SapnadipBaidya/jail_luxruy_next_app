@@ -10,21 +10,21 @@ import {
   Divider,
   Typography,
   useTheme,
-  useMediaQuery,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import GenericBtns from "../buttons/GenericBtns";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import CloseIcon from "@mui/icons-material/Close";
 
-// ✅ Styled Components
+// Styled Components
 const SortFilterWrapper = styled(Box)(({ theme }) => ({
   minWidth: "100%",
   height: "7vh",
   padding: "1rem",
   display: "flex",
   justifyContent: "space-between",
-  alignItems: "center"
+  alignItems: "center",
+  gap: theme.spacing(2)
 }));
 
 const DrawerContent = styled(Box)(({ theme }) => ({
@@ -44,53 +44,98 @@ const DrawerHeader = styled(Box)(({ theme }) => ({
   paddingBottom: theme.spacing(2),
 }));
 
-const SortFilterComponentMobile = ({ setShowFilters, showFilters ,setSortDetail, sortBy, setSortBy }) => {
+const SortFilterComponentMobile = ({
+  setShowFilters,
+  showFilters,
+  setSortDetail,
+  sortBy,
+  setSortBy,
+  handleSortChange // Added missing prop
+}) => {
   const theme = useTheme();
-  const ismobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
-
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleOpenDrawer = () => setDrawerOpen(true);
   const handleCloseDrawer = () => setDrawerOpen(false);
 
-  const handleSortSelection = (value) => {
+  const handleSortSelection = (value, dbValue, dbSortBy) => {
+    setSortDetail({ sortBy: dbValue, sortOrder: dbSortBy });
+    handleSortChange(value, dbValue, dbSortBy); // Use passed prop
     setSortBy(value);
-    setDrawerOpen(false); // Close drawer after selection
+    handleCloseDrawer();
   };
+
+  const sortOptions = [
+    { label: "None", value: "Sort By" },
+    { 
+      label: "Price: Low to High", 
+      value: "Price: Low to High",
+      dbValue: "product_price_local",
+      dbSort: "ASC" 
+    },
+    { 
+      label: "Price: High to Low", 
+      value: "Price: High to Low",
+      dbValue: "product_price_local",
+      dbSort: "DESC" 
+    },
+  ];
 
   return (
     <>
-      {/* Main Bar */}
       <SortFilterWrapper>
-        <GenericBtns type="primary" btnText={<FilterListIcon />} executableFunction={() => setShowFilters(!showFilters)} minWidth="3vw" />
-        <GenericBtns type="secondary" btnText={sortBy} executableFunction={handleOpenDrawer} minWidth="10vw" />
+        <GenericBtns 
+          type="primary" 
+          btnText={<FilterListIcon />} 
+          executableFunction={() => setShowFilters(!showFilters)} 
+          minWidth="3vw" 
+        />
+        <GenericBtns 
+          type="secondary" 
+          btnText={sortBy} 
+          executableFunction={handleOpenDrawer} 
+          minWidth="10vw" 
+        />
       </SortFilterWrapper>
 
-      {/* Sort Drawer */}
-      <Drawer anchor="right" open={drawerOpen} onClose={handleCloseDrawer}>
+      <Drawer 
+        anchor="right" 
+        open={drawerOpen} 
+        onClose={handleCloseDrawer}
+        PaperProps={{
+          sx: {
+            backgroundColor: theme.palette.background.default,
+          }
+        }}
+      >
         <DrawerContent>
-          {/* Header */}
           <DrawerHeader>
             <Typography variant="h6">Sort Options</Typography>
             <IconButton onClick={handleCloseDrawer}>
               <CloseIcon />
             </IconButton>
           </DrawerHeader>
-
           <Divider />
 
-          {/* Sort Options */}
-          <List>
-            {[
-              { label: "None", value: "Sort By" },
-              { label: "Price: Low to High", value: "Price: Low to High" },
-              { label: "Price: High to Low", value: "Price: High to Low" },
-              { label: "Newest Arrivals", value: "Newest Arrivals" },
-              { label: "Best Rated", value: "Best Rated" },
-            ].map((item) => (
-              <ListItem button key={item.value} onClick={() => handleSortSelection(item.value)}>
-                <ListItemText primary={item.label} />
+          <List sx={{ flexGrow: 1 }}>
+            {sortOptions.map((item) => (
+              <ListItem 
+                button 
+                key={item.value} 
+                onClick={() => handleSortSelection(item.value, item?.dbValue, item?.dbSort)}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: theme.palette.action.hover,
+                  }
+                }}
+              >
+                <ListItemText 
+                  primary={item.label} 
+                  primaryTypographyProps={{
+                    color: sortBy === item.value ? 'primary' : 'inherit',
+                    fontWeight: sortBy === item.value ? 600 : 400
+                  }}
+                />
               </ListItem>
             ))}
           </List>

@@ -92,8 +92,6 @@ function SortFilterComponent({ setShowFilters, showFilters,setSortDetail,handleS
           { label: "None", value: "Sort By" },
           { label: "Price: Low to High", value: "Price: Low to High" , dbValue:"product_price_local" , dbSort : "ASC" },
           { label: "Price: High to Low", value: "Price: High to Low" , dbValue:"product_price_local" , dbSort : "DESC" },
-          { label: "Newest Arrivals", value: "Newest Arrivals" },
-          { label: "Best Rated", value: "Best Rated" },
         ].map((item) => (
           <MenuItem
             key={item.value}

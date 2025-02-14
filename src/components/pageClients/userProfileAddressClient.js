@@ -133,7 +133,7 @@ export default function UserProfileAddressClient() {
     country: "",
     pincode: "",
     addressName: "Home",
-    isDefault: false,
+    isDefault: true,
   });
 
   const [savedAddresses, setSavedAddresses] = useState([]);

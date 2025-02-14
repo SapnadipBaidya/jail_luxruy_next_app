@@ -38,7 +38,17 @@ const StyledButton = styled("span")(({ theme }) => ({
   // fontSize: theme.typography.pxToRem(16),
   color: theme.custom.primaryButtonFontColor,
   fontSize: theme.typography.pxToRem(15),
-  maxWidth: theme.typography.pxToRem(190),
+  minWidth: theme.typography.pxToRem(80),
+  maxWidth: theme.typography.pxToRem(300),
+  cursor: "pointer",
+}));
+
+const StyledIcon = styled("span")(({ theme }) => ({
+  textTransform: "none",
+  margin: "1vh",
+  color: theme.custom.primaryButtonFontColor,
+  fontSize: theme.typography.pxToRem(15),
+  maxWidth: theme.typography.pxToRem(50),
   cursor: "pointer",
 }));
 
@@ -166,14 +176,14 @@ export default function Navbar({ carouselImages, userData }) {
           {/* Show mobile menu button for touch devices (including iPad Pro) */}
           {/* Show mobile menu button for touch devices (including iPad Pro) */}
           {deviceType === "touch" && (
-            <StyledButton
+            <StyledIcon
               edge="start"
               color="inherit"
               aria-label="menu"
               onClick={toggleMobileNav}
             >
               <MenuIcon />
-            </StyledButton>
+            </StyledIcon>
           )}
 
           {/* Show desktop navigation for non-touch devices */}
@@ -215,30 +225,29 @@ export default function Navbar({ carouselImages, userData }) {
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 1 }}>
-              <StyledButton
-                sx={{}}
+              <StyledIcon
                 color="inherit"
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 aria-label="search"
               >
                 {isSearchOpen ? <CloseIcon /> : <SearchIcon />}
-              </StyledButton>
+              </StyledIcon>
               {deviceType === "pc" && (
                 <>
-                  <StyledButton
+                  <StyledIcon
                     color="inherit"
                     onClick={() => router.push("/wishlist")}
                     aria-label="wishlist"
                   >
                     <Favorite />
-                  </StyledButton>
-                  <StyledButton
+                  </StyledIcon>
+                  <StyledIcon
                     color="inherit"
                     onClick={() => router.push("/cart")}
                     aria-label="cart"
                   >
                     <ShoppingCart />
-                  </StyledButton>
+                  </StyledIcon>
                 </>
               )}
             </Box>

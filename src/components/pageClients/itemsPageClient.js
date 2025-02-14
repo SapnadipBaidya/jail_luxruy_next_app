@@ -215,6 +215,7 @@ export default function ItemsPageClient({
               setSortDetail={setSortDetail}
               sortBy={sortBy}
               setSortBy={setSortBy}
+              handleSortChange={handleSortChange}
             />
           ) : (
             <SortFilterComponent

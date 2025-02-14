@@ -1,10 +1,19 @@
+"use client";
 import React, { useState, forwardRef, useContext } from "react";
 import NextLink from "next/link";
-import { Menu, MenuItem, Button, Box, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import {
+  Menu,
+  MenuItem,
+  Button,
+  Box,
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  useMediaQuery,
+  styled
+} from "@mui/material";
 import ChevronDownIcon from "@mui/icons-material/ExpandMore";
-
-// ---- Example Icons from @mui/icons-material (pick whichever suits your design) ----
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import LuggageIcon from "@mui/icons-material/Luggage";
@@ -13,16 +22,13 @@ import CheckroomIcon from "@mui/icons-material/Checkroom";
 import StoreIcon from "@mui/icons-material/Store";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import zIndex from "@mui/material/styles/zIndex";
 import { AppContext } from "@/context/applicationContext";
 
-// ✅ Create a Link wrapper that forwards refs to Next.js's Link component
 const LinkBehavior = forwardRef(function LinkBehavior(props, ref) {
   const { href, ...other } = props;
   return <NextLink ref={ref} href={href} {...other} />;
 });
 
-// ✅ Styled Components for Pixel-Perfect Look
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.text.primary,
   textTransform: "none",
@@ -36,23 +42,22 @@ const StyledButton = styled(Button)(({ theme }) => ({
   "&:hover": {
     backgroundColor: theme.palette.action.hover,
   },
-
-    color:theme.custom.primaryButtonFontColor
- 
+  color: theme.custom.primaryButtonFontColor
 }));
 
 const MenuContainer = styled(Menu)(({ theme }) => ({
   "& .MuiPaper-root": {
-    marginTop:theme.typography.pxToRem(18),
+    marginTop: theme.typography.pxToRem(18),
     minWidth: theme.typography.pxToRem(200),
-    maxWidth:  theme.typography.pxToRem(260),
-    padding:  theme.typography.pxToRem(8),
+    maxWidth: theme.typography.pxToRem(260),
+    padding: theme.typography.pxToRem(8),
     borderRadius: theme.typography.pxToRem(8),
     backgroundColor: theme.palette.background.paper,
     color: theme.custom.primaryButtonFontColor,
     boxShadow: theme.shadows[5],
     position: "absolute",
     top: "100%",
+    zIndex: theme.zIndex.modal
   },
 }));
 
@@ -68,8 +73,34 @@ const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
   },
 }));
 
-// ---- Icon Mapper Example ----
-// Update the keys (slugs) to match your own category slugs
+const StyledAccordion = styled(Accordion)(({ theme }) => ({
+  backgroundColor: "transparent",
+  boxShadow: "none",
+  "&:before": {
+    display: "none",
+  },
+  margin: 0,
+  width: "100%"
+}));
+
+const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
+  minHeight: "auto",
+  padding: 0,
+  "& .MuiAccordionSummary-content": {
+    margin: 0
+  },
+  "& .MuiAccordionSummary-expandIconWrapper": {
+    color: theme.custom.primaryButtonFontColor
+  }
+}));
+
+const AccordionDetailsStyled = styled(AccordionDetails)(({ theme }) => ({
+  padding: theme.spacing(1),
+  display: "flex",
+  flexDirection: "column",
+  gap: theme.spacing(1)
+}));
+
 const iconMap = {
   bag: <ShoppingBagIcon sx={{ fontSize: "24px" }} />,
   belt: <WorkOutlineIcon sx={{ fontSize: "24px" }} />,
@@ -84,51 +115,83 @@ const iconMap = {
 const CategoryDropdown = () => {
   const { categoryItems } = useContext(AppContext);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [expanded, setExpanded] = useState(false);
+  const isTouchDevice = useMediaQuery('(pointer: coarse)');
 
   const handleOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+    if (!isTouchDevice) {
+      setAnchorEl(event.currentTarget);
+    }
+  };
+
+  const handleAccordionToggle = () => {
+    setExpanded(!expanded);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+    setExpanded(false);
   };
 
   return (
-    <Box>
-      {/* ✅ Category Button */}
-      <StyledButton onClick={handleOpen}>
-        Categories <ChevronDownIcon fontSize="small" />
-      </StyledButton>
-
-      {/* ✅ Dropdown Menu */}
-      <MenuContainer
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        transformOrigin={{ vertical: "top", horizontal: "left" }}
-      >
-        {/* ✅ Dynamic Category List */}
-        {categoryItems?.map((category, index) => {
-          // Safely retrieve the icon from the map. Fallback to <ShoppingBagIcon /> if none is found.
-          const icon = iconMap[category?.slug] || (
-            <ShoppingBagIcon sx={{ fontSize: "24px" }} />
-          );
-
-          return (
-            <MenuItemStyled
-              key={index}
-              onClick={handleClose}
-              // Use the custom LinkBehavior as the component and pass the href prop
-              component={LinkBehavior}
-              href={`/products/${category?.category_mapping}`}
-            >
-              {icon}
-              <Typography>{category?.catagory_name}</Typography>
-            </MenuItemStyled>
-          );
-        })}
-      </MenuContainer>
+    <Box sx={{ width: "100%" }}>
+      {isTouchDevice ? (
+        <StyledAccordion expanded={expanded} onChange={handleAccordionToggle}>
+          <StyledAccordionSummary
+            expandIcon={<ChevronDownIcon />}
+            aria-controls="categories-content"
+          >
+            <StyledButton >
+              Categories 
+            </StyledButton>
+          </StyledAccordionSummary>
+          
+          <AccordionDetailsStyled>
+            {categoryItems?.map((category, index) => {
+              const icon = iconMap[category?.slug] || <ShoppingBagIcon sx={{ fontSize: "24px" }} />;
+              return (
+                <MenuItemStyled
+                  key={index}
+                  component={LinkBehavior}
+                  href={`/products/${category?.category_mapping}`}
+                  onClick={handleClose}
+                >
+                  {icon}
+                  <Typography variant="body2">{category?.catagory_name}</Typography>
+                </MenuItemStyled>
+              );
+            })}
+          </AccordionDetailsStyled>
+        </StyledAccordion>
+      ) : (
+        <>
+          <StyledButton onClick={handleOpen}>
+            Categories           </StyledButton>
+          
+          <MenuContainer
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            transformOrigin={{ vertical: "top", horizontal: "left" }}
+          >
+            {categoryItems?.map((category, index) => {
+              const icon = iconMap[category?.slug] || <ShoppingBagIcon sx={{ fontSize: "24px" }} />;
+              return (
+                <MenuItemStyled
+                  key={index}
+                  onClick={handleClose}
+                  component={LinkBehavior}
+                  href={`/products/${category?.category_mapping}`}
+                >
+                  {icon}
+                  <Typography variant="body2">{category?.catagory_name}</Typography>
+                </MenuItemStyled>
+              );
+            })}
+          </MenuContainer>
+        </>
+      )}
     </Box>
   );
 };

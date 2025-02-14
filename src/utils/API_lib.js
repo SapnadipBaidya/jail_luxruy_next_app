@@ -1,8 +1,6 @@
 // app/actions/wishlist-actions.js
 "use server";
-
 import { cookies } from "next/headers";
-
 // Helper to get server-side API URL
 const getApiUrl = (path) => {
   return `${process.env.NEXT_PUBLIC_API_URL}${path}`;
@@ -211,4 +209,32 @@ export const updateUserData = async ({
       last_name,
     },
   });
+};
+
+
+
+export const logout = async () => {
+  "use server";
+  
+  try {
+    const cookieStore = await cookies();
+    const refreshToken = cookieStore.get("refreshToken")?.value;
+
+    // 1. Invalidate tokens on backend
+    await fetch(getApiUrl("/logout"), {
+      method: "POST",
+      headers: { Cookie: `refreshToken=${refreshToken}` },
+    });
+
+    // 2. Delete cookies properly
+    cookieStore.delete("accessToken");
+    cookieStore.delete("refreshToken");
+
+    // 3. Return success status
+    return { success: true };
+    
+  } catch (error) {
+    console.error("Logout failed:", error);
+    return { success: false };
+  }
 };
