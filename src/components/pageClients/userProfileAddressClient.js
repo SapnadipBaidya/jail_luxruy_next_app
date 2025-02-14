@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Box,
   TextField,
@@ -25,9 +25,17 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { addOrEditUserAddress, getUserAddresses, deleteUserAddress } from "@/utils/API_lib";
+import {
+  addOrEditUserAddress,
+  getUserAddresses,
+  deleteUserAddress,
+} from "@/utils/API_lib";
+import ThreeDotLoader from "../loaders/threeDotLoader";
+import { useRouter } from "next/navigation";
+import Chip from "@mui/material/Chip";
 
 export default function UserProfileAddressClient() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     addressLine1: "",
     addressLine2: "",
@@ -45,19 +53,22 @@ export default function UserProfileAddressClient() {
   const [openDialog, setOpenDialog] = useState(false);
   const [editingAddressId, setEditingAddressId] = useState(null);
 
-  useEffect(() => {
-    const fetchAddresses = async () => {
-      try {
-        const response = await getUserAddresses();
-        setSavedAddresses(response.data || []);
-      } catch (err) {
-        setError("Failed to load addresses");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchAddresses();
+  // Wrap fetchAddresses in useCallback to make it stable and callable on demand
+  const fetchAddresses = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await getUserAddresses();
+      setSavedAddresses(response.data || []);
+    } catch (err) {
+      setError("Failed to load addresses");
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchAddresses();
+  }, [fetchAddresses]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -77,14 +88,9 @@ export default function UserProfileAddressClient() {
 
       const response = await addOrEditUserAddress(payload);
       if (response.success) {
-        const updatedAddresses = editingAddressId
-          ? savedAddresses.map((addr) =>
-              addr.address_id === editingAddressId ? response.data : addr
-            )
-          : [...savedAddresses, response.data];
-
-        setSavedAddresses(updatedAddresses);
         resetForm();
+        // Instead of router.refresh(), simply re-fetch the addresses.
+        fetchAddresses();
       }
     } catch (err) {
       setError("Failed to save address");
@@ -93,13 +99,13 @@ export default function UserProfileAddressClient() {
 
   const handleEditAddress = (address) => {
     setFormData({
-      addressLine1: address.addressLine1,
-      addressLine2: address.addressLine2,
+      addressLine1: address.address_line1,
+      addressLine2: address.address_line2,
       state: address.state,
       country: address.country,
       pincode: address.pincode,
-      addressName: address.addressName,
-      isDefault: address.isDefault,
+      addressName: address.address_name,
+      isDefault: address.is_default,
     });
     setEditingAddressId(address.address_id);
     setIsEditing(true);
@@ -108,9 +114,12 @@ export default function UserProfileAddressClient() {
   const handleDeleteAddress = async (addressId) => {
     try {
       await deleteUserAddress({ addressId });
+      // Option 1: Update local state immediately
       setSavedAddresses((prev) =>
         prev.filter((addr) => addr.address_id !== addressId)
       );
+      // Option 2: Re-fetch addresses to ensure consistency:
+      // fetchAddresses();
     } catch (err) {
       setError("Failed to delete address");
     }
@@ -133,18 +142,30 @@ export default function UserProfileAddressClient() {
   const handleOpenDialog = () => setOpenDialog(true);
   const handleCloseDialog = () => setOpenDialog(false);
 
-  if (loading) return <Typography>Loading addresses...</Typography>;
+  if (loading)
+    return (
+      <div
+        style={{
+          minHeight: "90vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ThreeDotLoader />
+      </div>
+    );
   if (error) return <Typography color="error">{error}</Typography>;
 
   return (
     <Box sx={{ maxWidth: 600, mx: "auto", p: 2 }}>
       <Accordion sx={{ mb: 3 }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Saved Addresses ({savedAddresses.length})</Typography>
+          <Typography>Saved Addresses ({savedAddresses?.length})</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Stack spacing={2}>
-            {savedAddresses.map((address) => (
+            {savedAddresses?.map((address) => (
               <Paper
                 key={address.address_id}
                 sx={{ p: 2, position: "relative" }}
@@ -163,12 +184,16 @@ export default function UserProfileAddressClient() {
                 >
                   <EditIcon fontSize="small" />
                 </IconButton>
-                <Typography variant="subtitle1" gutterBottom>
-                  {address.addressName} {address.isDefault && "(Default)"}
-                </Typography>
-                <Typography>{address.addressLine1}</Typography>
-                {address.addressLine2 && (
-                  <Typography>{address.addressLine2}</Typography>
+
+                <Chip
+                  label={`${address.address_name} ${
+                    address.is_default ? "(Default)" : ""
+                  }`}
+                />
+
+                <Typography>{address.address_line1}</Typography>
+                {address.adress_line2 && (
+                  <Typography>{address.adress_line2}</Typography>
                 )}
                 <Typography>
                   {address.state}, {address.country} - {address.pincode}
