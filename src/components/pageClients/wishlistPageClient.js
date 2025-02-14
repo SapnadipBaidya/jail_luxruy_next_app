@@ -40,11 +40,11 @@ function WishListPageClient({ itemsArr }) {
   useEffect(() => {
     fetchData();
   }, [fetchData]); // Run effect only when fetchData changes
-
+  
   return (
     <div style={{ display: "flex",alignItems:"center", justifyContent: "center", flexDirection:"column" }}>
          <PageHeaderComp>WISHLIST</PageHeaderComp>
-      <div  style={{ display: "flex",alignItems:"center", justifyContent: "center", minHeight: "90vh", flexDirection:"column"}}>
+      <div  style={{ display: "flex",alignItems:"center", justifyContent: "center", minHeight: "90vh",maxWidth: "80vw", flexDirection:"column"}}>
    
       {wishlistLoading ? (
         <ThreeDotLoader />

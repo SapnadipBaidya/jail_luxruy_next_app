@@ -1,7 +1,7 @@
 "use client";
 
 import PropTypes from "prop-types";
-import { Card, Box, Fade, Slide, useMediaQuery } from "@mui/material";
+import { Card, Box, Fade, Slide, useMediaQuery,Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
@@ -22,8 +22,8 @@ const StyledCard = styled(Card, {
   shouldForwardProp: (prop) => prop !== "deviceType",
 })(({ theme, deviceType }) => ({
   margin: "1rem", // Use rem for consistent spacing
-  width: "25rem", // Base width
-  height: "18rem", // Base height
+  width: "27rem", // Base width
+  height: "32.5rem", // Base height
   maxWidth: "100%", // Ensure it doesn't overflow on small screens
   position: "relative",
   overflow: "hidden",
@@ -57,17 +57,24 @@ const StyledCard = styled(Card, {
     },
   }),
   // Media queries for responsiveness
+  [theme.breakpoints.down('xl')]: {
+    width: "25rem", // Base width
+    height: "18rem",
+    
+  },
   [theme.breakpoints.down('lg')]: {
     width: "18rem",
-    height: "28rem",
+    height: "25rem",
+    
   },
   [theme.breakpoints.down('md')]: {
-    width: "22rem",
-    height: "19.5rem",
+    width: "19rem",
+    height: "24.3rem",
+    
   },
   [theme.breakpoints.down('sm')]: {
     width: "100%",
-    height: "14.8rem",
+    height: "15.6rem",
     margin: "0.5rem 0",
   },
 }));
@@ -84,21 +91,24 @@ const CardActionsContainer = styled("div")(({ theme }) => ({
 
 const ProductImage = styled("img")(({ theme }) => ({
   width: "100%", // Full width to maintain responsiveness
-  height: "14rem", // Fixed height for consistency
+  height: "26.7rem", // Fixed height for consistency
   objectFit: "cover", // Ensure the image covers the area without distortion
   borderRadius: "1rem 1rem 0 0", // Rounded corners only at the top
   transition: "transform 0.3s ease-in-out",
   "&:hover": {
     transform: "scale(1.05)", // Subtle zoom effect on hover
   },
-  [theme.breakpoints.down('lg')]: {
+  [theme.breakpoints.down('xl')]: {
     height: "16rem",
   },
+  [theme.breakpoints.down('lg')]: {
+    height: "19rem",
+  },
   [theme.breakpoints.down('md')]: {
-    height: "14rem",
+    height: "19rem",
   },
   [theme.breakpoints.down('sm')]: {
-    height: "10rem",
+    height: "11rem",
   },
 }));
 
@@ -112,45 +122,55 @@ const ProductInfo = styled(Box)(({ theme }) => ({
   justifyContent: "flex-start",
   width: "100%", // Full width for better alignment
    // Center-align text
-  "& .product-name": {
-    fontSize: "1.2rem",
+   "& .product-name": {
+    fontSize: "1.2rem", // Base font size
     fontWeight: 600,
     marginBottom: "0.5rem",
     color: theme.palette.text.primary,
+    [theme.breakpoints.down("lg")]: {
+      fontSize: "1.1rem", // Smaller font size for large screens
+    },
+    [theme.breakpoints.down("md")]: {
+      fontSize: "1rem", // Smaller font size for medium screens
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.9rem", // Smaller font size for small screens
+    },
   },
   "& .product-price": {
-    fontSize: "1.1rem",
+    fontSize: "1.1rem", // Base font size
     fontWeight: 500,
     color: theme.palette.text.secondary,
-  },
-  [theme.breakpoints.down('lg')]: {
-    height: "16rem",
-  },
-  [theme.breakpoints.down('md')]: {
-    height: "3rem",
-  },
-  [theme.breakpoints.down('sm')]: {
-    height: "3rem",
+    [theme.breakpoints.down("lg")]: {
+      fontSize: "1rem", // Smaller font size for large screens
+    },
+    [theme.breakpoints.down("md")]: {
+      fontSize: "0.9rem", // Smaller font size for medium screens
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.8rem", // Smaller font size for small screens
+    },
   },
 }));
 
 const HoverContent = styled(Box)(({ theme }) => ({
-  position: "absolute",
+  position: "absolute", // Use absolute positioning to overlay on the card
   bottom: "0",
-  width: "100%",
+  width: "100%", // Ensure it spans the full width of the card
   color: "#fff",
-  textAlign: "center",
-  
   opacity: 0, // Hidden by default on PC
   transform: "translateY(100%)", // Moved down by default on PC
   transition: "opacity 0.3s ease-in-out, transform 0.3s ease-in-out",
   display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-evenly",
-  alignItems: "center",
+  flexDirection: "row", // Ensure horizontal layout
+  justifyContent: "space-between", // Space out items evenly
+  alignItems: "center", // Vertically center items
   backgroundColor: "rgba(0, 0, 0, 0.7)", // Semi-transparent background
   borderRadius: "0 0 1rem 1rem", // Rounded corners at the bottom
+  paddingLeft:"0.5rem", // Add padding for spacing
+  
 }));
+
 // ── Main Component ───────────────────────────────────────────────────
 const StyledCardWrapper = React.memo(
   ({ type, item, accessToken, setWishlistData, setWishlistLoading }) => {
@@ -185,18 +205,20 @@ const StyledCardWrapper = React.memo(
           </Fade>
 
           <ProductInfo className="product-info">
-            <TruncatedText fontSizeNumber={14}>
-              {item?.product_name || "No Name"}
-            </TruncatedText>
-            <TruncatedText fontSizeNumber={12}>
-              ₹{item?.product_data?.price || "N/A"}
-            </TruncatedText>
+          <Typography variant="body1" >
+            {item?.product_name || "No Name"}
+          </Typography>
+          <Typography variant="body1" >
+    ₹{item?.product_data?.price || "N/A"}
+  </Typography>
           </ProductInfo>
 
           {type === "Product" ? (
-            <HoverContent className="hover-content">
-              <TruncatedText fontSize="16px">View Product</TruncatedText>
-              <WishListButton item={item} />
+            <HoverContent className="hover-content" >
+              <Typography className="viewProduct" sx={{ whiteSpace: "nowrap", marginRight: "1rem" }}>
+                View Product 
+              </Typography>
+              <WishListButton item={item} backgroundColor="yellow"/>
             </HoverContent>
           ) : (
             // For non-product types, show Cart and Delete buttons.
