@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -24,26 +24,40 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { addOrEditUserAddress, getUserAddresses, deleteUserAddress } from "@/utils/API_lib";
 
 export default function UserProfileAddressClient() {
   const [formData, setFormData] = useState({
-    firstName: "",
-    secondName: "",
-    mobile: "",
-    email: "",
-    pinCode: "",
-    address: "",
-    locality: "",
-    city: "",
+    addressLine1: "",
+    addressLine2: "",
     state: "",
-    type: "Home",
+    country: "",
+    pincode: "",
+    addressName: "Home",
     isDefault: false,
   });
 
   const [savedAddresses, setSavedAddresses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [customAddressType, setCustomAddressType] = useState("");
+  const [editingAddressId, setEditingAddressId] = useState(null);
+
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const response = await getUserAddresses();
+        setSavedAddresses(response.data || []);
+      } catch (err) {
+        setError("Failed to load addresses");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAddresses();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -53,181 +67,199 @@ export default function UserProfileAddressClient() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSavedAddresses((prev) => [...prev, formData]);
+  const handleSaveAddress = async () => {
+    try {
+      const payload = {
+        ...formData,
+        addressId: editingAddressId,
+        defaultAddress: formData.isDefault,
+      };
+
+      const response = await addOrEditUserAddress(payload);
+      if (response.success) {
+        const updatedAddresses = editingAddressId
+          ? savedAddresses.map((addr) =>
+              addr.address_id === editingAddressId ? response.data : addr
+            )
+          : [...savedAddresses, response.data];
+
+        setSavedAddresses(updatedAddresses);
+        resetForm();
+      }
+    } catch (err) {
+      setError("Failed to save address");
+    }
+  };
+
+  const handleEditAddress = (address) => {
     setFormData({
-      firstName: "",
-      secondName: "",
-      mobile: "",
-      email: "",
-      pinCode: "",
-      address: "",
-      locality: "",
-      city: "",
+      addressLine1: address.addressLine1,
+      addressLine2: address.addressLine2,
+      state: address.state,
+      country: address.country,
+      pincode: address.pincode,
+      addressName: address.addressName,
+      isDefault: address.isDefault,
+    });
+    setEditingAddressId(address.address_id);
+    setIsEditing(true);
+  };
+
+  const handleDeleteAddress = async (addressId) => {
+    try {
+      await deleteUserAddress({ addressId });
+      setSavedAddresses((prev) =>
+        prev.filter((addr) => addr.address_id !== addressId)
+      );
+    } catch (err) {
+      setError("Failed to delete address");
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      addressLine1: "",
+      addressLine2: "",
       state: "",
-      type: "Home",
+      country: "",
+      pincode: "",
+      addressName: "Home",
       isDefault: false,
     });
+    setEditingAddressId(null);
     setIsEditing(false);
   };
 
-  const toggleEdit = () => {
-    setIsEditing(!isEditing);
-  };
+  const handleOpenDialog = () => setOpenDialog(true);
+  const handleCloseDialog = () => setOpenDialog(false);
 
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  const handleSaveCustomAddress = () => {
-    if (customAddressType.trim() !== "") {
-      setFormData((prev) => ({ ...prev, type: customAddressType }));
-    }
-    setCustomAddressType("");
-    setOpenDialog(false);
-  };
+  if (loading) return <Typography>Loading addresses...</Typography>;
+  if (error) return <Typography color="error">{error}</Typography>;
 
   return (
     <Box sx={{ maxWidth: 600, mx: "auto", p: 2 }}>
-      {savedAddresses.length > 0 && (
-        <Accordion sx={{ mb: 3 }}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Saved Addresses</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Stack spacing={2}>
-              {savedAddresses.map((address, index) => (
-                <Paper key={index} sx={{ p: 2 }}>
-                  <Typography variant="subtitle1" gutterBottom>
-                    {address.type} {address.isDefault && "(Default)"}
-                  </Typography>
-                  <Typography>
-                    {address.firstName} {address.secondName}
-                  </Typography>
-                  <Typography>{address.address}</Typography>
-                  <Typography>
-                    {address.locality}, {address.city}, {address.state} - {address.pinCode}
-                  </Typography>
-                </Paper>
-              ))}
-            </Stack>
-          </AccordionDetails>
-        </Accordion>
-      )}
+      <Accordion sx={{ mb: 3 }}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>Saved Addresses ({savedAddresses.length})</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Stack spacing={2}>
+            {savedAddresses.map((address) => (
+              <Paper
+                key={address.address_id}
+                sx={{ p: 2, position: "relative" }}
+              >
+                <IconButton
+                  sx={{ position: "absolute", top: 8, right: 8 }}
+                  onClick={() => handleDeleteAddress(address.address_id)}
+                  aria-label="delete address"
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+                <IconButton
+                  sx={{ position: "absolute", top: 8, right: 40 }}
+                  onClick={() => handleEditAddress(address)}
+                  aria-label="edit address"
+                >
+                  <EditIcon fontSize="small" />
+                </IconButton>
+                <Typography variant="subtitle1" gutterBottom>
+                  {address.addressName} {address.isDefault && "(Default)"}
+                </Typography>
+                <Typography>{address.addressLine1}</Typography>
+                {address.addressLine2 && (
+                  <Typography>{address.addressLine2}</Typography>
+                )}
+                <Typography>
+                  {address.state}, {address.country} - {address.pincode}
+                </Typography>
+              </Paper>
+            ))}
+          </Stack>
+        </AccordionDetails>
+      </Accordion>
 
       <Paper sx={{ p: 3, borderRadius: 2, position: "relative" }}>
         <IconButton
           sx={{ position: "absolute", top: 16, right: 16 }}
-          onClick={toggleEdit}
+          onClick={resetForm}
+          aria-label="reset form"
         >
           {isEditing ? <CloseIcon /> : <EditIcon />}
         </IconButton>
 
-        <form onSubmit={handleSubmit}>
+        <Box>
           <Typography variant="h6" gutterBottom>
-            Contact Details
+            {editingAddressId ? "Edit Address" : "Add New Address"}
           </Typography>
-          <Box sx={{ display: "grid", gap: 2, gridTemplateColumns: { sm: "1fr 1fr" } }}>
-            <TextField
-              label="First Name"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              required
-              fullWidth
-              disabled={!isEditing}
-            />
-            <TextField
-              label="Second Name"
-              name="secondName"
-              value={formData.secondName}
-              onChange={handleChange}
-              required
-              fullWidth
-              disabled={!isEditing}
-            />
-          </Box>
-          <TextField
-            label="Mobile Number"
-            name="mobile"
-            value={formData.mobile}
-            onChange={handleChange}
-            required
-            fullWidth
-            sx={{ mt: 2 }}
-            disabled={!isEditing}
-          />
-          <TextField
-            label="Email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            fullWidth
-            sx={{ mt: 2 }}
-            disabled={!isEditing}
-          />
 
-          <Typography variant="h6" sx={{ mt: 3, mb: 2 }}>
-            Address
-          </Typography>
           <TextField
-            label="Pin code"
-            name="pinCode"
-            value={formData.pinCode}
-            onChange={handleChange}
-            required
-            fullWidth
-            disabled={!isEditing}
-          />
-          <TextField
-            label="Address (House No., Building, Street, Area)"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            required
-            fullWidth
-            multiline
-            rows={2}
-            sx={{ mt: 2 }}
-            disabled={!isEditing}
-          />
-          <TextField
-            label="Locality/Town"
-            name="locality"
-            value={formData.locality}
+            label="Address Line 1"
+            name="addressLine1"
+            value={formData.addressLine1}
             onChange={handleChange}
             required
             fullWidth
             sx={{ mt: 2 }}
-            disabled={!isEditing}
           />
-          <Box sx={{ display: "grid", gap: 2, gridTemplateColumns: { sm: "1fr 1fr" }, mt: 2 }}>
-            <TextField
-              label="City/District"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-              required
-              fullWidth
-              disabled={!isEditing}
-            />
+          <TextField
+            label="Address Line 2"
+            name="addressLine2"
+            value={formData.addressLine2}
+            onChange={handleChange}
+            fullWidth
+            sx={{ mt: 2 }}
+          />
+          <Box
+            sx={{
+              display: "grid",
+              gap: 2,
+              gridTemplateColumns: "1fr 1fr",
+              mt: 2,
+            }}
+          >
             <TextField
               label="State"
               name="state"
               value={formData.state}
               onChange={handleChange}
               required
-              fullWidth
-              disabled={!isEditing}
+            />
+            <TextField
+              label="Country"
+              name="country"
+              value={formData.country}
+              onChange={handleChange}
+              required
             />
           </Box>
+          <TextField
+            label="Postal Code"
+            name="pincode"
+            value={formData.pincode}
+            onChange={handleChange}
+            required
+            fullWidth
+            sx={{ mt: 2 }}
+          />
+
+          <Typography sx={{ mt: 2 }}>Address Type</Typography>
+          <RadioGroup
+            row
+            name="addressName"
+            value={formData.addressName}
+            onChange={handleChange}
+            sx={{ mb: 2 }}
+          >
+            <FormControlLabel value="Home" control={<Radio />} label="Home" />
+            <FormControlLabel value="Work" control={<Radio />} label="Work" />
+            <FormControlLabel
+              value="Other"
+              control={<Radio />}
+              label="Other"
+              onClick={handleOpenDialog}
+            />
+          </RadioGroup>
 
           <FormControlLabel
             control={
@@ -235,39 +267,45 @@ export default function UserProfileAddressClient() {
                 checked={formData.isDefault}
                 onChange={handleChange}
                 name="isDefault"
-                disabled={!isEditing}
               />
             }
-            label="Make this my default address"
-            sx={{ mt: 2 }}
+            label="Set as default address"
+            sx={{ mt: 1 }}
           />
 
-          <Typography sx={{ mt: 2 }}>Save address as</Typography>
-          <RadioGroup
-            row
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            sx={{ mb: 3 }}
+          <Button
+            onClick={handleSaveAddress}
+            variant="contained"
+            fullWidth
+            sx={{ mt: 3 }}
           >
-            <FormControlLabel value="Home" control={<Radio />} label="Home" disabled={!isEditing} />
-            <FormControlLabel value="Work" control={<Radio />} label="Work" disabled={!isEditing} />
-            <FormControlLabel
-              value="Other"
-              control={<Radio />}
-              label="Other"
-              disabled={!isEditing}
-              onClick={handleOpenDialog}
-            />
-          </RadioGroup>
-
-          {isEditing && (
-            <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
-              SAVE DETAILS
-            </Button>
-          )}
-        </form>
+            {editingAddressId ? "UPDATE ADDRESS" : "SAVE ADDRESS"}
+          </Button>
+        </Box>
       </Paper>
+
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Custom Address Type</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Custom Address Name"
+            fullWidth
+            value={formData.addressName}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                addressName: e.target.value,
+              }))
+            }
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={handleCloseDialog}>Save</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

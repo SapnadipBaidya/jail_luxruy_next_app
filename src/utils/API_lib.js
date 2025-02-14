@@ -10,10 +10,12 @@ const getApiUrl = (path) => {
 
 // Helper to validate and refresh tokens
 const validateAndRefreshTokens = async () => {
-  const cookieStore =await cookies();
+  const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken")?.value;
   const refreshToken = cookieStore.get("refreshToken")?.value;
-  const lastUpdate = parseInt(cookieStore.get("lastTokenUpdate")?.value || Date.now());
+  const lastUpdate = parseInt(
+    cookieStore.get("lastTokenUpdate")?.value || Date.now()
+  );
 
   // If no tokens are found, throw an error
   if (!accessToken || !refreshToken) {
@@ -35,7 +37,8 @@ const validateAndRefreshTokens = async () => {
         throw new Error("Failed to refresh token");
       }
 
-      const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await refreshResponse.json();
+      const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
+        await refreshResponse.json();
 
       // Update tokens in cookies
       cookieStore.set("accessToken", newAccessToken, {
@@ -121,13 +124,13 @@ export const fetchUserWishlist = async () => {
 };
 
 // Cart Actions
-export const addToCart = async (productDetailsId, productId,quantity) => {
+export const addToCart = async (productDetailsId, productId, quantity) => {
   "use server";
   return serverApiRequest("/api/cart/addOrEditCart", "POST", {
     payloadObj: {
       productsDetailsId: productDetailsId,
       product_id: productId,
-      quantity:quantity
+      quantity: quantity,
     },
   });
 };
@@ -137,10 +140,9 @@ export const fetchUserCart = async () => {
   return serverApiRequest("/api/cart/fetchUserCart", "POST");
 };
 
-
-export const deleteFromUserCart = async (productId,productDetailsId ) => {
+export const deleteFromUserCart = async (productId, productDetailsId) => {
   "use server";
-  console.log("deleteFromUserCart")
+  console.log("deleteFromUserCart");
   return serverApiRequest("/api/cart/deleteFromUserCart", "POST", {
     payloadObj: {
       productsDetailsId: productDetailsId,
@@ -148,3 +150,47 @@ export const deleteFromUserCart = async (productId,productDetailsId ) => {
     },
   });
 };
+
+// User Address Actions
+export const addOrEditUserAddress = async ({
+  addressId,
+  addressLine1,
+  addressLine2,
+  state,
+  country,
+  pincode,
+  defaultAddress,
+  addressName,
+}) => {
+  "use server";
+  return serverApiRequest("/api/users/addOrEditUserAddress", "POST", {
+    payloadObj: {
+      addressId,
+      addressLine1,
+      addressLine2,
+      state,
+      country,
+      pincode,
+      defaultAddress,
+      addressName,
+    },
+  });
+};
+
+export const getUserAddresses = async () => {
+  "use server";
+  return serverApiRequest("/api/users/getUserAddresses", "POST");
+};
+
+export const deleteUserAddress = async ({ addressId }) => {
+  "use server";
+  console.log("deleteFromUserCart");
+  return serverApiRequest("/api/users/deleteUserAddress", "POST", {
+    payloadObj: {
+      addressId,
+    },
+  });
+};
+
+
+//addOrEditUserAddress,getUserAddresses,deleteUserAddress
