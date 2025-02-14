@@ -14,11 +14,31 @@ const GridWrapperComponent = styled("div")(({ theme }) => ({
   justifyContent: "space-evenly",
   alignItems:"flex-start",
   
+  [theme.breakpoints.down("xl")]: {
+   
+    
+  },
 
+  [theme.breakpoints.down("lg")]: {
+    width: "100vw",
+    padding: "1rem",
+    justifyContent: "center",
+    backgroundColor:"black",
+    
+  },
   [theme.breakpoints.down("md")]: {
     width: "100vw",
     padding: "1rem",
     justifyContent: "center",
+    backgroundColor:"blue",
+    
+  },
+  [theme.breakpoints.down("sm")]: {
+    width: "100vw",
+    padding: "1rem",
+    justifyContent: "center",
+    backgroundColor:"green",
+    
   },
 }));
 
