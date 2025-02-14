@@ -58,7 +58,7 @@ const VideoDescContainer = styled(Box)(({ theme ,ismobile}) => ({
 
 const TextContainer = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
-  fontSize: "1.6rem",
+  fontSize: theme.typography.pxToRem(20),
   lineHeight: "1.6",
   textAlign: "justify",
   marginBottom: theme.spacing(2),

@@ -12,16 +12,16 @@ const NoDataContainer = styled(Container)(({ theme }) => ({
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  height: "60vh",
+  height: theme.typography.pxToRem(500),
   textAlign: "center",
 }));
 
 const NoDataCard = styled(Box)(({ theme }) => ({
   background: "rgba(255, 255, 255, 0.1)",
   backdropFilter: "blur(10px)",
-  borderRadius: "12px",
+  borderRadius: theme.typography.pxToRem(12),
   padding: theme.spacing(4),
-  maxWidth: "500px",
+  maxWidth: theme.typography.pxToRem(500),
   boxShadow: `0 0vh 2vh 0.1vh ${theme.palette.secondary.main}`,
   border: `1px solid ${theme.palette.divider}`,
   transition: "transform 0.3s ease-in-out",

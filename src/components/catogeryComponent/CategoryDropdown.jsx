@@ -24,6 +24,7 @@ import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { AppContext } from "@/context/applicationContext";
 
+
 const LinkBehavior = forwardRef(function LinkBehavior(props, ref) {
   const { href, ...other } = props;
   return <NextLink ref={ref} href={href} {...other} />;
@@ -102,14 +103,14 @@ const AccordionDetailsStyled = styled(AccordionDetails)(({ theme }) => ({
 }));
 
 const iconMap = {
-  bag: <ShoppingBagIcon sx={{ fontSize: "24px" }} />,
-  belt: <WorkOutlineIcon sx={{ fontSize: "24px" }} />,
-  duffleBag: <BusinessCenterIcon sx={{ fontSize: "24px" }} />,
-  gloves: <HandshakeIcon sx={{ fontSize: "24px" }} />,
-  jacket: <CheckroomIcon sx={{ fontSize: "24px" }} />,
-  shoes: <StoreIcon sx={{ fontSize: "24px" }} />,
-  trolley: <LuggageIcon sx={{ fontSize: "24px" }} />,
-  wallet: <AccountBalanceWalletIcon sx={{ fontSize: "24px" }} />,
+  bags: <ShoppingBagIcon sx={{ fontSize: "24px" }} />,
+  belts: <WorkOutlineIcon sx={{ fontSize: "24px" }} />,
+  duffle_bags: <BusinessCenterIcon sx={{ fontSize: "24px" }} />,
+  wallets: <HandshakeIcon sx={{ fontSize: "24px" }} />,
+  jackets: <CheckroomIcon sx={{ fontSize: "24px" }} />,
+  gloves: <StoreIcon sx={{ fontSize: "24px" }} />,
+  shoes: <LuggageIcon sx={{ fontSize: "24px" }} />,
+  trolley: <AccountBalanceWalletIcon sx={{ fontSize: "24px" }} />,
 };
 
 const CategoryDropdown = () => {
@@ -148,7 +149,7 @@ const CategoryDropdown = () => {
           
           <AccordionDetailsStyled>
             {categoryItems?.map((category, index) => {
-              const icon = iconMap[category?.slug] || <ShoppingBagIcon sx={{ fontSize: "24px" }} />;
+              const icon = iconMap[category.category_mapping] || <ShoppingBagIcon sx={{ fontSize: "24px" }} />;
               return (
                 <MenuItemStyled
                   key={index}
@@ -176,7 +177,7 @@ const CategoryDropdown = () => {
             transformOrigin={{ vertical: "top", horizontal: "left" }}
           >
             {categoryItems?.map((category, index) => {
-              const icon = iconMap[category?.slug] || <ShoppingBagIcon sx={{ fontSize: "24px" }} />;
+              const icon = iconMap[category.category_mapping] || <ShoppingBagIcon sx={{ fontSize: "24px" }} />;
               return (
                 <MenuItemStyled
                   key={index}
