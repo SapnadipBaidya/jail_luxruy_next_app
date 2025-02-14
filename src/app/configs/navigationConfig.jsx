@@ -42,7 +42,7 @@ export const navigationConfig = [
   {
     label:"About Us",
     text:"About Us",
-    path: '/about-us',
+    path: 'about',
     component: 'AboutUs',
     render:true
   },
