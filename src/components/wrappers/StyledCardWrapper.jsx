@@ -10,53 +10,65 @@ import CartBtn from "../buttons/cartBtn.jsx";
 import TruncatedText from "./TruncatedText.jsx";
 import DeleteBtn from "../buttons/deleteBtn.jsx";
 
+// ── Custom Hook: useDeviceType ─────────────────────────────────────────
 const useDeviceType = () => {
   const isTouchDevice = useMediaQuery("(hover: none) and (pointer: coarse)");
   return isTouchDevice ? "touch" : "pc";
 };
 
+// ── Styled Components ──────────────────────────────────────────────────
+
 const StyledCard = styled(Card, {
   shouldForwardProp: (prop) => prop !== "deviceType",
 })(({ theme, deviceType }) => ({
-  margin: "0.1vw",
-  minWidth: `clamp(${theme.typography.pxToRem(200)}, 15vw, ${theme.typography.pxToRem(300)})`, // Responsive min-width
-  minHeight:`clamp(${theme.typography.pxToRem(250)}, 40vh, ${theme.typography.pxToRem(400)})`, // Responsive min-height
-  maxWidth: "50vh",
-  maxHeight: "65vh",
+  margin: "1rem", // Use rem for consistent spacing
+  width: "25rem", // Base width
+  height: "18rem", // Base height
+  maxWidth: "100%", // Ensure it doesn't overflow on small screens
   position: "relative",
   overflow: "hidden",
-  backgroundColor: theme.custom?.cardBg,
-  borderRadius: "2vh",
-  transition:
-    "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out !important",
+  backgroundColor: theme.custom?.cardBg || "#ffffff", // Fallback color
+  borderRadius: "1rem", // Slightly rounded corners
+  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "flex-start",
   cursor: "pointer",
-  willChange: "transform, box-shadow, opacity", // Hint to the browser for optimization
-
+  willChange: "transform, box-shadow, opacity",
   "&:hover": {
-    boxShadow: "0 1vh 1.7vw #000000", // Adjusted shadow for smoother transition
+    transform: "scale(1.02)", // Slight scale-up on hover
+    boxShadow: theme.shadows[6], // Use theme shadow for consistency
     ...(deviceType === "pc" && {
       "& .hover-content": {
         opacity: 1,
-        transform: "translateY(0) translateZ(0)", // Force GPU acceleration
+        transform: "translateY(0)",
       },
       "& .product-info": {
         opacity: 0,
       },
     }),
   },
-
+  // For touch devices, make the hover content always visible
+  ...(deviceType === "touch" && {
+    "& .hover-content": {
+      opacity: 1,
+      transform: "translateY(0)",
+    },
+  }),
   // Media queries for responsiveness
-  "@media (max-width: 768px)": {
-    minWidth: "clamp(150px, 40vw, 200px)", // Adjust for tablets
-    minHeight: "clamp(250px, 50vh, 300px)",
+  [theme.breakpoints.down('lg')]: {
+    width: "18rem",
+    height: "28rem",
   },
-  "@media (max-width: 480px)": {
-    minWidth: "clamp(120px, 80vw, 150px)", // Adjust for mobile
-    minHeight: "clamp(200px, 60vh, 250px)",
+  [theme.breakpoints.down('md')]: {
+    width: "22rem",
+    height: "19.5rem",
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: "100%",
+    height: "14.8rem",
+    margin: "0.5rem 0",
   },
 }));
 
@@ -65,53 +77,83 @@ const CardActionsContainer = styled("div")(({ theme }) => ({
   flexDirection: "row",
   justifyContent: "space-evenly",
   alignItems: "center",
-  margin: "1vh",
-  width:"9vw"
+  margin: "1rem 0",
+  width: "100%", // Full width for better alignment
+  padding: "0 1rem", // Add padding for spacing
 }));
 
 const ProductImage = styled("img")(({ theme }) => ({
-  margin: theme.typography.pxToRem(10),
-  minWidth: `clamp(${theme.typography.pxToRem(300)}, 10vw, ${theme.typography.pxToRem(150)})`, // Responsive min-width
-  maxWidth: `clamp(${theme.typography.pxToRem(350)}, 15.5vw, ${theme.typography.pxToRem(200)})`, // Responsive max-width
-  minHeight: `clamp(${theme.typography.pxToRem(260)}, 25vh, ${theme.typography.pxToRem(250)})`, // Responsive min-height
-  maxHeight: "10vh",
-  borderRadius: "1vh",
-  transition: "transform 0.3s ease-in-out !important",
+  width: "100%", // Full width to maintain responsiveness
+  height: "14rem", // Fixed height for consistency
+  objectFit: "cover", // Ensure the image covers the area without distortion
+  borderRadius: "1rem 1rem 0 0", // Rounded corners only at the top
+  transition: "transform 0.3s ease-in-out",
   "&:hover": {
-    transform: "scale(110%)",
+    transform: "scale(1.05)", // Subtle zoom effect on hover
   },
-  // border: "solid 2px red",
+  [theme.breakpoints.down('lg')]: {
+    height: "16rem",
+  },
+  [theme.breakpoints.down('md')]: {
+    height: "14rem",
+  },
+  [theme.breakpoints.down('sm')]: {
+    height: "10rem",
+  },
 }));
 
 const ProductInfo = styled(Box)(({ theme }) => ({
-  padding: "1vh",
+  
+  backgroundColor:"red",
   opacity: 1,
   transition: "opacity 0.3s ease-in-out",
   display: "flex",
   flexDirection: "column",
   justifyContent: "flex-start",
-  // border:"solid 2px blue",
-  minWidth:"100%"
+  width: "100%", // Full width for better alignment
+   // Center-align text
+  "& .product-name": {
+    fontSize: "1.2rem",
+    fontWeight: 600,
+    marginBottom: "0.5rem",
+    color: theme.palette.text.primary,
+  },
+  "& .product-price": {
+    fontSize: "1.1rem",
+    fontWeight: 500,
+    color: theme.palette.text.secondary,
+  },
+  [theme.breakpoints.down('lg')]: {
+    height: "16rem",
+  },
+  [theme.breakpoints.down('md')]: {
+    height: "3rem",
+  },
+  [theme.breakpoints.down('sm')]: {
+    height: "3rem",
+  },
 }));
 
-const HoverContent = styled(Box)({
+const HoverContent = styled(Box)(({ theme }) => ({
   position: "absolute",
   bottom: "0",
   width: "100%",
   color: "#fff",
   textAlign: "center",
-  padding: "10px",
-  opacity: 0,
-  transform: "translateY(100%)",
+  
+  opacity: 0, // Hidden by default on PC
+  transform: "translateY(100%)", // Moved down by default on PC
   transition: "opacity 0.3s ease-in-out, transform 0.3s ease-in-out",
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-evenly",
-  alignItems:"center"
-});
-
+  alignItems: "center",
+  backgroundColor: "rgba(0, 0, 0, 0.7)", // Semi-transparent background
+  borderRadius: "0 0 1rem 1rem", // Rounded corners at the bottom
+}));
+// ── Main Component ───────────────────────────────────────────────────
 const StyledCardWrapper = React.memo(
-  ({ type, item, accessToken, setWishlistData,setWishlistLoading }) => {
+  ({ type, item, accessToken, setWishlistData, setWishlistLoading }) => {
     const pathname = usePathname();
     const router = useRouter();
     const [show, setShow] = useState(false);

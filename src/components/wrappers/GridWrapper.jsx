@@ -8,7 +8,7 @@ import NoDataComponent from "./noDataComponent";
 
 const GridWrapperComponent = styled("div")(({ theme }) => ({
   minWidth:"70vw",
-  padding: "2rem",
+  padding: "1rem",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-evenly",

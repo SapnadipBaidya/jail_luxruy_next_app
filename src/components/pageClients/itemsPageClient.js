@@ -104,6 +104,20 @@ export default function ItemsPageClient({
     [userInput]
   );
 
+   const useDeviceType = () => {
+      const isTouchDevice = useMediaQuery('(hover: none) and (pointer: coarse)');
+      const isIpadPro = useMediaQuery(
+        '(min-width: 1024px) and (max-width: 1366px) and (orientation: portrait), (min-width: 1366px) and (max-width: 1024px) and (orientation: landscape)'
+      );
+  
+      if (isIpadPro) {
+        return 'touch';
+      }
+  
+      return isTouchDevice ? 'touch' : 'pc';
+    };
+    const deviceType = useDeviceType();
+
   const updateFilters = useCallback(
     debounce((newFilters, newPage, sortBy, sortOrder) => {
       const queryString = createQueryString(
@@ -172,7 +186,7 @@ export default function ItemsPageClient({
     <PageContainer>
       {cardName && <PageHeaderComp>{cardName.toUpperCase()}</PageHeaderComp>}
       <ContentContainer isMobileOrTablet={isMobileOrTablet}>
-        {isMobileOrTablet ? (
+        {deviceType === 'touch' ? (
           <FilterDrawerMobile
             selectedFilters={selectedFilters}
             setSelectedFilters={setSelectedFilters}
@@ -195,7 +209,7 @@ export default function ItemsPageClient({
         )}
 
         <MainContent>
-          {isMobileOrTablet ? (
+          {deviceType === 'touch' ? (
             <SortFilterComponentMobile
               setShowFilters={setShowFilters}
               setSortDetail={setSortDetail}
