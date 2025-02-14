@@ -62,8 +62,8 @@ const StyledCard = styled(Card, {
     height: "28rem",
   },
   [theme.breakpoints.down('md')]: {
-    width: "16rem",
-    height: "26rem",
+    width: "22rem",
+    height: "19.5rem",
   },
   [theme.breakpoints.down('sm')]: {
     width: "100%",
@@ -127,7 +127,7 @@ const ProductInfo = styled(Box)(({ theme }) => ({
     height: "16rem",
   },
   [theme.breakpoints.down('md')]: {
-    height: "14rem",
+    height: "3rem",
   },
   [theme.breakpoints.down('sm')]: {
     height: "3rem",
