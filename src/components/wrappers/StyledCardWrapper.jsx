@@ -10,6 +10,8 @@ import CartBtn from "../buttons/cartBtn.jsx";
 import DeleteBtn from "../buttons/deleteBtn.jsx";
 
 // ── Custom Hook: useDeviceType ─────────────────────────────────────────
+const pixelToRem = (px, base = 16) => `${px / base}rem`;
+
 const useDeviceType = () => {
   const isTouchDevice = useMediaQuery("(hover: none) and (pointer: coarse)");
   return isTouchDevice ? "touch" : "pc";
@@ -64,7 +66,7 @@ const StyledCard = styled(Card, {
   },
   [theme.breakpoints.down('lg')]: {
     width: "18rem",
-    height: "25rem",
+    height: "25.2rem",
   },
   [theme.breakpoints.down('md')]: {
     width: "19rem",
@@ -111,19 +113,22 @@ const ProductImage = styled("img")(({ theme }) => ({
 }));
 
 const ProductInfo = styled(Box)(({ theme }) => ({
+  paddingLeft:"0.2rem",
   opacity: 1, // Always visible
   transition: "opacity 0.3s ease-in-out",
   display: "flex",
+  
   flexDirection: "column",
   justifyContent: "flex-start",
   width: "100%", // Full width for better alignment
   "& .product-name": {
-    fontSize: "1.2rem", // Base font size
+    fontSize: "1rem", // Base font size
+    fontWeight:"bold",
     
-    marginBottom: "0.5rem",
     color: theme.palette.text.primary,
     [theme.breakpoints.down("lg")]: {
       fontSize: "1.1rem", // Smaller font size for large screens
+      
     },
     [theme.breakpoints.down("md")]: {
       fontSize: "1rem", // Smaller font size for medium screens
@@ -134,7 +139,7 @@ const ProductInfo = styled(Box)(({ theme }) => ({
   },
   "& .product-price": {
     fontSize: "1.1rem", // Base font size
-    fontWeight: 500,
+    fontWeight:"bold",
     color: theme.palette.text.secondary,
     [theme.breakpoints.down("lg")]: {
       fontSize: "1rem", // Smaller font size for large screens
