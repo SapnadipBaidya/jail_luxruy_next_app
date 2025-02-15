@@ -329,6 +329,7 @@ const SizeSelector = React.memo(({ sizes, selectedSize, onSelect }) => (
           onClick={() => onSelect(size)}
           aria-label={`Select size ${size.sizeName}`}
           aria-pressed={selectedSize === size.sizeId}
+          disabled={!size?.inStock}
         >
           {size.sizeName}
         </SizeButton>
