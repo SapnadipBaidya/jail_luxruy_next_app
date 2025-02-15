@@ -14,6 +14,7 @@ import ChooseAddress from "../wrappers/chooseAddress";
 const CheckoutContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
+  backgroundColor:"yellow",
   padding: theme.spacing(3),
   gap: theme.spacing(3),
   [theme.breakpoints.up("md")]: {
@@ -23,10 +24,11 @@ const CheckoutContainer = styled(Box)(({ theme }) => ({
 }));
 
 const CartSection = styled(Box)(({ theme }) => ({
-  width: theme.typography.pxToRem(250),
+  
+  backgroundColor:"green",
   marginLeft: "0",
-  [theme.breakpoints.up("md")]: {
-    width: "65%",
+  [theme.breakpoints.up("sm")]: {
+    width: "100%",
   },
 }));
 
