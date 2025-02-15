@@ -1,13 +1,12 @@
 "use client";
 
 import PropTypes from "prop-types";
-import { Card, Box, Fade, Slide, useMediaQuery,Typography } from "@mui/material";
+import { Card, Box, Fade, Slide, useMediaQuery, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import WishListButton from "../buttons/wishListBtn.jsx";
 import CartBtn from "../buttons/cartBtn.jsx";
-import TruncatedText from "./TruncatedText.jsx";
 import DeleteBtn from "../buttons/deleteBtn.jsx";
 
 // ── Custom Hook: useDeviceType ─────────────────────────────────────────
@@ -19,8 +18,8 @@ const useDeviceType = () => {
 // ── Styled Components ──────────────────────────────────────────────────
 
 const StyledCard = styled(Card, {
-  shouldForwardProp: (prop) => prop !== "deviceType",
-})(({ theme, deviceType }) => ({
+  shouldForwardProp: (prop) => prop !== "deviceType" && prop !== "isProduct",
+})(({ theme, deviceType, isProduct }) => ({
   margin: "1rem", // Use rem for consistent spacing
   width: "27rem", // Base width
   height: "32.5rem", // Base height
@@ -36,21 +35,23 @@ const StyledCard = styled(Card, {
   justifyContent: "flex-start",
   cursor: "pointer",
   willChange: "transform, box-shadow, opacity",
-  "&:hover": {
-    transform: "scale(1.02)", // Slight scale-up on hover
-    boxShadow: theme.shadows[6], // Use theme shadow for consistency
-    ...(deviceType === "pc" && {
-      "& .hover-content": {
-        opacity: 1,
-        transform: "translateY(0)",
-      },
-      "& .product-info": {
-        opacity: 0,
-      },
-    }),
-  },
+  ...(isProduct && {
+    "&:hover": {
+      transform: "scale(1.02)", // Slight scale-up on hover
+      boxShadow: theme.shadows[6], // Use theme shadow for consistency
+      ...(deviceType === "pc" && {
+        "& .hover-content": {
+          opacity: 1,
+          transform: "translateY(0)",
+        },
+        "& .product-info": {
+          opacity: 0,
+        },
+      }),
+    },
+  }),
   // For touch devices, make the hover content always visible
-  ...(deviceType === "touch" && {
+  ...(deviceType === "touch" && isProduct && {
     "& .hover-content": {
       opacity: 1,
       transform: "translateY(0)",
@@ -60,17 +61,14 @@ const StyledCard = styled(Card, {
   [theme.breakpoints.down('xl')]: {
     width: "25rem", // Base width
     height: "18rem",
-    
   },
   [theme.breakpoints.down('lg')]: {
     width: "18rem",
     height: "25rem",
-    
   },
   [theme.breakpoints.down('md')]: {
     width: "19rem",
     height: "24.3rem",
-    
   },
   [theme.breakpoints.down('sm')]: {
     width: "100%",
@@ -113,18 +111,15 @@ const ProductImage = styled("img")(({ theme }) => ({
 }));
 
 const ProductInfo = styled(Box)(({ theme }) => ({
-  
-  backgroundColor:"red",
-  opacity: 1,
+  opacity: 1, // Always visible
   transition: "opacity 0.3s ease-in-out",
   display: "flex",
   flexDirection: "column",
   justifyContent: "flex-start",
   width: "100%", // Full width for better alignment
-   // Center-align text
-   "& .product-name": {
+  "& .product-name": {
     fontSize: "1.2rem", // Base font size
-    fontWeight: 600,
+    
     marginBottom: "0.5rem",
     color: theme.palette.text.primary,
     [theme.breakpoints.down("lg")]: {
@@ -167,8 +162,7 @@ const HoverContent = styled(Box)(({ theme }) => ({
   alignItems: "center", // Vertically center items
   backgroundColor: "rgba(0, 0, 0, 0.7)", // Semi-transparent background
   borderRadius: "0 0 1rem 1rem", // Rounded corners at the bottom
-  paddingLeft:"0.5rem", // Add padding for spacing
-  
+  paddingLeft: "0.5rem", // Add padding for spacing
 }));
 
 // ── Main Component ───────────────────────────────────────────────────
@@ -189,9 +183,10 @@ const StyledCardWrapper = React.memo(
       item?.product_data?.gallery?.images?.[0] || "/placeholder.jpg";
 
     return (
-      <Slide direction="up" in={show} mountOnEnter unmountOnExit key={item?.product_id+item?.product_detail_id+Date.now()}>
+      <Slide direction="up" in={show} mountOnEnter unmountOnExit key={item?.product_id + item?.product_detail_id + Date.now()}>
         <StyledCard
           deviceType={deviceType}
+          isProduct={type === "Product"}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -205,20 +200,20 @@ const StyledCardWrapper = React.memo(
           </Fade>
 
           <ProductInfo className="product-info">
-          <Typography variant="body1" >
-            {item?.product_name || "No Name"}
-          </Typography>
-          <Typography variant="body1" >
-    ₹{item?.product_data?.price || "N/A"}
-  </Typography>
+            <Typography variant="body1" className="product-name">
+              {item?.product_name || "No Name"}
+            </Typography>
+            <Typography variant="body1" className="product-price">
+              ₹{item?.product_data?.price || "N/A"}
+            </Typography>
           </ProductInfo>
 
           {type === "Product" ? (
-            <HoverContent className="hover-content" >
+            <HoverContent className="hover-content">
               <Typography className="viewProduct" sx={{ whiteSpace: "nowrap", marginRight: "1rem" }}>
-                View Product 
+                View Product
               </Typography>
-              <WishListButton item={item} backgroundColor="yellow"/>
+              <WishListButton item={item} backgroundColor="yellow" />
             </HoverContent>
           ) : (
             // For non-product types, show Cart and Delete buttons.
