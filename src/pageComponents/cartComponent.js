@@ -394,8 +394,137 @@ export default function CartComponent({
 
             return (
               <CartRow key={i?.product_details?.products_details_id}>
-                {/* Desktop view content remains the same */}
-              </CartRow>
+              <ResponsiveBox sx={{ gap: 1, flexDirection: "column" }}>
+                <ProductImage>
+                  {isGlobalLoading ? (
+                    <Skeleton variant="rectangular" width="100%" height="100%" />
+                  ) : (
+                    <Image
+                      src={i?.gallery_details?.gallary?.images[0]}
+                      alt={i?.product_details?.product_name}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        router.push(
+                          `/item/${i?.product_details?.product_name}?pid=${i?.product_details?.product_id}&pdid=${i?.product_details?.products_details_id}`
+                        );
+                      }}
+                    />
+                  )}
+                </ProductImage>
+                {isGlobalLoading ? (
+                  <Skeleton variant="text" width="80%" height={24} />
+                ) : (
+                  <TruncatedText maxWidth="90%" fontSize="0.5vh">
+                    {i?.product_details?.product_name || "No Name"}
+                  </TruncatedText>
+                )}
+              </ResponsiveBox>
+
+              <ResponsiveBox>
+                {isGlobalLoading ? (
+                  <Skeleton variant="rectangular" width={32} height={32} />
+                ) : (
+                  <SizeBox>
+                    <Typography variant="h6">
+                      {i?.size_details?.size_name}
+                    </Typography>
+                  </SizeBox>
+                )}
+              </ResponsiveBox>
+
+              <ResponsiveBox>
+                {isGlobalLoading ? (
+                  <Skeleton variant="text" width={50} height={24} />
+                ) : (
+                  <Typography variant="h6">
+                    ₹{i?.product_details?.product_price_inr}
+                  </Typography>
+                )}
+              </ResponsiveBox>
+
+              <ResponsiveBox>
+                <NumberControl>
+                  {isGlobalLoading ? (
+                    <Skeleton variant="rectangular" width={20} height={20} />
+                  ) : (
+                    <IconButton
+                      size="small"
+                      disabled={i?.cart_details?.quantity <= 1 || isGlobalLoading}
+                      onClick={() =>
+                        handleQuantityChange(
+                          i?.product_details?.product_id,
+                          i?.product_details?.products_details_id,
+                          -1
+                        )
+                      }
+                    >
+                      <RemoveIcon />
+                    </IconButton>
+                  )}
+                  {isGlobalLoading ? (
+                    <Skeleton variant="rectangular" width={50} height={32} />
+                  ) : (
+                    <NumberQuantity
+                      type="number"
+                      name="number"
+                      value={i?.cart_details?.quantity}
+                      readOnly
+                    />
+                  )}
+                  {isGlobalLoading ? (
+                    <Skeleton variant="rectangular" width={20} height={20} />
+                  ) : (
+                    <IconButton
+                      size="small"
+                      disabled={isGlobalLoading}
+                      onClick={() =>
+                        handleQuantityChange(
+                          i?.product_details?.product_id,
+                          i?.product_details?.products_details_id,
+                          1
+                        )
+                      }
+                    >
+                      <AddOutlinedIcon />
+                    </IconButton>
+                  )}
+                </NumberControl>
+              </ResponsiveBox>
+
+              <ResponsiveBox>
+                {isGlobalLoading ? (
+                  <Skeleton variant="text" width={50} height={24} />
+                ) : (
+                  <Typography variant="h6">
+                  ₹
+                    {(
+                      i?.product_details?.product_price_inr *
+                      i?.cart_details?.quantity
+                    )?.toFixed(2)}
+                  </Typography>
+                )}
+              </ResponsiveBox>
+
+              <ResponsiveBox>
+                {isGlobalLoading ? (
+                  <Skeleton variant="circular" width={32} height={32} />
+                ) : (
+                  <IconButton
+                    size="small"
+                    disabled={isGlobalLoading}
+                    onClick={(e) =>
+                      handleDelete(
+                        i?.product_details?.products_details_id,
+                        i?.product_details?.product_id
+                      )
+                    }
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                )}
+              </ResponsiveBox>
+            </CartRow>
             );
           })}
 
