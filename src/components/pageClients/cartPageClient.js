@@ -186,7 +186,11 @@ export default function CartPageClient() {
         <StyledTypography variant="h6" mt={2}>
         Grand Total: ₹{subTotalData}
         </StyledTypography>
-        <ProceedButton variant="contained" color="primary" fullWidth  disabled={loading}>
+        <ProceedButton variant="contained" color="primary" fullWidth  disabled={loading} onClick={(e)=>{
+          e.preventDefault();
+          e.stopPropagation();
+          router.push("/checkout")
+        }}>
           Proceed to Payment
         </ProceedButton>
         </>

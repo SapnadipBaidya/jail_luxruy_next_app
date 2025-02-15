@@ -211,6 +211,19 @@ export const updateUserData = async ({
   });
 };
 
+export const checkout = async ({
+  name,amount
+ }) => {
+   "use server";
+   console.log("checkout",name,amount);
+   return serverApiRequest("/api/payments/checkout", "POST", {
+     payloadObj: {
+       currency:"INR",
+       name,
+       amount
+     },
+   });
+ };
 
 
 export const logout = async () => {
