@@ -18,8 +18,8 @@ const CartButton = styled(Button)(({ theme }) => ({
   transitionDuration: "0.3s",
   overflow: "hidden",
   position: "relative",
-  maxWidth: "4vh", // Adjusted to make the container thinner
-  maxHeight: "40px",
+  maxWidth: "4vh", 
+  height: "40px",
   padding: "0", // Remove padding to make the container thinner
   border: `solid 0.1vh ${theme.palette.primary.main}`,
   "&:hover": {

@@ -18,9 +18,9 @@ const DeleteButton = styled(Button)(({ theme }) => ({
   transitionDuration: "0.3s",
   overflow: "hidden",
   position: "relative",
-  maxWidth: "50px", // Adjusted to make the container thinner
-  minWidth: "50px", // Ensure the button doesn't shrink further
-  minHeight:"40px",
+  
+  
+  height:"40px",
   padding: "0", // Remove padding to make the container thinner
   border: `solid 0.1vh ${theme.palette.primary.main}`,
   "&:hover": {
