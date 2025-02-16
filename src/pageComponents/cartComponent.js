@@ -52,8 +52,8 @@ const ProductImage = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   flexDirection: "column",
   [theme.breakpoints.down("sm")]: {
-    width: "10vh",
-    height: "10vh",
+    width: "23vw",
+    height: "12vh",
   },
 }));
 
@@ -66,6 +66,12 @@ const SizeBox = styled(Box)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   backgroundColor: "#fff",
+  [theme.breakpoints.down("sm")]: {
+    width: 30,
+    height: 30,
+    marginLeft:"1rem",
+    
+  },
 }));
 
 const HeaderText = styled(Typography)(({ theme }) => ({
@@ -95,6 +101,11 @@ const Image = styled("img")(({ theme }) => ({
 const NumberControl = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
+  backgroundColor:"white",
+  [theme.breakpoints.down("sm")]: {
+    marginLeft:"1rem",
+  },
+
 }));
 
 const NumberQuantity = styled("input")(({ theme }) => ({
@@ -109,10 +120,14 @@ const NumberQuantity = styled("input")(({ theme }) => ({
     "-webkit-appearance": "none",
     margin: 0,
   },
+  [theme.breakpoints.down("sm")]: {
+    width: theme.typography.pxToRem(15),
+  },
 }));
 
 const StyledAccordion = styled(Accordion)(({ theme }) => ({
   backgroundColor: "transparent",
+  
   boxShadow: "none",
   "&:before": {
     display: "none",
@@ -123,12 +138,14 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
 
 const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
   minHeight: "auto",
+  marginTop:"1rem",
   padding: 0,
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
   alignItems: "center",
-  border: "solid 2px red",
+  backgroundColor: "#f5f5f5",
+  
   "& .MuiAccordionSummary-content": {
     margin: 0,
   },
@@ -227,7 +244,7 @@ export default function CartComponent({
             aria-controls={`${panelId}-content`}
             id={`${panelId}-header`}
           >
-            <ResponsiveBox sx={{ gap: 1, flexDirection: "column" }}>
+            <ResponsiveBox sx={{ gap: 1, flexDirection: "row" }}>
               <ProductImage>
                 {isGlobalLoading ? (
                   <Skeleton variant="rectangular" width="100%" height="100%" />
@@ -248,7 +265,7 @@ export default function CartComponent({
               {isGlobalLoading ? (
                 <Skeleton variant="text" width="80%" height={24} />
               ) : (
-                <TruncatedText maxWidth="15vw" fontSize="2vh">
+                <TruncatedText maxWidth="15vw" fontSize="7vh">
                   {item?.product_details?.product_name || "No Name"}
                 </TruncatedText>
               )}
