@@ -79,25 +79,11 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
   borderRadius: "1vh",
   background: theme.custom.cardBg,
   color: theme.custom.primaryButtonFontColor,
+  position: "relative",
   "&:after": {
-    content: '""',
-    width: "0%",
-    height: "100%",
-    background: "#483030",
-    position: "absolute",
-    transition: "all 0.4s ease-in-out",
-    right: 0,
-  },
-  "&:hover::after": {
-    borderRadius: "1vh",
-    right: 0,
-    left: "auto",
-    width: "100%",
-    backgroundColor: theme.palette.ascentColor.main,
-    boxShadow: "0px 0.1vh 3vh 0 rgb(75, 65, 65)",
+    display: "none", // Removes the pseudo-element effect
   },
 }));
-
 const AnimatedIcon = styled(IconButton)(({ theme, iswishlisted }) => ({
   display: "flex",
   alignItems: "center",
@@ -111,7 +97,6 @@ const AnimatedIcon = styled(IconButton)(({ theme, iswishlisted }) => ({
     color: "#f52121",
     animation: iswishlisted ? "wiggle 0.5s ease-in-out" : "none",
   },
-
   "& .inactive": {
     display: iswishlisted ? "none" : "inline-block",
     color: theme.custom.primaryButtonFontColor,
@@ -123,21 +108,7 @@ const AnimatedIcon = styled(IconButton)(({ theme, iswishlisted }) => ({
     "75%": { transform: "rotate(-10deg)" },
   },
   "&:after": {
-    content: '""',
-    width: "0%",
-    height: "100%",
-    background: "#483030",
-    position: "absolute",
-    transition: "all 0.4s ease-in-out",
-    right: 0,
-  },
-  "&:hover::after": {
-    borderRadius: "1vh",
-    right: 0,
-    left: "auto",
-    width: "100%",
-    backgroundColor: theme.palette.ascentColor.main,
-    boxShadow: "0px 0.1vh 3vh 0 rgb(75, 65, 65)",
+    display: "none", // Removes the pseudo-element effect
   },
 }));
 
