@@ -222,9 +222,10 @@ const ProductDetails = ({ data }) => {
         sx={{
           display: "flex",
           alignItems: "center",
+          justifyContent:{ xs: "center", sm: "center",lg:"left" ,md:"left"},
           gap: 2,
           mt: 3,
-          flexDirection: { xs: "column", sm: "row" },
+          flexDirection: { xs: "row", sm: "row" },
         }}
       >
         <StyledIconButton
