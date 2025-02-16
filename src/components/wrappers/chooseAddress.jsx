@@ -17,7 +17,6 @@ const StyledDiv = styled("div")(({ theme }) => ({
   justifyContent: "space-evenly",
   alignItems: "flex-start",
   minHeight: theme.typography.pxToRem(100),
-  backgroundColor:"red",
   padding:"1rem 0 1rem 0",
 }));
 

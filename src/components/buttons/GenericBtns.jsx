@@ -7,7 +7,7 @@ function GenericBtns({ type, btnText, defaultText = "default", executableFunctio
   const ismobile = useMediaQuery(theme.breakpoints.down("sm")); // ✅ Detect Mobile View
 
   // ✅ Adjust Button Size for Different Screens
-  const buttonMinWidth = ismobile ? "100%" : isTablet ? "7vw" : minWidth;
+  const buttonMinWidth = minWidth;
 
   const renderButtonByType = () => {
     switch (type) {
@@ -79,7 +79,7 @@ const StyledButton = styled(Button)(({ theme, minwidth , borderRadius = 10}) => 
 
   // ✅ Tablet View Adjustments
   [theme.breakpoints.down("md")]: {
-    minWidth: "35vw", // ✅ Adjust width for tablets
+    // minWidth: minwidth, // ✅ Adjust width for tablets
     fontSize: theme.typography.pxToRem(12),
     padding: theme.spacing(1, 2),
     maxHeight:theme.typography.pxToRem(40)
@@ -87,7 +87,7 @@ const StyledButton = styled(Button)(({ theme, minwidth , borderRadius = 10}) => 
 
   // ✅ Mobile View Adjustments
   [theme.breakpoints.down("sm")]: {
-    minWidth: "30vw", // ✅ Full width for mobile
+    // minWidth: minwidth, // ✅ Full width for mobile
     fontSize: theme.typography.pxToRem(12),
     padding: theme.spacing(1),
     maxHeight:theme.typography.pxToRem(30)
