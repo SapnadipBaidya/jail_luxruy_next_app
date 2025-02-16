@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import GridWrapper from '../wrappers/GridWrapper';
 import { styled } from '@mui/material';
 const PageHeaderComp = styled("div")(({ theme }) => ({
-    width: "100%",
+
     backgroundColor: theme.custom.banner,
     color: theme.custom.primaryButtonFontColor,
     display: "flex",
@@ -13,6 +13,7 @@ const PageHeaderComp = styled("div")(({ theme }) => ({
     padding: theme.spacing(2),
     fontSize: theme.typography.pxToRem(60),
     fontFamily: "aboreto",
+    minWidth:"100vw"
   }));
 function BestSellerPageClient({ItemsData}) {
     const [itemsArr, setItemsArr] = useState(ItemsData?.data);
@@ -22,17 +23,20 @@ function BestSellerPageClient({ItemsData}) {
           setGridLoading(ItemsData?.loading);
         }, [ItemsData?.loading]);
   return (
-    <div> 
+    <div style={{ display:"flex",justifyContent:"center",alignItems:"center" , flexDirection:"column"}}> 
         <PageHeaderComp>BEST SELLERS</PageHeaderComp>
         {gridLoading ? (
         <div style={{minHeight:"70%", display:"flex",justifyContent:"center",alignItems:"center"}}>  <ThreeDotLoader/></div>
       
       ) : (
-        <GridWrapper
+        <div style={{maxWidth:"80vw"}}>
+           <GridWrapper
           itemsArr={itemsArr}
           type="Product"
           loading={ItemsData?.loading}
         />
+        </div>
+       
       )}</div>
   )
 }
