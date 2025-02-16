@@ -1,10 +1,12 @@
 "use client";
-import { checkout } from '@/utils/API_lib';
-import React, { useEffect, useState } from 'react';
+import { checkout, paymentVerification } from '@/utils/API_lib';
+import React, { useContext, useEffect, useState } from 'react';
 import Script from 'next/script';
 import ThreeDotLoader from '../loaders/threeDotLoader';
+import { AppContext } from '@/context/applicationContext';
 
 function CheckoutPageClient({ onClose }) {
+  const { user } = useContext(AppContext);
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
   const [paymentInitialized, setPaymentInitialized] = useState(false);
 
@@ -16,21 +18,40 @@ function CheckoutPageClient({ onClose }) {
         return;
       }
 
+      console.log("user",user)
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        key: "rzp_test_bpnhkN3Uh0mT0L",
         amount: data.amount,
         currency: "INR",
-        name: "Payment Razorpay",
-        description: "Test Transaction",
+        name: `JAIL LUXURY`,
+        description: `payment from ${user?.email}`,
         order_id: data.id,
-        handler: function (response) {
-          console.log('Payment successful', response);
-          onClose();
+        handler: async (response) => {
+            console.log("checkoutHandler response",response)
+          try {
+            // Verify payment with your backend
+            const verification = await paymentVerification(response);
+            console.log("verification",verification)
+
+            if (verification) {
+            //   setPaymentStatus('success');
+              onClose();
+            } else {
+            //   setPaymentStatus('failed');
+              alert('Payment verification failed');
+            }
+          } catch (err) {
+            console.error('Verification error:', err);
+            setPaymentStatus('failed');
+            alert('Payment verification failed');
+          }
+
+          setPaymentInitialized(false);
         },
         prefill: {
-          name: "Sapnadip Baidya",
-          email: "sapnadip.baidya.official@gmail.com",
-          contact: "8013687055",
+          name: user?.name,
+          email: user?.email,
+          contact: user?.phone,
         },
         theme: {
           color: "#3399cc",
@@ -38,6 +59,7 @@ function CheckoutPageClient({ onClose }) {
         modal: {
           ondismiss: function () {
             console.log('Modal dismissed');
+            document.body.style.overflow = 'auto'; // Reset scroll
             setPaymentInitialized(false);
             onClose();
           }

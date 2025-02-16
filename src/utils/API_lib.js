@@ -87,6 +87,7 @@ const serverApiRequest = async (path, method = "GET", body = null) => {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+    console.log("response.json()",response.json())
 
     return await response.json();
   } catch (error) {
@@ -225,6 +226,17 @@ export const checkout = async ({
    });
  };
 
+ export const paymentVerification = async (
+  obj
+) => {
+   "use server";
+   console.log("paymentVerification",obj);
+   return serverApiRequest("/api/payments/verification", "POST", {
+     payloadObj: {
+       ...obj
+     },
+   });
+ };
 
 export const logout = async () => {
   "use server";
