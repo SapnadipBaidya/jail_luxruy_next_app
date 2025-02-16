@@ -17,7 +17,10 @@ const StyledDiv = styled("div")(({ theme }) => ({
   justifyContent: "space-evenly",
   alignItems: "flex-start",
   minHeight: theme.typography.pxToRem(100),
+  backgroundColor:"red",
+  padding:"1rem 0 1rem 0",
 }));
+
 
 const StyledPaper = styled(Paper)(({ theme, selected }) => ({
   padding: theme.spacing(2),
@@ -142,7 +145,7 @@ function ChooseAddress({
         <TextAreaSkeleton />
       ) : (
         <StyledDiv>
-          <StyledText variant="h5">Choose Address to deliver</StyledText>
+          <StyledText variant="h6">Choose Address to deliver</StyledText>
           <StyledText>
             <b>Deliver To -</b> {toDeliverAddress?.deliver_to}
           </StyledText>
@@ -152,10 +155,12 @@ function ChooseAddress({
           <StyledText>{toDeliverAddress?.pincode}</StyledText>
           <StyledText>{toDeliverAddress?.phone_number}</StyledText>
           <GenericBtns
+            className="changeaddressButton"
             type="secondary"
             btnText="Change Address"
             executableFunction={handleToDeliverAddressChange}
             minWidth="100%"
+            
           />
         </StyledDiv>
       )}

@@ -14,7 +14,7 @@ import ChooseAddress from "../wrappers/chooseAddress";
 const CheckoutContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  backgroundColor:"yellow",
+  
   padding: theme.spacing(3),
   gap: theme.spacing(3),
   [theme.breakpoints.up("md")]: {
@@ -25,7 +25,7 @@ const CheckoutContainer = styled(Box)(({ theme }) => ({
 
 const CartSection = styled(Box)(({ theme }) => ({
   
-  backgroundColor:"green",
+  
   marginLeft: "0",
   [theme.breakpoints.up("sm")]: {
     width: "100%",
@@ -70,6 +70,12 @@ const WishlistButton = styled(Button)(({ theme }) => ({
   padding: theme.spacing(1.5),
   margin: theme.spacing(1),
   "&:hover": { background: "#ccc" },
+  [theme.breakpoints.down("sm")]: {
+    marginLeft: theme.spacing(0),
+    marginRight: theme.spacing(0),
+    marginTop: theme.spacing(3),
+    width:"100%",
+  },
 }));
 
 const ProceedButton = styled(Button)(({ theme }) => ({
