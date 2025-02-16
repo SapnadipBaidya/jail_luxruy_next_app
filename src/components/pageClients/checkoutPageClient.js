@@ -4,28 +4,28 @@ import React, { useEffect, useState } from 'react';
 import Script from 'next/script';
 import ThreeDotLoader from '../loaders/threeDotLoader';
 
-function CheckoutPageClient() {
-  const [razorpayLoaded, setRazorpayLoaded] = useState(true);
+function CheckoutPageClient({ onClose }) {
+  const [razorpayLoaded, setRazorpayLoaded] = useState(false);
+  const [paymentInitialized, setPaymentInitialized] = useState(false);
 
   const checkoutHandler = async (name, amount) => {
     try {
       const { success, data } = await checkout({ name, amount });
-
       if (!success || !data) {
         console.error('Checkout failed');
         return;
       }
 
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Ensure this is set in your .env.local
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: data.amount,
         currency: "INR",
-        name: "Payment razorpay",
+        name: "Payment Razorpay",
         description: "Test Transaction",
         order_id: data.id,
         handler: function (response) {
           console.log('Payment successful', response);
-          // Handle payment success (e.g., redirect or show success message)
+          onClose();
         },
         prefill: {
           name: "Sapnadip Baidya",
@@ -35,48 +35,58 @@ function CheckoutPageClient() {
         theme: {
           color: "#3399cc",
         },
+        modal: {
+          ondismiss: function () {
+            console.log('Modal dismissed');
+            setPaymentInitialized(false);
+            onClose();
+          }
+        }
       };
 
       if (window.Razorpay) {
         const rzp1 = new window.Razorpay(options);
+
+        rzp1.on('payment.failed', function (response) {
+          console.error('Payment failed', response);
+          onClose();
+        });
+
         rzp1.open();
       } else {
         console.error('Razorpay not loaded');
       }
     } catch (error) {
       console.error("Checkout error:", error);
+      onClose();
     }
   };
 
   useEffect(() => {
-    if (razorpayLoaded) {
-      checkoutHandler("sapnadip", 29999);
+    if (window.Razorpay && !paymentInitialized) {
+      checkoutHandler("sapnadip", 1);
+      setPaymentInitialized(true);
     }
-  }, [razorpayLoaded]);
+  }, [razorpayLoaded, paymentInitialized]);
+
+  // Reset body overflow when component unmounts
+  useEffect(() => {
+    return () => {
+      setPaymentInitialized(false);
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
 
   return (
     <div>
-      {/* Load Razorpay script using next/script */}
       <Script
         src="https://checkout.razorpay.com/v1/checkout.js"
-        strategy="afterInteractive" // Load after the page becomes interactive
+        strategy="lazyOnload"
         onLoad={() => {
-          console.log('Razorpay script loading');
           setRazorpayLoaded(true);
         }}
-        
-        onReady={() => {
-          console.log('Razorpay script loaded');
-          setRazorpayLoaded(false);
-        }}
-        
       />
-
-      {razorpayLoaded ? (
-        <div><ThreeDotLoader/></div>
-      ) : (
-        <div>checkoutPageClient</div>
-      )}
+      {!razorpayLoaded && <div style={{marginTop:"5vh"}}><ThreeDotLoader /></div>}
     </div>
   );
 }

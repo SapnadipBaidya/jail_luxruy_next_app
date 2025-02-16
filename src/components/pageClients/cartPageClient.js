@@ -9,6 +9,7 @@ import CartComponent from "@/pageComponents/cartComponent";
 import ThreeDotLoader from "../loaders/threeDotLoader";
 import TextAreaSkeleton from "../wrappers/textAreaSkeleton.jsx"
 import ChooseAddress from "../wrappers/chooseAddress";
+import CheckoutPageClient from "./checkoutPageClient";
 
 // ✅ Styled Components (Same as Before)
 const CheckoutContainer = styled(Box)(({ theme }) => ({
@@ -102,7 +103,7 @@ export default function CartPageClient() {
   const [savedAddresses, setSavedAddresses] = useState([]);
   const [addressesLoading, setAddressesLoading] = useState(true);
   const [toDeliverAddress,setToDeliverAddress] = useState({})
-
+  const [checkoutPortalOpen,setCheckoutPortalOpen] = useState(false);
   const fetchAddresses = useCallback(async () => {
       setAddressesLoading(true);
       try {
@@ -199,10 +200,15 @@ export default function CartPageClient() {
         <ProceedButton variant="contained" color="primary" fullWidth  disabled={loading} onClick={(e)=>{
           e.preventDefault();
           e.stopPropagation();
-          router.push("/checkout")
+          setCheckoutPortalOpen(true)
+          // router.push("/checkout")
         }}>
           Proceed to Payment
         </ProceedButton>
+
+
+        {checkoutPortalOpen && <CheckoutPageClient onClose={() => {
+          setCheckoutPortalOpen(false)}} checkoutPortalOpen={checkoutPortalOpen}/> }
         </>
       }
       </SummarySection>
