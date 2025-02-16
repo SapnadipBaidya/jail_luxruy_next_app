@@ -67,10 +67,19 @@ const SizeBox = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   backgroundColor: "#fff",
   [theme.breakpoints.down("sm")]: {
-    width: 30,
-    height: 30,
-    marginLeft:"1rem",
-    
+    width: 20,
+    height: 20,
+    marginLeft:"2rem",
+  },
+  [theme.breakpoints.down("lg")]: {
+    width: 40,
+    height: 40,
+    marginLeft:"2rem",
+  },
+  [theme.breakpoints.down("md")]: {
+    width: 20,
+    height: 20,
+    marginLeft:"2rem",
   },
 }));
 
@@ -103,8 +112,15 @@ const NumberControl = styled("div")(({ theme }) => ({
   alignItems: "center",
   backgroundColor:"white",
   [theme.breakpoints.down("sm")]: {
-    marginLeft:"1rem",
+    marginLeft:"3rem",
+  },[theme.breakpoints.down("md")]: {
+    marginLeft:"3rem",
   },
+  [theme.breakpoints.down("lg")]: {
+    marginLeft:"3rem",
+  },
+
+
 
 }));
 
@@ -122,6 +138,7 @@ const NumberQuantity = styled("input")(({ theme }) => ({
   },
   [theme.breakpoints.down("sm")]: {
     width: theme.typography.pxToRem(15),
+    
   },
 }));
 
@@ -159,6 +176,40 @@ const AccordionDetailsStyled = styled(AccordionDetails)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing(1),
+}));
+const productName = styled(Typography)(({ theme }) => ({
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  maxWidth: "15vw",
+  fontSize: "7vh",
+  lineHeight: 1.2,
+  fontWeight: 500,
+  color: theme.palette.text.primary,
+  transition: "all 0.3s ease",
+
+  // Responsive adjustments
+  [theme.breakpoints.down("lg")]: {
+    maxWidth: "20vw",
+    fontSize: "6vh",
+  },
+  [theme.breakpoints.down("md")]: {
+    maxWidth: "25vw",
+    fontSize: "5vh",
+  },
+  [theme.breakpoints.down("sm")]: {
+    maxWidth: "30vw",
+    fontSize: "4vh",
+    whiteSpace: "normal", // Allow text to wrap on small screens
+    display: "-webkit-box",
+    WebkitLineClamp: 2, // Limit to 2 lines
+    WebkitBoxOrient: "vertical",
+  },
+  [theme.breakpoints.down("xs")]: {
+    maxWidth: "40vw",
+    fontSize: "3vh",
+    WebkitLineClamp: 1, // Limit to 1 line on extra small screens
+  },
 }));
 
 export default function CartComponent({
@@ -232,7 +283,6 @@ export default function CartComponent({
   const MobileAccordionItem = useCallback(
     ({ item }) => {
       const panelId = item?.product_details?.products_details_id;
-      const isDeleteLoading = deleteLoading === panelId;
 
       return (
         <StyledAccordion
@@ -244,7 +294,7 @@ export default function CartComponent({
             aria-controls={`${panelId}-content`}
             id={`${panelId}-header`}
           >
-            <ResponsiveBox sx={{ gap: 1, flexDirection: "row" }}>
+            <ResponsiveBox sx={{ gap: 1, flexDirection: "column" }}>
               <ProductImage>
                 {isGlobalLoading ? (
                   <Skeleton variant="rectangular" width="100%" height="100%" />
@@ -265,7 +315,7 @@ export default function CartComponent({
               {isGlobalLoading ? (
                 <Skeleton variant="text" width="80%" height={24} />
               ) : (
-                <TruncatedText maxWidth="15vw" fontSize="7vh">
+                <TruncatedText className="productName">
                   {item?.product_details?.product_name || "No Name"}
                 </TruncatedText>
               )}
