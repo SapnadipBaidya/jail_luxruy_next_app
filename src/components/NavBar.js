@@ -41,6 +41,9 @@ const StyledButton = styled("span")(({ theme }) => ({
   minWidth: theme.typography.pxToRem(80),
   maxWidth: theme.typography.pxToRem(300),
   cursor: "pointer",
+  "&:hover": {
+    backgroundColor: theme.palette.action.hover,
+  },
 }));
 
 const StyledIcon = styled("span")(({ theme }) => ({
