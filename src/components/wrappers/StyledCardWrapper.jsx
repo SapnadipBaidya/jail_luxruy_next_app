@@ -38,11 +38,15 @@ const StyledCard = styled(Card, {
   justifyContent: "flex-start",
   cursor: "pointer",
   willChange: "transform, box-shadow, opacity",
-  ...(isProduct && {
+  ...(isProduct && deviceType === "pc" &&  {
     "&:hover": {
       transform: "scale(1.02)", // Slight scale-up on hover
       boxShadow: theme.shadows[6], // Use theme shadow for consistency
+      "& .product-image": {
+        transform: "scale(1.15)", // Scale up the image on card hover
+      },
       ...(deviceType === "pc" && {
+        
         "& .hover-content": {
           opacity: 1,
           transform: "translateY(0)",
@@ -96,10 +100,7 @@ const ProductImage = styled("img")(({ theme }) => ({
   objectFit: "cover", // Ensure the image covers the area without distortion
   borderRadius: "1rem 1rem 0 0", // Rounded corners only at the top
   transition: "transform 0.3s ease-in-out",
-"&:hover": {
-  transform: "scaleY(1.15)", // Increases only the height on hover
-  transition: "transform 0.3s ease-in-out !important",
-},
+
   [theme.breakpoints.down('xl')]: {
     height: "16rem",
   },
@@ -204,7 +205,7 @@ const StyledCardWrapper = React.memo(
           }}
         >
           <Fade in={show} timeout={500}>
-            <ProductImage src={mainImgUrl} alt="Product Image" />
+            <ProductImage className="product-image" src={mainImgUrl} alt="Product Image" />
           </Fade>
 
           <ProductInfo className="product-info">

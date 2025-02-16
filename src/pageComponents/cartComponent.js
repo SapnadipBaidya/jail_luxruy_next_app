@@ -26,6 +26,7 @@ const CartRow = styled(Box)(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "minmax(150px, 2fr) repeat(4, minmax(80px, 1fr)) 40px",
   alignItems: "center",
+  
   gap: theme.spacing(2),
   padding: theme.spacing(2),
   backgroundColor: "#f5f5f5",
@@ -45,6 +46,7 @@ const ProductImage = styled(Box)(({ theme }) => ({
   width: "20vh",
   height: "20vh",
   aspectRatio: "1/1",
+  
   backgroundColor: "#fff",
   borderRadius: 8,
   display: "flex",
@@ -59,7 +61,7 @@ const ProductImage = styled(Box)(({ theme }) => ({
 
 const SizeBox = styled(Box)(({ theme }) => ({
   width: 60,
-  height: 60,
+  
   border: "1px solid #ddd",
   borderRadius: 4,
   display: "flex",
@@ -68,20 +70,22 @@ const SizeBox = styled(Box)(({ theme }) => ({
   backgroundColor: "#fff",
   [theme.breakpoints.down("sm")]: {
     width: 20,
-    height: 20,
+    
     marginLeft:"2rem",
   },
   [theme.breakpoints.down("lg")]: {
     width: 40,
-    height: 40,
+    
     marginLeft:"2rem",
   },
   [theme.breakpoints.down("md")]: {
     width: 20,
-    height: 20,
+    
     marginLeft:"2rem",
   },
 }));
+
+
 
 const HeaderText = styled(Typography)(({ theme }) => ({
   fontWeight: 600,
@@ -326,7 +330,7 @@ export default function CartComponent({
                 <Skeleton variant="rectangular" width={32} height={32} />
               ) : (
                 <SizeBox>
-                  <Typography variant="h6">
+                  <Typography fontSize={10} sx={{ whiteSpace: "normal", wordWrap: "break-word", textAlign: "center" }}>
                     {item?.size_details?.size_name}
                   </Typography>
                 </SizeBox>
