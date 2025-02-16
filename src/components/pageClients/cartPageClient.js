@@ -36,6 +36,7 @@ const SummarySection = styled(Box)(({ theme }) => ({
   width: "100%",
   padding: theme.spacing(3),
   borderTop: "2px solid #ddd",
+
   [theme.breakpoints.up("md")]: {
     width: "30%",
     borderTop: "none",
@@ -46,6 +47,7 @@ const SummarySection = styled(Box)(({ theme }) => ({
 const TableWrapper = styled(Box)(({ theme }) => ({
   maxHeight: "70vh",
   overflowY: "auto",
+  
   scrollbarWidth: "thin",
   scrollbarColor: "#c0c0c0 transparent",
   "&::-webkit-scrollbar": { width: "8px" },
@@ -60,6 +62,8 @@ const TableWrapper = styled(Box)(({ theme }) => ({
 const StyledTable = styled("table")({
   width: "100%",
   borderCollapse: "collapse",
+  
+
 });
 
 const WishlistButton = styled(Button)(({ theme }) => ({
@@ -73,7 +77,7 @@ const WishlistButton = styled(Button)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     marginLeft: theme.spacing(0),
     marginRight: theme.spacing(0),
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(2),
     width:"100%",
   },
 }));
