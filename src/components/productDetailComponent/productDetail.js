@@ -233,7 +233,7 @@ const ProductDetails = ({ data }) => {
       >
        
         <StyledIconButton
-          disabled={user?.id?.length>0}
+          disabled={!user?.id}
           aria-label="Add to favorites"
           onClick={(e) => {
             e.preventDefault();
@@ -247,7 +247,7 @@ const ProductDetails = ({ data }) => {
           </AnimatedIcon>
         </StyledIconButton>
         <AddToCartButton
-          disabled={user?.id?.length>0}
+          disabled={!user?.id}
           variant="contained"
           color="primary"
           onClick={(e) => {
