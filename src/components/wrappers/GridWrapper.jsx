@@ -23,22 +23,18 @@ const GridWrapperComponent = styled("div")(({ theme }) => ({
     width: "100vw",
     padding: "1rem",
     justifyContent: "center",
-    backgroundColor:"black",
     
   },
   [theme.breakpoints.down("md")]: {
     width: "100vw",
     padding: "1rem",
     justifyContent: "center",
-    backgroundColor:"blue",
     
   },
   [theme.breakpoints.down("sm")]: {
     width: "100vw",
     padding: "1rem",
     justifyContent: "center",
-    backgroundColor:"green",
-    
   },
 }));
 
