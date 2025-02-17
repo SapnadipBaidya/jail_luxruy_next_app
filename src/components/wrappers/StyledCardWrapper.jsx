@@ -30,7 +30,7 @@ const StyledCard = styled(Card, {
   position: "relative",
   overflow: "hidden",
   backgroundColor: theme.custom?.cardBg || "#ffffff", // Fallback color
-  borderRadius: "1rem", // Slightly rounded corners
+  borderRadius: "1.5rem", // Slightly rounded corners
   transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out",
   display: "flex",
   flexDirection: "column",
@@ -38,8 +38,13 @@ const StyledCard = styled(Card, {
   justifyContent: "flex-start",
   cursor: "pointer",
   willChange: "transform, box-shadow, opacity",
+  ...(!isProduct && {
+    backgroundColor:"",
+  }),
   ...(isProduct && deviceType === "pc" &&  {
+    
     "&:hover": {
+      border:"none",
       transform: "scale(1.02)", // Slight scale-up on hover
       boxShadow: theme.shadows[6], // Use theme shadow for consistency
       "& .product-image": {
@@ -71,15 +76,15 @@ const StyledCard = styled(Card, {
   },
   [theme.breakpoints.down('lg')]: {
     width: "18rem",
-    height: "25.2rem",
+    height: "26.1rem",
   },
   [theme.breakpoints.down('md')]: {
     width: "19rem",
-    height: "24.3rem",
+    height: "25.4rem",
   },
   [theme.breakpoints.down('sm')]: {
     width: "100%",
-    height: "15.6rem",
+    height: "16.5rem",
     margin: "0.5rem 0",
   },
 }));
@@ -91,15 +96,19 @@ const CardActionsContainer = styled("div")(({ theme }) => ({
   alignItems: "center",
   margin: "1rem 0",
   width: "100%", // Full width for better alignment
-  padding: "0 1rem", // Add padding for spacing
+  padding: "0 1rem", 
+  height:"0.7rem",
+  // Add padding for spacing
 }));
 
 const ProductImage = styled("img")(({ theme }) => ({
-  width: "100%", // Full width to maintain responsiveness
+  marginTop:"4%",
+  width: "90%", // Full width to maintain responsiveness
   height: "26.7rem", // Fixed height for consistency
   objectFit: "cover", // Ensure the image covers the area without distortion
   borderRadius: "1rem 1rem 0 0", // Rounded corners only at the top
   transition: "transform 0.3s ease-in-out",
+ 
 
   [theme.breakpoints.down('xl')]: {
     height: "16rem",
@@ -116,7 +125,7 @@ const ProductImage = styled("img")(({ theme }) => ({
 }));
 
 const ProductInfo = styled(Box)(({ theme }) => ({
-  padding:"0.2rem",
+  padding:"0.5rem",
   opacity: 1, // Always visible
   transition: "opacity 0.3s ease-in-out",
   display: "flex",
