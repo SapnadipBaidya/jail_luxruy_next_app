@@ -84,10 +84,10 @@ const serverApiRequest = async (path, method = "GET", body = null) => {
       body: body ? JSON.stringify(body) : null,
     });
 
+    console.log("generic response",await response)
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    console.log("response.json()",response.json())
 
     return await response.json();
   } catch (error) {
@@ -217,7 +217,7 @@ export const checkout = async ({
  }) => {
    "use server";
    console.log("checkout",name,amount);
-   return serverApiRequest("/api/payments/checkout", "POST", {
+    return await  serverApiRequest("/api/payments/checkout", "POST", {
      payloadObj: {
        currency:"INR",
        name,
@@ -231,11 +231,14 @@ export const checkout = async ({
 ) => {
    "use server";
    console.log("paymentVerification",obj);
-   return serverApiRequest("/api/payments/verification", "POST", {
-     payloadObj: {
-       ...obj
-     },
-   });
+
+   const data = await serverApiRequest("/api/payments/verification", "POST", {
+    payloadObj: {
+      ...obj
+    },
+  });
+  console.log("paymentVerification data",data)
+   return data
  };
 
 export const logout = async () => {

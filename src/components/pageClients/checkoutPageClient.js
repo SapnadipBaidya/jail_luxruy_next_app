@@ -33,7 +33,7 @@ function CheckoutPageClient({ onClose }) {
             const verification = await paymentVerification(response);
             console.log("verification",verification)
 
-            if (verification) {
+            if (verification?.data == true && verification?.success) {
             //   setPaymentStatus('success');
               onClose();
             } else {
