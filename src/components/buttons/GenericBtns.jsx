@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, useTheme, useMediaQuery, styled } from '@mui/material';
 
-function GenericBtns({ type, btnText, defaultText = "default", executableFunction, minWidth = "10vw" }) {
+function GenericBtns({ type, btnText, defaultText = "default", executableFunction, minWidth = "10vw" , disabled=false}) {
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down("md")); // ✅ Detect Tablet View
   const ismobile = useMediaQuery(theme.breakpoints.down("sm")); // ✅ Detect Mobile View
@@ -13,25 +13,25 @@ function GenericBtns({ type, btnText, defaultText = "default", executableFunctio
     switch (type) {
       case 'primary':
         return (
-          <StyledButton variant="contained" color="primary" onClick={executableFunction} minwidth={buttonMinWidth}>
+          <StyledButton variant="contained" color="primary" onClick={executableFunction} minwidth={buttonMinWidth} disabled={disabled}>
             {btnText}
           </StyledButton>
         );
       case 'secondary':
         return (
-          <StyledButton variant="outlined" color="secondary" onClick={executableFunction} minwidth={buttonMinWidth}>
+          <StyledButton variant="outlined" color="secondary" onClick={executableFunction} minwidth={buttonMinWidth} disabled={disabled}>
             {btnText}
           </StyledButton>
         );
       case 'error':
         return (
-          <StyledButton variant="text" color="error" onClick={executableFunction} minwidth={buttonMinWidth}>
+          <StyledButton variant="text" color="error" onClick={executableFunction} minwidth={buttonMinWidth} disabled={disabled}>
             {btnText}
           </StyledButton>
         );
       default:
         return (
-          <StyledButton variant="text" color="primary" onClick={executableFunction} minwidth={buttonMinWidth}>
+          <StyledButton variant="text" color="primary" onClick={executableFunction} minwidth={buttonMinWidth} disabled={disabled}>
             {btnText || defaultText}
           </StyledButton>
         );

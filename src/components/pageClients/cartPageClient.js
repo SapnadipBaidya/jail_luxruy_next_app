@@ -10,6 +10,7 @@ import ThreeDotLoader from "../loaders/threeDotLoader";
 import TextAreaSkeleton from "../wrappers/textAreaSkeleton.jsx"
 import ChooseAddress from "../wrappers/chooseAddress";
 import CheckoutPageClient from "./checkoutPageClient";
+import GenericBtns from "../buttons/GenericBtns";
 
 // ✅ Styled Components (Same as Before)
 const CheckoutContainer = styled(Box)(({ theme }) => ({
@@ -83,10 +84,13 @@ const WishlistButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const ProceedButton = styled(Button)(({ theme }) => ({
+const ProceedButton = styled("button")(({ theme }) => ({
   marginTop: theme.spacing(2),
   fontSize: theme.typography.pxToRem(14),
   padding: theme.spacing(2),
+  width:"100%",
+  backgroundColor:theme.palette.primary.main,
+  color:theme.custom.primaryButtonFontColor
 }));
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
@@ -197,14 +201,21 @@ export default function CartPageClient() {
         <StyledTypography variant="h6" mt={2}>
         Grand Total: ₹{subTotalData}
         </StyledTypography>
-        <ProceedButton variant="contained" color="primary" fullWidth  disabled={loading} onClick={(e)=>{
-          e.preventDefault();
-          e.stopPropagation();
-          setCheckoutPortalOpen(true)
-          // router.push("/checkout")
-        }}>
-          Proceed to Payment
-        </ProceedButton>
+
+
+
+        <GenericBtns
+              className="proceedtoPaymentButton"
+              type="secondary"
+              btnText=" Proceed to Payment"
+              executableFunction={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setCheckoutPortalOpen(true);
+              }}
+              minWidth="100%"
+              disabled={loading || Object.keys(toDeliverAddress||{})?.length==0}
+            />
 
 
         {checkoutPortalOpen && <CheckoutPageClient onClose={() => {
