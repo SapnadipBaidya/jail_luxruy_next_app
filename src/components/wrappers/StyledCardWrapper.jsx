@@ -31,7 +31,7 @@ const StyledCard = styled(Card, {
   overflow: "hidden",
   backgroundColor: theme.custom?.cardBg || "#ffffff", // Fallback color
   borderRadius: "1.5rem", // Slightly rounded corners
-  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out",
+  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out !important",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -47,6 +47,7 @@ const StyledCard = styled(Card, {
       border:"none",
       transform: "scale(1.02)", // Slight scale-up on hover
       boxShadow: theme.shadows[6], // Use theme shadow for consistency
+      transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out !important",
       "& .product-image": {
         transform: "scale(1.15)", // Scale up the image on card hover
       },
@@ -55,6 +56,7 @@ const StyledCard = styled(Card, {
         "& .hover-content": {
           opacity: 1,
           transform: "translateY(0)",
+          transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out !important",
         },
         "& .product-info": {
           opacity: 0,
@@ -107,7 +109,7 @@ const ProductImage = styled("img")(({ theme }) => ({
   height: "26.7rem", // Fixed height for consistency
   objectFit: "cover", // Ensure the image covers the area without distortion
   borderRadius: "1rem 1rem 0 0", // Rounded corners only at the top
-  transition: "transform 0.3s ease-in-out",
+  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out !important",
  
 
   [theme.breakpoints.down('xl')]: {
@@ -127,7 +129,7 @@ const ProductImage = styled("img")(({ theme }) => ({
 const ProductInfo = styled(Box)(({ theme }) => ({
   padding:"0.5rem",
   opacity: 1, // Always visible
-  transition: "opacity 0.3s ease-in-out",
+  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out !important",
   display: "flex",
   
   flexDirection: "column",
@@ -172,7 +174,7 @@ const HoverContent = styled(Box)(({ theme }) => ({
   color: "#fff",
   opacity: 0, // Hidden by default on PC
   transform: "translateY(100%)", // Moved down by default on PC
-  transition: "opacity 0.3s ease-in-out, transform 0.3s ease-in-out",
+  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out !important",
   display: "flex",
   flexDirection: "row", // Ensure horizontal layout
   justifyContent: "space-between", // Space out items evenly
