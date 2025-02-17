@@ -11,7 +11,7 @@ async  function  getSuccessData() {
   const cookieStore = await cookies();
   const successData = cookieStore.get("successData");
   console.log("getSuccessData",successData)
-  return successData ? JSON.parse(successData?.value) : null;
+  return successData?.value ? JSON?.parse(successData?.value || {}) : null;
 }
 
 const getCarouselImages = cache(async () => {

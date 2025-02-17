@@ -136,9 +136,9 @@ function ChooseAddress({ savedAddresses, addressesLoading, toDeliverAddress, set
           <Typography variant="body1">
             <strong>Recipient:</strong> {toDeliverAddress?.deliver_to}
           </Typography>
-          <Typography variant="body1">{toDeliverAddress?.address_line1}</Typography>
+          <Typography variant="body1">{toDeliverAddress?.adress_line1}</Typography>
           {toDeliverAddress?.address_line2 && (
-            <Typography variant="body1">{toDeliverAddress?.address_line2}</Typography>
+            <Typography variant="body1">{toDeliverAddress?.adress_line2}</Typography>
           )}
           <Typography variant="body1">
             {toDeliverAddress?.state}, {toDeliverAddress?.pincode}
@@ -150,6 +150,7 @@ function ChooseAddress({ savedAddresses, addressesLoading, toDeliverAddress, set
             btnText="Change Address"
             executableFunction={handleToDeliverAddressChange}
             sx={{ mt: 2 }}
+            minWidth="100%"
           />
         </StyledDiv>
       )}

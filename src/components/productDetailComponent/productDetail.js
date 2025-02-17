@@ -1,11 +1,12 @@
 "use client";
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback, useContext } from "react";
 import PropTypes from "prop-types";
 import { Box, Typography, Button, IconButton, styled } from "@mui/material";
 import { useRouter, usePathname, useParams } from "next/navigation";
 import { addOrEditWishlist, addToCart } from "@/utils/API_lib";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { AppContext } from "@/context/applicationContext";
 
 // Optimized styled components (moved outside main component)
 const ColorCircle = styled(Box)(({ bgcolor, selected, theme }) => ({
@@ -113,7 +114,9 @@ const AnimatedIcon = styled(IconButton)(({ theme, iswishlisted }) => ({
 }));
 
 const ProductDetails = ({ data }) => {
-  console.log("productDetails ",data)
+
+    const { user } = useContext(AppContext);
+    console.log("productDetails ",data, user)
   const productInfo = useMemo(() => data?.product_info || {}, [data]);
   const router = useRouter();
   const params = useParams();
@@ -217,7 +220,7 @@ const ProductDetails = ({ data }) => {
         <br />
         Height of model: 189 cm / 6'2", Size: 41
       </Typography>
-
+      {user?.id?.length==0 && <h5>Please login to Wishlist / Cart</h5>}
       <Box
         sx={{
           display: "flex",
@@ -228,7 +231,9 @@ const ProductDetails = ({ data }) => {
           flexDirection: { xs: "row", sm: "row" },
         }}
       >
+       
         <StyledIconButton
+          disabled={user?.id?.length>0}
           aria-label="Add to favorites"
           onClick={(e) => {
             e.preventDefault();
@@ -236,12 +241,13 @@ const ProductDetails = ({ data }) => {
             handleAddToWishList(productInfo?.productDetailsId, productInfo?.productId);
           }}
         >
-          <AnimatedIcon iswishlisted={iswishlisted}>
+          <AnimatedIcon iswishlisted={iswishlisted} >
             <FavoriteBorderIcon className="inactive" fontSize="medium" />
             <FavoriteIcon className="active" fontSize="medium" />
           </AnimatedIcon>
         </StyledIconButton>
         <AddToCartButton
+          disabled={user?.id?.length>0}
           variant="contained"
           color="primary"
           onClick={(e) => {

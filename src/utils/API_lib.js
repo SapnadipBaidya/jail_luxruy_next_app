@@ -255,6 +255,7 @@ export const logout = async () => {
     });
 
     // 2. Delete cookies properly
+    cookieStore.delete("successData");
     cookieStore.delete("accessToken");
     cookieStore.delete("refreshToken");
 
