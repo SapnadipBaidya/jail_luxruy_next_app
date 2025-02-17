@@ -4,12 +4,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import Script from 'next/script';
 import ThreeDotLoader from '../loaders/threeDotLoader';
 import { AppContext } from '@/context/applicationContext';
+import { useRouter } from 'next/navigation';
 
-function CheckoutPageClient({ onClose }) {
+function CheckoutPageClient({ onClose , amount}) {
   const { user } = useContext(AppContext);
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
   const [paymentInitialized, setPaymentInitialized] = useState(false);
-
+  const router = useRouter(); // Initialize the router
   const checkoutHandler = async (name, amount) => {
     try {
       const { success, data } = await checkout({ name, amount });
@@ -35,6 +36,7 @@ function CheckoutPageClient({ onClose }) {
 
             if (verification?.data == true && verification?.success) {
             //   setPaymentStatus('success');
+             router.push("/orders")
               onClose();
             } else {
             //   setPaymentStatus('failed');
@@ -86,7 +88,7 @@ function CheckoutPageClient({ onClose }) {
 
   useEffect(() => {
     if (window.Razorpay && !paymentInitialized) {
-      checkoutHandler("sapnadip", 1);
+      checkoutHandler("sapnadip", amount);
       setPaymentInitialized(true);
     }
   }, [razorpayLoaded, paymentInitialized]);

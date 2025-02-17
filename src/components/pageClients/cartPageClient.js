@@ -219,7 +219,8 @@ export default function CartPageClient() {
 
 
         {checkoutPortalOpen && <CheckoutPageClient onClose={() => {
-          setCheckoutPortalOpen(false)}} checkoutPortalOpen={checkoutPortalOpen}/> }
+          setCheckoutPortalOpen(false)}} checkoutPortalOpen={checkoutPortalOpen}   amount={subTotalData}/>  }
+        
         </>
       }
       </SummarySection>
