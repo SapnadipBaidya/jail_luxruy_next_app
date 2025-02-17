@@ -1,10 +1,10 @@
 "use client";
-
 import React from "react";
 import TextAreaSkeleton from "./textAreaSkeleton";
 import GenericBtns from "../buttons/GenericBtns";
-import { Chip, Dialog, Paper, Stack, styled, Typography } from "@mui/material";
+import { Chip, Dialog, DialogActions, DialogTitle, IconButton, Paper, Stack, styled, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
+import CloseIcon from '@mui/icons-material/Close';
 
 const StyledText = styled(Typography)(({ theme }) => ({
   color: theme.custom.primaryButtonFontColor,
@@ -14,25 +14,23 @@ const StyledDiv = styled("div")(({ theme }) => ({
   color: theme.custom.primaryButtonFontColor,
   display: "flex",
   flexDirection: "column",
-  justifyContent: "space-evenly",
+  gap: theme.spacing(1),
   alignItems: "flex-start",
-  minHeight: theme.typography.pxToRem(100),
-  padding:"1rem 0 1rem 0",
+  padding: "1rem 0",
 }));
-
 
 const StyledPaper = styled(Paper)(({ theme, selected }) => ({
   padding: theme.spacing(2),
   borderRadius: theme.shape.borderRadius,
-  position: "relative",
   backgroundColor: theme.palette.background.paper,
   color: theme.custom.primaryButtonFontColor,
-  minWidth: "35vw",
-  margin: theme.spacing(2),
-  border: selected ? `2px solid ${theme.palette.primary.main}` : "none", // Add border if selected
-  cursor: "pointer", // Add pointer cursor for better UX
+  width: "100%",
+  maxWidth: 500,
+  border: selected ? `2px solid ${theme.palette.primary.main}` : "1px solid rgba(255, 255, 255, 0.12)",
+  cursor: "pointer",
+  transition: "border 0.2s ease-in-out",
   "&:hover": {
-    border: `2px solid ${theme.palette.primary.main}`, // Add hover effect
+    border: `2px solid ${theme.palette.primary.main}`,
   },
 }));
 
@@ -42,13 +40,9 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   color: theme.custom.primaryButtonFontColor,
 }));
 
-function ChooseAddress({
-  savedAddresses,
-  addressesLoading,
-  toDeliverAddress,
-  setToDeliverAddress,
-}) {
+function ChooseAddress({ savedAddresses, addressesLoading, toDeliverAddress, setToDeliverAddress }) {
   const [open, setOpen] = React.useState(false);
+  const router = useRouter();
 
   const handleToDeliverAddressChange = (e) => {
     e.preventDefault();
@@ -56,17 +50,13 @@ function ChooseAddress({
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const router = useRouter();
+  const handleClose = () => setOpen(false);
 
   const handleSelectAddress = (e, address) => {
     e.preventDefault();
     e.stopPropagation();
     setToDeliverAddress(address);
-    handleClose(); // Close the dialog after selecting an address
+    handleClose();
   };
 
   return (
@@ -74,92 +64,92 @@ function ChooseAddress({
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        maxWidth="xl"
+        maxWidth="md"
         fullWidth
-        scroll="paper"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+        PaperProps={{
+          sx: {
+            borderRadius: 2,
+            maxHeight: '80vh',
+            overflow: 'hidden'
+          }
         }}
       >
-        <Stack
-          spacing={2}
-          sx={{
-            minWidth: "80vw",
-            maxWidth: "80vw",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 2,
-            minHeight: "70vh",
-            maxHeight: "70vh",
-            overflow: "scroll",
-          }}
-        >
+        <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          Select Delivery Address
+          <IconButton onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+
+        <Stack spacing={2} sx={{ 
+          px: 3,
+          overflowY: 'auto',
+          maxHeight: '60vh',
+          '&::-webkit-scrollbar': { width: 8 },
+          '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(255,255,255,0.3)', borderRadius: 2 }
+        }}>
           {savedAddresses?.map((address) => (
             <StyledPaper
               key={address?.address_id}
               onClick={(e) => handleSelectAddress(e, address)}
-              selected={toDeliverAddress?.address_id === address?.address_id} // Pass selected prop
+              selected={toDeliverAddress?.address_id === address?.address_id}
             >
               <StyledChip
-                label={`${address?.address_name} ${
-                  address?.is_default ? "(Default)" : ""
-                }`}
+                label={`${address?.address_name} ${address?.is_default ? "(Default)" : ""}`}
+                size="small"
               />
-              <Typography>{address?.adress_line1}</Typography>
-              {address?.adress_line2 && (
-                <Typography>{address?.adress_line2}</Typography>
+              <Typography variant="body2">{address?.address_line1}</Typography>
+              {address?.address_line2 && (
+                <Typography variant="body2">{address?.address_line2}</Typography>
               )}
-              <Typography>
+              <Typography variant="body2">
                 {address?.state}, {address?.country} - {address?.pincode}
               </Typography>
             </StyledPaper>
           ))}
         </Stack>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+
+        <DialogActions sx={{ justifyContent: 'space-between', p: 2 }}>
           <GenericBtns
             type="secondary"
-            btnText="ADD NEW ADDRESS"
+            btnText="Add New Address"
             executableFunction={(e) => {
               e.preventDefault();
-              e.stopPropagation();
               router.push("/userContact");
             }}
-            minWidth="10vw"
+            size="small"
           />
-        </div>
+          <GenericBtns
+            type="primary"
+            btnText="Close"
+            executableFunction={handleClose}
+            size="small"
+          />
+        </DialogActions>
       </Dialog>
 
       {addressesLoading ? (
         <TextAreaSkeleton />
       ) : (
         <StyledDiv>
-          <StyledText variant="h6">Choose Address to deliver</StyledText>
-          <StyledText>
-            <b>Deliver To -</b> {toDeliverAddress?.deliver_to}
-          </StyledText>
-          <StyledText>{toDeliverAddress?.adress_line1}</StyledText>
-          <StyledText>{toDeliverAddress?.adress_line2}</StyledText>
-          <StyledText>{toDeliverAddress?.state}</StyledText>
-          <StyledText>{toDeliverAddress?.pincode}</StyledText>
-          <StyledText>{toDeliverAddress?.phone_number}</StyledText>
+          <Typography variant="h6" gutterBottom>Delivery Address</Typography>
+          <Typography variant="body1">
+            <strong>Recipient:</strong> {toDeliverAddress?.deliver_to}
+          </Typography>
+          <Typography variant="body1">{toDeliverAddress?.address_line1}</Typography>
+          {toDeliverAddress?.address_line2 && (
+            <Typography variant="body1">{toDeliverAddress?.address_line2}</Typography>
+          )}
+          <Typography variant="body1">
+            {toDeliverAddress?.state}, {toDeliverAddress?.pincode}
+          </Typography>
+          <Typography variant="body1">Phone: {toDeliverAddress?.phone_number}</Typography>
+          
           <GenericBtns
-            className="changeaddressButton"
             type="secondary"
             btnText="Change Address"
             executableFunction={handleToDeliverAddressChange}
-            minWidth="100%"
-            
+            sx={{ mt: 2 }}
           />
         </StyledDiv>
       )}
