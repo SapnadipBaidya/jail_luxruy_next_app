@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { styled } from "@mui/material/styles";
 import { Box, useMediaQuery, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -75,28 +75,65 @@ const TitleText = styled(Typography)(({ theme }) => ({
 const LocalVideoPlayer = ({ videoSrc }) => {
   const theme = useTheme();
   const ismobile = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const videoRef = useRef(null);
   const [videoSrcState, setVideoSrcState] = useState(videoSrc || "");
+
+  // Add cache busting to prevent browser caching
+  const fetchVideo = async () => {
+    try {
+      const response = await fetch(`/api/get-video?t=${Date.now()}`);
+      const data = await response.json();
+      setVideoSrcState(`${data.videoUrl}?t=${Date.now()}`);
+    } catch (error) {
+      console.error("Error fetching video:", error);
+    }
+  };
 
   useEffect(() => {
     if (!videoSrc) {
-      const fetchVideo = async () => {
-        try {
-          const response = await fetch("/api/get-video");
-          const data = await response.json();
-          setVideoSrcState(data.videoUrl);
-        } catch (error) {
-          console.error("Error fetching video:", error);
-        }
-      };
       fetchVideo();
     }
   }, [videoSrc]);
 
+  // Handle video playback
+  useEffect(() => {
+    const playVideo = async () => {
+      if (videoRef.current) {
+        try {
+          await videoRef.current.play();
+        } catch (err) {
+          console.log("Autoplay prevented, trying muted play");
+          videoRef.current.muted = true;
+          await videoRef.current.play();
+        }
+      }
+    };
+
+    if (videoSrcState) {
+      playVideo();
+    }
+
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.removeAttribute('src');
+        videoRef.current.load();
+      }
+    };
+  }, [videoSrcState]);
+
   return (
     <VideoContainer ismobile={ismobile}>
       {videoSrcState ? (
-        <StyledVideo autoPlay loop muted playsInline ismobile={ismobile}>
+        <StyledVideo
+          key={videoSrcState} // Force re-render on source change
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          ismobile={ismobile}
+        >
           <source src={videoSrcState} type="video/mp4" />
           Your browser does not support the video tag.
         </StyledVideo>
@@ -107,7 +144,7 @@ const LocalVideoPlayer = ({ videoSrc }) => {
       )}
 
       <VideoDescContainer ismobile={ismobile}>
-        <TitleText>WHY JAIL?</TitleText>
+      <TitleText>WHY JAIL?</TitleText>
         <TextContainer>
           The name “Jail” is more than just a brand. It’s a nod to our roots. The
           original shop was located on Jail Road in Banka, and the name was born
@@ -115,7 +152,7 @@ const LocalVideoPlayer = ({ videoSrc }) => {
           stands as a symbol of our journey, from a small shop in Bihar to a
           luxury brand that resonates with customers around the world.
         </TextContainer>
-      </VideoDescContainer>
+          </VideoDescContainer>
     </VideoContainer>
   );
 };
