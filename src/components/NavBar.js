@@ -30,6 +30,7 @@ import { useTheme } from "@emotion/react";
 import useDebounce from "@/utils/customHooks/useDebounce";
 import { AppContext } from "@/context/applicationContext";
 import CategoryDropdown from "@/components/catogeryComponent/CategoryDropdown"; // Import the CategoryDropdown component
+import SearchComponent from "./searchComponent";
 
 // ✅ Styled Components
 const StyledButton = styled("span")(({ theme }) => ({
@@ -80,12 +81,6 @@ const MobileNav = styled(Drawer)(({ theme }) => ({
   },
 }));
 
-const SearchBox = styled(Box)(({ theme }) => ({
-  padding: 2,
-  borderTop: 1,
-  borderColor: "divider",
-  [theme.breakpoints.down("sm")]: {},
-}));
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -93,16 +88,6 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
   borderColor: "divider",
 }));
 
-const StyledInput = styled("input")(({ theme }) => ({
-  width: "100%",
-  height: "100%",
-  padding: "8px",
-  fontSize: "1rem",
-  border: `0.5vh solid ${theme.palette.secondary.main}`,
-  backgroundColor: theme.palette.background.paper,
-  borderRadius: "4px",
-  outline: "none",
-}));
 
 const NavLinksContainer = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -275,19 +260,10 @@ export default function Navbar({ carouselImages, userData }) {
         </Toolbar>
 
         {isSearchOpen && (
-          <SearchBox>
-            <StyledInput
-              type="text"
-              placeholder="S E A R C H"
-              value={searchQuery || ""}
-              onChange={handleSearchChange}
-              onKeyPress={(e) => {
-                if (e.key === "Enter") {
-                  handleSearchSubmit();
-                }
-              }}
-            />
-          </SearchBox>
+         <SearchComponent searchQuery={searchQuery}
+         handleSearchChange={handleSearchChange}
+         handleSearchSubmit={handleSearchSubmit}
+         />
         )}
       </StyledAppBar>
 
