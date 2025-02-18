@@ -11,7 +11,7 @@ async function FetchItems({ gender }) {
 }
 
 export default async function BestSellerPage({ params, searchParams }) {
-  const gender = searchParams.gender;
+  const gender = searchParams?.gender;
 
   return (
     <Suspense fallback={<LoadingAnimation />}>
