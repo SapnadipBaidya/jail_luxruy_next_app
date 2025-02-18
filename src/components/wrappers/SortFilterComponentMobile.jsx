@@ -50,7 +50,8 @@ const SortFilterComponentMobile = ({
   setSortDetail,
   sortBy,
   setSortBy,
-  handleSortChange // Added missing prop
+  handleSortChange,
+  sortConfigArr=[]
 }) => {
   const theme = useTheme();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -65,21 +66,6 @@ const SortFilterComponentMobile = ({
     handleCloseDrawer();
   };
 
-  const sortOptions = [
-    { label: "None", value: "Sort By" },
-    { 
-      label: "Price: Low to High", 
-      value: "Price: Low to High",
-      dbValue: "product_price_local",
-      dbSort: "ASC" 
-    },
-    { 
-      label: "Price: High to Low", 
-      value: "Price: High to Low",
-      dbValue: "product_price_local",
-      dbSort: "DESC" 
-    },
-  ];
 
   return (
     <>
@@ -118,10 +104,10 @@ const SortFilterComponentMobile = ({
           <Divider />
 
           <List sx={{ flexGrow: 1 }}>
-            {sortOptions.map((item) => (
+            {sortConfigArr.map((item) => (
               <ListItem 
                 button 
-                key={item.value} 
+                key={item.dbValue} 
                 onClick={() => handleSortSelection(item.value, item?.dbValue, item?.dbSort)}
                 sx={{
                   '&:hover': {

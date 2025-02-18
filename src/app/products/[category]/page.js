@@ -13,13 +13,19 @@ async function ItemsPageContent({ params, searchParams }) {
   const waitedParams = await params;
   const waitedSearchParams = await searchParams;
   const category = waitedParams?.category || "default-category";
-  const userInput = waitedSearchParams?.userInput || "";
   const page = parseInt(waitedSearchParams?.page) || 1;
   const color = waitedSearchParams?.color || "";
   const size = waitedSearchParams?.size || "";
   const gender = waitedSearchParams?.gender || "";
-  const sortBy = waitedSearchParams?.sortBy || "";
   const sortOrder = waitedSearchParams?.sortOrder || "";
+  const sortConfigArr = [
+    { label: "None", value: "Sort By" },
+    { label: "Price: Low to High", value: "Price: Low to High" , dbValue:"product_price_local" , dbSort : "ASC" },
+    { label: "Price: High to Low", value: "Price: High to Low" , dbValue:"product_price_local" , dbSort : "DESC" },
+  ]
+
+  const sortConfig = sortConfigArr.find((item)=>item?.dbValue==waitedSearchParams?.sortBy && item?.dbSort == waitedSearchParams?.sortOrder)
+  const sortBy = sortConfig?.value
   console.log("searchParams", page, color, size, gender, "params", category);
   // Fetch data in parallel where possible
   const [ItemsData, allSizesPerCategory, allColors] = await Promise.all([
@@ -41,6 +47,7 @@ async function ItemsPageContent({ params, searchParams }) {
       : [0, 1000000],
   };
 
+
   return (
     <>
      
@@ -54,6 +61,7 @@ async function ItemsPageContent({ params, searchParams }) {
         accessToken={accessToken}
         initialSortBy={sortBy}
         initialSortOrder={sortOrder}
+        sortConfigArr={sortConfigArr}
       />
     </>
   );

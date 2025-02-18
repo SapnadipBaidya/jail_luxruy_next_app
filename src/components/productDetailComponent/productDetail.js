@@ -220,7 +220,7 @@ const ProductDetails = ({ data }) => {
         <br />
         Height of model: 189 cm / 6'2", Size: 41
       </Typography>
-      {user?.id?.length==0 && <h5>Please login to Wishlist / Cart</h5>}
+      {!user?.id && <h5>Please login to Wishlist / Cart</h5>}
       <Box
         sx={{
           display: "flex",

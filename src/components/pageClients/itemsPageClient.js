@@ -63,6 +63,7 @@ export default function ItemsPageClient({
   accessToken,
   initialSortBy,
   initialSortOrder,
+  sortConfigArr
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -79,7 +80,7 @@ export default function ItemsPageClient({
     sortBy: initialSortBy || "",
     sortOrder: initialSortOrder || "",
   });
-  const [sortBy, setSortBy] = useState("Sort By");
+  const [sortBy, setSortBy] = useState(initialSortBy || "Sort By");
   const [gridLoading, setGridLoading] = useState(false);
 
   useEffect(() => {
@@ -139,6 +140,7 @@ export default function ItemsPageClient({
   };
 
   const onClearFilters = () => {
+    console.log("onClearFilter ran")
     setGridLoading(true);
     const clearedFilters = {
       gender: "",
@@ -165,6 +167,7 @@ export default function ItemsPageClient({
   };
 
   const handleSortChange = useCallback((value, sortBy, sortOrder) => {
+    console.log("handleSortChange ran",value, sortBy, sortOrder)
     setGridLoading(true);
     if (value) {
       setSortBy(value); // Update the selected sorting option
@@ -216,6 +219,7 @@ export default function ItemsPageClient({
               sortBy={sortBy}
               setSortBy={setSortBy}
               handleSortChange={handleSortChange}
+              sortConfigArr={sortConfigArr}
             />
           ) : (
             <SortFilterComponent
@@ -224,6 +228,7 @@ export default function ItemsPageClient({
               sortBy={sortBy}
               setSortBy={setSortBy}
               handleSortChange={handleSortChange}
+              sortConfigArr={sortConfigArr}
             />
           )}
           {gridLoading ? (

@@ -27,7 +27,7 @@ const SortFilterWrapper = styled("div")(({ theme }) => ({
   boxShadow:"none"
 }));
 
-function SortFilterComponent({ setShowFilters, showFilters,setSortDetail,handleSortChange ,sortBy,setSortBy}) {
+function SortFilterComponent({ setShowFilters, showFilters,setSortDetail,handleSortChange ,sortBy,setSortBy,sortConfigArr=[]}) {
   const theme = useTheme();
   const ismobile = useMediaQuery(theme.breakpoints.down("sm")); // ✅ Detects mobile view
   const isTablet = useMediaQuery(theme.breakpoints.down("md")); // ✅ Detects tablet view
@@ -88,11 +88,7 @@ function SortFilterComponent({ setShowFilters, showFilters,setSortDetail,handleS
           horizontal: "center",
         }}
       >
-        {[
-          { label: "None", value: "Sort By" },
-          { label: "Price: Low to High", value: "Price: Low to High" , dbValue:"product_price_local" , dbSort : "ASC" },
-          { label: "Price: High to Low", value: "Price: High to Low" , dbValue:"product_price_local" , dbSort : "DESC" },
-        ].map((item) => (
+        {sortConfigArr.map((item) => (
           <MenuItem
             key={item.value}
             onClick={() => handleClose(item.value , item?.dbValue , item?.dbSort)}

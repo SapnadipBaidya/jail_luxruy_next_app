@@ -11,7 +11,7 @@ const protectedRoutes = [
   "/payment",
   "/profile",
 ];
-const greyList = ["/products", "/item","/"];
+const greyList = ["/products", "/item", "/"];
 
 const apiClient = axios.create({
   baseURL: "http://localhost:8080",
@@ -44,7 +44,7 @@ export async function validateAndRefresh({ accessToken, refreshToken, request, r
     const successData = verifyResponse.data;
     const response = NextResponse.next();
 
-    console.log("successData",successData)
+    console.log("successData", successData);
     response.cookies.set("successData", JSON.stringify(successData), {
       httpOnly: false,
       secure: true,
@@ -87,6 +87,13 @@ export async function validateAndRefresh({ accessToken, refreshToken, request, r
       return response;
     } catch (refreshError) {
       console.error("Refresh token failed:", refreshError);
+
+      // Delete all cookies if refresh fails
+      const response = NextResponse.next();
+      response.cookies.delete("accessToken");
+      response.cookies.delete("refreshToken");
+      response.cookies.delete("successData");
+
       if (redirectOnFailure) {
         return NextResponse.redirect(new URL("/login-signup", request.url));
       }
