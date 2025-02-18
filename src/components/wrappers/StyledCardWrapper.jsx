@@ -127,14 +127,14 @@ const ProductImage = styled("img")(({ theme }) => ({
 }));
 
 const ProductInfo = styled(Box)(({ theme }) => ({
-  padding:"0.5rem",
+  padding:"0.5rem 0 0.5rem 0",
   opacity: 1, // Always visible
   transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out !important",
   display: "flex",
   
   flexDirection: "column",
   justifyContent: "flex-start",
-  width: "100%", // Full width for better alignment
+  width: "90%", // Full width for better alignment
   "& .product-name": {
     fontSize: "1rem", // Base font size
     fontWeight:"bold",
@@ -174,17 +174,34 @@ const HoverContent = styled(Box)(({ theme }) => ({
   color: "#fff",
   opacity: 0, // Hidden by default on PC
   transform: "translateY(100%)", // Moved down by default on PC
-  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out !important",
+  transition: "transform 0.3s ease-in-out, opacity 0.3s ease-in-out", // Smooth transitions
   display: "flex",
   flexDirection: "row", // Ensure horizontal layout
   justifyContent: "space-between", // Space out items evenly
   alignItems: "center", // Vertically center items
   backgroundColor: "rgba(0, 0, 0, 0.7)", // Semi-transparent background
   borderRadius: "0 0 1rem 1rem", // Rounded corners at the bottom
-  paddingLeft:"1vh",
-  paddingRight:"1vh"
-}));
+  padding: "0 0 0 1.3rem", // Consistent padding (left and right)
+  height: "3.5rem", // Default height for larger screens
 
+  
+  [theme.breakpoints.down("xl")]: {
+    height: "3.2rem", 
+    padding: "0 0 0 0.4rem", 
+  },
+  [theme.breakpoints.down("lg")]: {
+    height: "3rem", 
+    padding: "0 0 0 1.2rem", 
+  },
+  [theme.breakpoints.down("md")]: {
+    height: "2.6rem", 
+    padding: "0 0 0 0.7rem", 
+  },
+  [theme.breakpoints.down("sm")]: {
+    height: "2rem", 
+    padding: "0 0 0 0.5rem", 
+  },
+}));
 // ── Main Component ───────────────────────────────────────────────────
 const StyledCardWrapper = React.memo(
   ({ type, item, accessToken, setWishlistData, setWishlistLoading }) => {
