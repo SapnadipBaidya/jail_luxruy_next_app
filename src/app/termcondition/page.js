@@ -1,4 +1,5 @@
 // app/terms-condition/page.js
+export const runtime = 'edge';
 import PolicyLayout from "@/components/pageClients/policyLayout";
 import React from "react";
 

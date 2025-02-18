@@ -125,6 +125,7 @@ const ProfileBtn = ({ text, loggedInId }) => {
   const handleLogout = async (e) => {
     setUser({});
     await logout();
+    console.log("logged out success")
   };
 
   // Handle menu close

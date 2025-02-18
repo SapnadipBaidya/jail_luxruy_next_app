@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import LoadingAnimation from "@/components/loaders/LoadingAnimation";
 import ItemsPageClient from "@/components/pageClients/itemsPageClient";
 import { makeGetAPIcall, makePostAPIcall } from "@/utils/API_vendor";

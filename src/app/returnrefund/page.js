@@ -1,5 +1,7 @@
+export const runtime = 'edge';
 import React from "react";
 import PolicyLayout from "@/components/pageClients/policyLayout";
+
 
 const returnRefundContent = [
   {

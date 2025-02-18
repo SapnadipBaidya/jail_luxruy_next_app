@@ -1,4 +1,4 @@
-"use server"
+
 import ImageCarousel from "@/components/ImageCarousel";
 import { Box} from "@mui/material";
 import CategoryCarousel from "@/pageComponents/homePageContent/catagoryComponentContainer/CatagoryComponent";
@@ -6,9 +6,7 @@ import ReviewComponent from "@/components/reviewComponent/ReviewComponent";
 import BestSellerComponent from "@/pageComponents/homePageContent/bestSellerContainer/bestSellerComponent";
 import LocalVideoPlayer from "@/pageComponents/homePageContent/videoPlayers/LocalVideoPlayer";
 
-
-
-
+export const runtime = 'edge';
 // ✅ Fetch images from API with caching
 
 

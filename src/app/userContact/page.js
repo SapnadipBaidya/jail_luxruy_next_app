@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import UserProfileAddressClient from "@/components/pageClients/userProfileAddressClient";
 import { cookies } from "next/headers";
 

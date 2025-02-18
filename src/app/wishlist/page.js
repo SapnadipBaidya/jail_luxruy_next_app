@@ -1,4 +1,4 @@
-// app/wishlist/page.js
+export const runtime = 'edge';
 import WishListPageClient from "@/components/pageClients/wishlistPageClient";
 import { cookies } from "next/headers";
 
