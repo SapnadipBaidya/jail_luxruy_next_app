@@ -48,7 +48,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 const MenuContainer = styled(Menu)(({ theme }) => ({
   "& .MuiPaper-root": {
-    marginTop: theme.typography.pxToRem(18),
+    marginTop: theme.typography.pxToRem(10),
     minWidth: theme.typography.pxToRem(200),
     maxWidth: theme.typography.pxToRem(260),
     padding: theme.typography.pxToRem(8),

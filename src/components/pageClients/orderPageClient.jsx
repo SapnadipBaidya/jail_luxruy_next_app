@@ -16,7 +16,7 @@ const PageHeaderComp = styled("div")(({ theme }) => ({
 function OrderPageClient() {
   return (
     <div>
-       <PageHeaderComp>BEST SELLERS</PageHeaderComp>
+       <PageHeaderComp>ORDERS</PageHeaderComp>
       <h1>coming soon</h1>
       
       </div>

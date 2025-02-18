@@ -252,6 +252,8 @@ export default function Navbar({ carouselImages, userData }) {
                       <TruncatedText maxWidth="9vw">{"Profile"}</TruncatedText>
                     )
                   }
+
+                 loggedInId = { userData?.id}
                 />
                 <ThemeToggle />
               </>

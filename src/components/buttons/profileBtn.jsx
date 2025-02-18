@@ -2,21 +2,21 @@
 import React, { useContext, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { Menu, MenuItem } from "@mui/material";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { logout } from "@/utils/API_lib";
 import { AppContext } from "@/context/applicationContext";
 
 // Styled button component using MUI theme
 const StyledButton = styled("button")(({ theme }) => ({
-  display:"flex",
-  justifyContent:"center",
-  alignItems:"center",
-  maxHeight:"5vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  maxHeight: "5vh",
   position: "relative",
   display: "inline-block",
   padding: "0vh 3vh",
   border: `0.4vh solid ${theme.palette.secondary.main}`, // Use theme primary color
-  borderRadius:"0.5vh",
+  borderRadius: "0.5vh",
   textTransform: "uppercase",
   color: theme.palette.text.primary, // Use theme text color
   textDecoration: "none",
@@ -59,13 +59,12 @@ const StyledButton = styled("button")(({ theme }) => ({
   },
 }));
 
-
 const MenuContainer = styled(Menu)(({ theme }) => ({
   "& .MuiPaper-root": {
-  
+    marginTop: theme.typography.pxToRem(19),
     minWidth: theme.typography.pxToRem(155),
-    maxWidth:  theme.typography.pxToRem(200),
-    padding:  theme.typography.pxToRem(8),
+    maxWidth: theme.typography.pxToRem(200),
+    padding: theme.typography.pxToRem(8),
     borderRadius: theme.typography.pxToRem(8),
     backgroundColor: theme.palette.background.paper,
     color: theme.custom.primaryButtonFontColor,
@@ -74,7 +73,6 @@ const MenuContainer = styled(Menu)(({ theme }) => ({
     top: "100%",
   },
 }));
-
 
 const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
   display: "flex",
@@ -87,8 +85,9 @@ const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
     backgroundColor: theme.palette.ascentColor.main,
   },
 }));
-const ProfileBtn = ({ text }) => {
-    const { setUser } = useContext(AppContext);
+
+const ProfileBtn = ({ text, loggedInId }) => {
+  const { setUser } = useContext(AppContext);
   const [anchorEl, setAnchorEl] = useState(null); // State to manage menu anchor
   const open = Boolean(anchorEl); // Check if menu is open
 
@@ -98,18 +97,35 @@ const ProfileBtn = ({ text }) => {
   };
 
   const router = useRouter(); // Initialize the router
-  
-    const handleProfileNavigation = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      router.push("/userContact"); // Programmatically navigate to the path
-    };
 
-    const handleLogout = async (e)=>{
+  const handleProfileNavigation = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    router.push("/userContact"); // Programmatically navigate to the path
+  };
+
+  const handleUserLoginSignup = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    router.push("/login-signup");
+  };
+
+  const handleGoToOrders = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    router.push("/orders"); // Programmatically navigate to the path
+  };
+
+  const handleGoToContactUs = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    router.push("/contact");
+  };
+
+  const handleLogout = async (e) => {
     setUser({});
-    await  logout()
-
-    }
+    await logout();
+  };
 
   // Handle menu close
   const handleClose = () => {
@@ -119,9 +135,7 @@ const ProfileBtn = ({ text }) => {
   return (
     <>
       {/* Styled Button */}
-      <StyledButton onClick={handleClick}>
-       {text}
-      </StyledButton>
+      <StyledButton onClick={handleClick}>{text}</StyledButton>
 
       {/* MUI Menu */}
       <MenuContainer
@@ -140,9 +154,56 @@ const ProfileBtn = ({ text }) => {
           horizontal: "left",
         }}
       >
-        {/* Menu Items */}
-        <MenuItemStyled onClick={(e)=>{handleClose();handleProfileNavigation(e)}}>Profile</MenuItemStyled>
-        <MenuItemStyled onClick={(e)=>{handleClose();handleLogout()}}>Logout</MenuItemStyled>
+        {!loggedInId || loggedInId == undefined
+          ? [
+              <MenuItemStyled
+                key="login-signup"
+                onClick={(e) => {
+                  handleClose();
+                  handleUserLoginSignup(e);
+                }}
+              >
+                Login / SignUp
+              </MenuItemStyled>,
+            ]
+          : [
+              <MenuItemStyled
+                key="orders"
+                onClick={(e) => {
+                  handleClose();
+                  handleGoToOrders(e);
+                }}
+              >
+                Orders
+              </MenuItemStyled>,
+              <MenuItemStyled
+                key="contact-us"
+                onClick={(e) => {
+                  handleClose();
+                  handleGoToContactUs(e);
+                }}
+              >
+                Contact us
+              </MenuItemStyled>,
+              <MenuItemStyled
+                key="edit-profile"
+                onClick={(e) => {
+                  handleClose();
+                  handleProfileNavigation(e);
+                }}
+              >
+                Edit Profile
+              </MenuItemStyled>,
+              <MenuItemStyled
+                key="logout"
+                onClick={(e) => {
+                  handleClose();
+                  handleLogout();
+                }}
+              >
+                Logout
+              </MenuItemStyled>,
+            ]}
       </MenuContainer>
     </>
   );
