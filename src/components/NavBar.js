@@ -65,11 +65,11 @@ const HomeLogoWrapper = styled("div")(({ theme }) => ({
   transform: "translateX(-50%)",
   cursor: "pointer",
   "& img": {
-    width: theme.typography.pxToRem(300),
-    height: theme.typography.pxToRem(50),
+    maxWidth: theme.typography.pxToRem(250),
+    maxHeight: theme.typography.pxToRem(35),
     [theme.breakpoints.down("md")]: {
-      width: theme.typography.pxToRem(200),
-      height: theme.typography.pxToRem(45),
+      maxWidth: theme.typography.pxToRem(200),
+      maxHeight: theme.typography.pxToRem(30),
     },
   },
 }));
