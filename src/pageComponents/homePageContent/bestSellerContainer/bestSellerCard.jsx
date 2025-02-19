@@ -9,6 +9,7 @@ import { useTheme } from "@mui/material/styles";
 const BestSellerComp = styled(Card)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
+  overflow:"visible",
   alignItems: "center",
   justifyContent: "space-between",
   width: "100%",
