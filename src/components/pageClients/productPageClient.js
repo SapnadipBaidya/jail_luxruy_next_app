@@ -1,11 +1,10 @@
 import { Box, Grid } from "@mui/material";
-import ProductDetailsTabComponent from "../productDetailsTabComponent/ProductDetailsTabComponent";
 import ProductImage from "../productDetailComponent/ProductImage";
 import ProductDetails from "../productDetailComponent/productDetail";
 import PdTabComp from "../productDetailComponent/productDetailsTabs/pdTabComp";
 
 const ProductPageClient = ({data}) => {
-
+console.log("ProductPageClient",data)
 
   return (
     <>
@@ -40,7 +39,7 @@ const ProductPageClient = ({data}) => {
           </Grid>
         </Grid>
       </Box>
-      <PdTabComp/>
+      <PdTabComp moreDetails={data?.product_info?.moreDetails}/>
       {/* <ProductDetailsTabComponent /> */}
       {/* <RecommandationCard /> */}
     </>
