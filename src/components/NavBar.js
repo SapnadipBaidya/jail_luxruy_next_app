@@ -42,15 +42,13 @@ const StyledButton = styled("span")(({ theme }) => ({
   minWidth: theme.typography.pxToRem(80),
   maxWidth: theme.typography.pxToRem(300),
   cursor: "pointer",
-  "&:hover": {
-    backgroundColor: theme.palette.action.hover,
-  },
+  
 }));
 
 const StyledIcon = styled("span")(({ theme }) => ({
   textTransform: "none",
   margin: "1vh",
-  color: theme.custom.primaryButtonFontColor,
+  color: theme.typography.color,
   fontSize: theme.typography.pxToRem(15),
   maxWidth: theme.typography.pxToRem(50),
   cursor: "pointer",
@@ -83,7 +81,7 @@ const MobileNav = styled(Drawer)(({ theme }) => ({
 
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
+  backgroundColor: theme.palette.navbac.main,
   borderBottom: 1,
   borderColor: "divider",
 }));
@@ -178,7 +176,7 @@ export default function Navbar({ carouselImages, userData }) {
           {deviceType === "pc" && (
             <NavLinksContainer>
               <CategoryDropdown />
-              <StyledButton
+              <StyledButton sx={{textAlign:"center"}}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -187,7 +185,7 @@ export default function Navbar({ carouselImages, userData }) {
               >
                 About Us
               </StyledButton>
-              <StyledButton
+              <StyledButton sx={{textAlign:"center"}}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();

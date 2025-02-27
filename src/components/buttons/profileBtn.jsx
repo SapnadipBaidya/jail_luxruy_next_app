@@ -22,6 +22,7 @@ const StyledButton = styled("button")(({ theme }) => ({
   textDecoration: "none",
   fontWeight: 600,
   fontSize: "20px",
+  fontFamily:"Abyssinica SIL",
   backgroundColor: "transparent",
   cursor: "pointer",
   "&::before": {

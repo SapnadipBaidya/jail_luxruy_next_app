@@ -1,3 +1,4 @@
+// app/privacy-policy/page.js
 export const runtime = 'edge';
 import React from "react";
 import PolicyLayout from "@/components/pageClients/policyLayout";
@@ -6,30 +7,25 @@ const privacyContent = [
   {
     title: "Introduction",
     paragraphs: [
-      "This Privacy Policy explains how REXINE & LEATHER PRODUCT PRIVATE LIMITED ('we,' 'our,' or 'us') collects, uses, and protects your personal information when you visit Jail.luxury.",
+      "This Privacy Policy explains how REXINE & LEATHER PRODUCT PRIVATE LIMITED (“we,” “our,” or “us”) collects, uses, and protects your personal information when you visit Jail.luxury.",
     ],
   },
   {
     title: "Information We Collect",
     paragraphs: [
-      "Personal Information: We may collect your name, email address, phone number, and payment information when you place an order or sign up for our services.",
-      "Non-Personal Information: We may collect non-personal information such as your IP address, browser type, and browsing behavior on our website.",
+      "Personal Information: We may collect your name, email address, phone number, and payment information when you place an order or sign up for our services. Non-Personal Information: We may collect non-personal information such as your IP address, browser type, and browsing behavior on our website.",
     ],
   },
   {
     title: "How We Use Your Information",
     paragraphs: [
-      "To process your orders and provide customer support.",
-      "To send you updates, newsletters, and promotional materials.",
-      "To improve our website and services based on user feedback and analytics.",
+      "To process your orders and provide customer support. To send you updates, newsletters, and promotional materials. To improve our website and services based on user feedback and analytics.",
     ],
   },
   {
     title: "Sharing Your Information",
     paragraphs: [
-      "We do not sell or rent your personal information to third parties.",
-      "We may share your information with trusted third-party service providers who assist us in operating our website and conducting our business.",
-      "We may disclose your information if required by law or to protect our rights and safety.",
+      "We do not sell or rent your personal information to third parties. We may share your information with trusted third-party service providers who assist us in operating our website and conducting our business. We may disclose your information if required by law or to protect our rights and safety.",
     ],
   },
   {
@@ -59,7 +55,7 @@ const privacyContent = [
 ];
 
 const PrivacyPolicy = () => {
-  return <PolicyLayout title="Privacy Policy" content={privacyContent}  />;
+  return <PolicyLayout title="Privacy Policy" content={privacyContent} />;
 };
 
 export default PrivacyPolicy;

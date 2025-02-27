@@ -14,7 +14,7 @@ import {
 
 const FooterContainer = styled(Box)(({ theme }) => ({
   marginTop:"2vh",
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.navbac.main,
   color: theme.custom.primaryButtonFontColor,
   padding: '2rem 2rem 3rem',
 }));
@@ -112,6 +112,9 @@ const Footer = () => {
       <Box mt={4} textAlign="center">
         <Typography variant="body2" color={theme.palette.text.secondary.main}>
           Copyright © 2025 Jail Luxury. All rights reserved.
+        </Typography>
+        <Typography variant="body2" color={theme.palette.text.secondary.main}>
+          Designed and Devoloped by <a href="https://www.jail.luxury" target="_blank" >Sands Technology Solution</a>
         </Typography>
       </Box>
     </FooterContainer>

@@ -23,10 +23,14 @@ const ColorCircle = styled(Box)(({ bgcolor, selected, theme }) => ({
 const SizeButton = styled(Button)(({ selected }) => ({
   borderRadius: "8px",
   minWidth: "50px",
-  backgroundColor: selected ? "#333" : "transparent",
+  backgroundColor: selected ? "#888" : "transparent",
   color: selected ? "#fff" : "#000",
   border: selected ? "2px solid black" : "1px solid #ccc",
   transition: "background 0.2s ease-in-out",
+}));
+
+const StyledTypography = styled(Typography)(({ theme }) => ({
+  color: theme.typography.color,
 }));
 
 const AddToCartButton = styled(Button)(({ theme }) => ({
@@ -85,6 +89,8 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
     display: "none", // Removes the pseudo-element effect
   },
 }));
+
+
 const AnimatedIcon = styled(IconButton)(({ theme, iswishlisted }) => ({
   display: "flex",
   alignItems: "center",
@@ -182,25 +188,25 @@ const ProductDetails = ({ data }) => {
 
   return (
     <Box component="section" aria-labelledby="product-details-heading">
-      <Typography variant="h4" id="product-details-heading" gutterBottom>
+      <StyledTypography variant="h4" id="product-details-heading" gutterBottom>
         {productInfo.productName}
-      </Typography>
+      </StyledTypography>
 
-      <Typography variant="body2" color="text.secondary" paragraph>
+      <StyledTypography variant="body2" color="text.secondary" paragraph>
         4.3 ★ 122 Ratings
-      </Typography>
+      </StyledTypography>
 
-      <Typography variant="h6" paragraph>
+      <StyledTypography variant="h6" paragraph>
         MRP {productInfo.productPrice}
-      </Typography>
+      </StyledTypography>
 
       <section aria-labelledby="description-heading">
-        <Typography variant="body1" id="description-heading" gutterBottom>
+        <StyledTypography variant="body1" id="description-heading" gutterBottom>
           Description
-        </Typography>
-        <Typography variant="body2" paragraph>
+        </StyledTypography>
+        <StyledTypography variant="body2" paragraph>
           {productInfo.description}
-        </Typography>
+        </StyledTypography>
       </section>
 
       <ColorSelector
@@ -215,12 +221,15 @@ const ProductDetails = ({ data }) => {
         onSelect={handleSizeSelect}
       />
 
-      <Typography variant="caption" color="text.secondary" display="block" gutterBottom>
+      <StyledTypography  variant="caption"  display="block" gutterBottom > 
         Size & Fit Guide
         <br />
         Height of model: 189 cm / 6'2", Size: 41
-      </Typography>
+      </StyledTypography>
+      <StyledTypography variant="body1"  gutterBottom>
       {!user?.id && <h5>Please login to Wishlist / Cart</h5>}
+        </StyledTypography>
+     
       <Box
         sx={{
           display: "flex",
@@ -275,9 +284,9 @@ const ProductDetails = ({ data }) => {
 // Sub-components for better readability and performance
 const ColorSelector = React.memo(({ colors, selectedColor, onSelect }) => (
   <section aria-labelledby="color-selector-heading">
-    <Typography variant="body1" id="color-selector-heading" gutterBottom>
+    <StyledTypography variant="body1" id="color-selector-heading" gutterBottom>
       Color
-    </Typography>
+    </StyledTypography>
     <Box display="flex" gap={2} mb={3}>
       {colors?.map((color) => (
         <ColorCircle
@@ -296,9 +305,9 @@ const ColorSelector = React.memo(({ colors, selectedColor, onSelect }) => (
 
 const SizeSelector = React.memo(({ sizes, selectedSize, onSelect }) => (
   <section aria-labelledby="size-selector-heading">
-    <Typography variant="body1" id="size-selector-heading" gutterBottom>
+    <StyledTypography variant="body1" id="size-selector-heading" gutterBottom>
       Size
-    </Typography>
+    </StyledTypography>
     <Box display="flex" gap={2} mb={2}>
       {sizes?.map((size) => (
         <SizeButton
@@ -308,8 +317,8 @@ const SizeSelector = React.memo(({ sizes, selectedSize, onSelect }) => (
           aria-label={`Select size ${size.sizeName}`}
           aria-pressed={selectedSize === size.sizeId}
           disabled={!size?.inStock}
-        >
-          {size.sizeName}
+        > <StyledTypography>{size.sizeName}</StyledTypography>
+          
         </SizeButton>
       ))}
     </Box>

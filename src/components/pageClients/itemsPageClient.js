@@ -30,12 +30,13 @@ const ContentContainer = styled("div")(({ theme, isMobileOrTablet }) => ({
   margin: "0 5vw",
   flexGrow: 1,
   padding: theme.spacing(2),
+  
 }));
 
 const PageHeaderComp = styled("div")(({ theme, isMobileOrTablet }) => ({
   width: "100%",
   backgroundColor: theme.custom.banner,
-  color: theme.custom.primaryButtonFontColor,
+  color: theme.typography.color,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -51,6 +52,7 @@ const MainContent = styled("div")(({ theme }) => ({
   width: "100%",
   flexGrow: 1,
   gap: theme.spacing(2),
+  borderTop: `1px solid ${theme.palette.divider}`,
 }));
 
 export default function ItemsPageClient({

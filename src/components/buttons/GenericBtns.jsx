@@ -19,8 +19,8 @@ function GenericBtns({ type, btnText, defaultText = "default", executableFunctio
         );
       case 'secondary':
         return (
-          <StyledButton variant="outlined" color="secondary" onClick={executableFunction} minwidth={buttonMinWidth} disabled={disabled}>
-            {btnText}
+          <StyledButton variant="outlined" color="secondary" sx={{ backgroundColor: theme.custom?.cardBg || "#ffffff" }}  onClick={executableFunction} minwidth={buttonMinWidth} disabled={disabled}>
+            {btnText} 
           </StyledButton>
         );
       case 'error':
@@ -57,10 +57,6 @@ const StyledButton = styled(Button)(({ theme, minwidth , borderRadius = 10}) => 
   padding:"1vh",
   color:theme.custom.primaryButtonFontColor,
 
-  '&:hover': {
-    boxShadow: theme.shadows[4],
-    transform: 'scale(1.05)',
-  },
 
   '&.MuiButton-contained': {
     backgroundColor: theme.palette.primary.main,

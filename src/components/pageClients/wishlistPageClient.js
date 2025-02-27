@@ -16,6 +16,7 @@ const PageHeaderComp = styled("div")(({ theme, isMobileOrTablet }) => ({
   padding: theme.spacing(2),
   fontSize: theme.typography.pxToRem(60),
   fontFamily: "aboreto",
+  
 }));
 
 function WishListPageClient({ itemsArr }) {
@@ -44,7 +45,7 @@ function WishListPageClient({ itemsArr }) {
   return (
     <div style={{ display: "flex",alignItems:"center", justifyContent: "center", flexDirection:"column" }}>
          <PageHeaderComp>WISHLIST</PageHeaderComp>
-      <div  style={{ display: "flex",alignItems:"center", justifyContent: "center", minHeight: "90vh",maxWidth: "80vw", flexDirection:"column"}}>
+      <div  style={{ display: "flex",alignItems:"center", justifyContent: "center",maxWidth: "80vw", flexDirection:"column"}}>
    
       {wishlistLoading ? (
         <ThreeDotLoader />

@@ -14,17 +14,19 @@ import { styled } from "@mui/material/styles";
 import GenericBtns from "../buttons/GenericBtns";
 import FilterSizeComponent from "./generics/filterSizeComponent";
 import FilterColorComponent from "./generics/filterColorComponent";
+import { hover } from "framer-motion";
+import { transform } from "lodash";
 const FilterWrapperComponent = styled(Box)(({ theme }) => ({
   minWidth: theme.typography.pxToRem(300),
   maxWidth: theme.typography.pxToRem(300),
-
+  borderRight: `2px solid ${theme.palette.divider}`,
   overflow: "auto",
   padding: theme.spacing(2),
   display: "flex",
   flexDirection: "column",
   position: "sticky",
   top: 0, // Ensures it sticks at the top
-  backgroundColor: theme.palette.background.paper, // Ensures visibility over content
+  backgroundColor: theme.custom?.cardBg, // Ensures visibility over content
   zIndex: 1000, // Keeps it above other elements
   overflow: "visible",
   [theme.breakpoints.down("md")]: {
@@ -78,6 +80,7 @@ const FilterTitle = styled(Typography)(({ theme }) => ({
 const FilterSection = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(1),
   padding: theme.spacing(1),
+  
 }));
 
 function FilterWrapper({
@@ -117,11 +120,13 @@ function FilterWrapper({
       <FilterHeader>
         <FilterTitle>Filters</FilterTitle>
         <GenericBtns
-          type="secondary"
-          btnText={"Clear Filters"}
-          executableFunction={() => onClearFilters()}
-          minWidth="5vw"
-        />
+  type="secondary"
+  btnText="Clear Filters"
+  executableFunction={() => onClearFilters()}
+  minWidth="5vw"
+  disableHover
+/>
+
       </FilterHeader>
 
       {/* ✅ Scrollable Filters Section */}

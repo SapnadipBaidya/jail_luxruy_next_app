@@ -96,6 +96,9 @@ const ProceedButton = styled("button")(({ theme }) => ({
 const StyledTypography = styled(Typography)(({ theme }) => ({
   color: theme.custom.primaryButtonFontColor,
 }));
+const StyledText = styled(Typography)(({ theme }) => ({
+  color: theme.typography.color, // Use theme.palette for color, not theme.typography
+}));
 
 
 export default function CartPageClient() {
@@ -158,8 +161,8 @@ export default function CartPageClient() {
   return (
     <CheckoutContainer>
       <CartSection>
-        <Typography variant="h5">Checkout</Typography>
-
+        
+        <StyledText variant="h5">Checkout</StyledText>
         {/* Scrollable Table */}
 
         {cartLoading ? (
