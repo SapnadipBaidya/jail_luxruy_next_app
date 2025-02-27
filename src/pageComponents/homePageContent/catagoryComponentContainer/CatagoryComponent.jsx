@@ -48,6 +48,10 @@ const CircleWrapper = styled(Box)(({ theme }) => ({
   minHeight: "35vh",
   scrollBehavior: "smooth", // Add smooth scrolling behavior
 }));
+const StyledText = styled(Typography)(({ theme }) => ({
+  color:theme.typography.color,
+  
+}));
 
 export default function CategoryCarousel({ mode = "light" }) {
   const { categoryItems } = useContext(AppContext);
@@ -77,17 +81,20 @@ export default function CategoryCarousel({ mode = "light" }) {
   return (
     <>
       <CardContainer mode={mode}>
-        <Typography
+        <StyledText
           variant="h4"
           gutterBottom
           sx={{
+            
             textAlign: "center",
             fontWeight: 600,
-            fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" }, // Responsive font size
+            fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" }, 
+            
+              // Responsive font size
           }}
         >
           SHOP BY CATEGORY
-        </Typography>
+        </StyledText>
         <Box
           sx={{
             display: "flex",

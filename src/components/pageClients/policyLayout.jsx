@@ -16,6 +16,7 @@ const HeaderBox = styled("div")(({ theme }) =>({
   top: 55,
   left: 0,
   zIndex: 1000,
+  color: theme.typography.color,
 }));
 
 const ContentWrapper = styled("div")(({ theme }) =>({
@@ -29,21 +30,21 @@ const SectionTitle = styled(Typography)(({ theme }) => ({
   fontSize: "18px",
   fontWeight: "bold",
   marginTop: "30px", // ⬆️ Increased spacing between sections
-  color: theme.palette.primary.main,
+  color: theme.typography.color,
 }));
 
 const Paragraph = styled(Typography)(({ theme }) => ({
   fontSize: "16px",
   lineHeight: "1.8", // ⬆️ Increased line height for better readability
   marginBottom: "16px", // ⬆️ Added more spacing between paragraphs
-  color: theme.palette.text.primary,
+  color: theme.typography.color,
 }));
 
 const ContactInfo = styled(Typography)(({ theme }) => ({
   fontSize: "16px",
   fontWeight: "bold",
   marginTop: "20px",
-  color: theme.palette.ascentColor.main,
+  color: theme.typography.color,
 }));
 
 const PolicyLayout = ({ title, content }) => {

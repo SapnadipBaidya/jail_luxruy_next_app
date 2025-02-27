@@ -1,3 +1,4 @@
+// app/shipping-policy/page.js
 export const runtime = 'edge';
 import React from "react";
 import PolicyLayout from "@/components/pageClients/policyLayout";
@@ -6,8 +7,7 @@ const shippingContent = [
   {
     title: "Order Processing",
     paragraphs: [
-      "All orders are processed within 2 days of receipt.",
-      "You will receive a confirmation email once your order has been shipped.",
+      "All orders are processed within 2 days of receipt. You will receive a confirmation email once your order has been shipped.",
     ],
   },
   {
@@ -49,7 +49,7 @@ const shippingContent = [
 ];
 
 const ShippingPolicy = () => {
-  return <PolicyLayout title="Shipping Policy" content={shippingContent} />;
+  return <PolicyLayout title="Shipping Policy for Jail.luxury powered by REXINE & LEATHER PRODUCT PRIVATE LIMITED" content={shippingContent} />;
 };
 
 export default ShippingPolicy;

@@ -10,13 +10,14 @@ import { useTheme } from '@mui/material/styles';
 const StyledBox = styled(Box)(({ theme }) => ({
   width: '100%',
   backgroundColor: theme.palette.background.default,
-  
+  color:theme.typography.color,
 }));
 
 const StyledTabs = styled(Tabs)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.divider}`,
   width: '90vw',
   margin: "0 5vw 0 5vw",
+  
 }));
 
 const StyledTabPanel = styled('div')(({ theme }) => ({
@@ -66,9 +67,9 @@ export default function PdTabComp({ moreDetails = "" }) {
   return (
     <StyledBox>
       <StyledTabs value={value} onChange={handleChange} aria-label="basic tabs example">
-        <Tab label="More Details" {...a11yProps(0)} />
-        <Tab label="Customer Reviews" {...a11yProps(1)} />
-      </StyledTabs>
+  <Tab label="More Details" {...a11yProps(0)} sx={{ color: 'secondary.main' }} />
+  <Tab label="Customer Reviews" {...a11yProps(1)} sx={{ color: 'secondary.main' }} />
+</StyledTabs>
       <CustomTabPanel value={value} index={0}>
         {moreDetails}
       </CustomTabPanel>

@@ -27,6 +27,7 @@ const SortFilterWrapper = styled("div")(({ theme }) => ({
   boxShadow:"none"
 }));
 
+
 function SortFilterComponent({ setShowFilters, showFilters,setSortDetail,handleSortChange ,sortBy,setSortBy,sortConfigArr=[]}) {
   const theme = useTheme();
   const ismobile = useMediaQuery(theme.breakpoints.down("sm")); // ✅ Detects mobile view
@@ -60,6 +61,7 @@ function SortFilterComponent({ setShowFilters, showFilters,setSortDetail,handleS
           btnText={<FilterListIcon />}
           executableFunction={handleFilterClick}
           minWidth="3vw"
+          
         />
       )}
       <GenericBtns
@@ -67,6 +69,8 @@ function SortFilterComponent({ setShowFilters, showFilters,setSortDetail,handleS
         btnText={sortBy}
         executableFunction={handleClick}
         minWidth="10vw"
+        sx={{ backgroundColor: theme.custom?.cardBg || "#ffffff" }} 
+        
       />
       <Menu
         anchorEl={anchorEl}

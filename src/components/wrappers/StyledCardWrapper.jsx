@@ -171,7 +171,7 @@ const HoverContent = styled(Box)(({ theme }) => ({
   position: "absolute", // Use absolute positioning to overlay on the card
   bottom: "0",
   width: "100%", // Ensure it spans the full width of the card
-  color: "#fff",
+  color: theme.typography.color,
   opacity: 0, // Hidden by default on PC
   transform: "translateY(100%)", // Moved down by default on PC
   transition: "transform 0.3s ease-in-out, opacity 0.3s ease-in-out", // Smooth transitions
@@ -179,7 +179,7 @@ const HoverContent = styled(Box)(({ theme }) => ({
   flexDirection: "row", // Ensure horizontal layout
   justifyContent: "space-between", // Space out items evenly
   alignItems: "center", // Vertically center items
-  backgroundColor: "rgba(0, 0, 0, 0.7)", // Semi-transparent background
+  backgroundColor: theme.cardHover.main, // Semi-transparent background
   borderRadius: "0 0 1rem 1rem", // Rounded corners at the bottom
   padding: "0 0 0 1.3rem", // Consistent padding (left and right)
   height: "3.5rem", // Default height for larger screens

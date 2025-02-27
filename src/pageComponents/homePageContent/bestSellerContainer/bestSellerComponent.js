@@ -7,6 +7,7 @@ import { styled } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
+
 const BestSellerContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -21,7 +22,8 @@ const BestSellerContainer = styled(Box)(({ theme }) => ({
 }));
 
 const StyledText = styled(Typography)(({ theme }) => ({
-  color:theme.custom.primaryButtonFontColor
+  color:theme.typography.color,
+  
 }));
 
 export default function BestSellerComponent() {

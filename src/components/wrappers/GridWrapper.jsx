@@ -13,7 +13,7 @@ const GridWrapperComponent = styled("div")(({ theme }) => ({
   flexDirection: "column",
   justifyContent: "space-evenly",
   alignItems:"flex-start",
-  
+  borderTop: `1px solid `, // oporer border
   [theme.breakpoints.down("xl")]: {
    
     

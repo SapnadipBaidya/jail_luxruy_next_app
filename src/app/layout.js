@@ -2,6 +2,7 @@
 
 import { StyledEngineProvider } from "@mui/material";
 
+
 import LayoutClientPage from "@/components/pageClients/layoutClientPage";
 import { cache } from "react";
 import { cookies } from "next/headers";

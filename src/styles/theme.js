@@ -1,5 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
+
 export const lightTheme = createTheme({
   palette: {
     mode: "light",
@@ -10,11 +11,14 @@ export const lightTheme = createTheme({
       main: "#ded4c0",
     },
     ascentColor: {
-      main: "#bba3a3",
+      main: "#dacecc",
     },
     background: {
-      default: "#f9f8f6",
+      default: "#faf9f6",
       paper: "#dbd5cd",
+    },
+    navbac:{
+      main:"#ece8dd",
     },
   },
   custom: { // ✅ Define custom properties here
@@ -22,11 +26,15 @@ export const lightTheme = createTheme({
     primaryButtonFontColor: "#363230",
     secondaryButtonFontColor:"#ffffff",
     btnBorder:"#363230",
-    cardBg:"#fdf4ee",
-    banner:"#f3ece3"
+    cardBg:"#e8e8e5",
+    banner:"#foede4"
   },
   typography: {
-    fontFamily: "Roboto, Arial, sans-serif",
+    fontFamily: "Sanchez",
+    color:"#121212",
+  },
+  cardHover:{
+    main:"#dacecc",
   },
 });
 
@@ -38,14 +46,17 @@ export const darkTheme = createTheme(lightTheme, {
       main: "#573C2C",
     },
     ascentColor: {
-      main: "#483030",
+      main: "#2d2121",
     },
     secondary: {
       main: "#CCB878",
     },
     background: {
-      default: "#414040", //2b2b2a , 575655 , 151515
+      default: "#121212", //2b2b2a , 575655 , 151515
       paper: "#1b1a1a",
+    },
+    navbac:{
+      main:"#000000",
     },
   },
   custom: { // ✅ Define custom properties here
@@ -53,7 +64,15 @@ export const darkTheme = createTheme(lightTheme, {
     primaryButtonFontColor: "#dbd5cd",
     secondaryButtonFontColor:"#ffffff",
     btnBorder:"black" ,// profile btn border
-    cardBg:"#161615",
-    banner:"#201d1c"
+    cardBg:"#232323",
+    banner:"#oeoeoe"
   },
+  typography: {
+    fontFamily: "'Keqima', Roboto, Arial, sans-serif", 
+    color:"#faf9f6",
+  },
+  cardHover:{
+    main:"#2d2121",
+  },
+  
 });

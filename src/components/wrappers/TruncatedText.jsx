@@ -16,7 +16,7 @@ const StyledTypography = styled("span")(({ theme ,fontSizeNumber}) => ({
   textOverflow: "ellipsis",
   display: "block",
   cursor: "pointer",
-  color: theme.custom.primaryButtonFontColor
+  color: theme.typography.color,
 }));
 
 // ✅ TruncatedText Component
