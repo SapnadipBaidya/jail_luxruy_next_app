@@ -50,6 +50,7 @@ const CircleWrapper = styled(Box)(({ theme }) => ({
 }));
 const StyledText = styled(Typography)(({ theme }) => ({
   color:theme.typography.color,
+  fontFamily:theme.typography3.fontFamily,
   
 }));
 
