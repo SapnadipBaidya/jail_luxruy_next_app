@@ -99,7 +99,7 @@ const CardActionsContainer = styled("div")(({ theme }) => ({
   margin: "1rem 0",
   width: "100%", // Full width for better alignment
   padding: "0 1rem", 
-  height:"0.7rem",
+  height:"1.6rem",
   // Add padding for spacing
 }));
 
