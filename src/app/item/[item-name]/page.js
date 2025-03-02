@@ -2,7 +2,6 @@ export const runtime = 'edge';
 import LoadingAnimation from "@/components/loaders/LoadingAnimation";
 import ProductPageClient from "@/components/pageClients/productPageClient";
 import { makeGetAPIcall } from "@/utils/API_vendor";
-import { cookies } from "next/headers";
 import { Suspense } from "react";
 
 // Function to fetch product data
@@ -15,8 +14,6 @@ async function fetchProductFromAPI(productName, pid, pdid) {
 
 // Product Detail Page Component
 async function ProductDetailPage({ params, searchParams }) {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore?.get("accessToken")?.value || null;
   const waitedSearchParams = await searchParams;
   const waitedParams = await params;
   const pid = waitedSearchParams?.pid;

@@ -62,15 +62,12 @@ export default function ItemsPageClient({
   sizeFilterArr,
   allColors,
   userInput,
-  accessToken,
   initialSortBy,
   initialSortOrder,
   sortConfigArr
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const params = useParams();
   const theme = useTheme();
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
 

@@ -2,14 +2,10 @@ export const runtime = 'edge';
 import LoadingAnimation from "@/components/loaders/LoadingAnimation";
 import ItemsPageClient from "@/components/pageClients/itemsPageClient";
 import { makeGetAPIcall, makePostAPIcall } from "@/utils/API_vendor";
-import { cookies } from "next/headers";
 import { Suspense } from "react";
 
 // Separate data fetching components
 async function ItemsPageContent({ params, searchParams }) {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore?.get("accessToken")?.value || null;
-  console.log("ItemsPageContent", accessToken);
   const waitedParams = await params;
   const waitedSearchParams = await searchParams;
   const category = waitedParams?.category || "default-category";
@@ -58,7 +54,6 @@ async function ItemsPageContent({ params, searchParams }) {
         category={category}
         sizeFilterArr={allSizesPerCategory}
         allColors={allColors}
-        accessToken={accessToken}
         initialSortBy={sortBy}
         initialSortOrder={sortOrder}
         sortConfigArr={sortConfigArr}

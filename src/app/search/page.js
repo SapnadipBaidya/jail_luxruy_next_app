@@ -12,7 +12,7 @@ async function SearchPageContent({ params, searchParams }) {
 
   // Fetch data in parallel where possible
   const [ItemsData, allColors] = await Promise.all([
-    fetchSearchItemsFromAPI(waitedSearchParams?.userInput,waitedSearchParams?.color,waitedSearchParams?.page),
+    fetchSearchItemsFromAPI(waitedSearchParams?.userInput,waitedSearchParams?.color,waitedSearchParams?.gender,waitedSearchParams?.page),
     fetchAllColors(),
 ]);
 const sortOrder = waitedSearchParams?.sortOrder || "";
@@ -69,9 +69,9 @@ export default async function ItemsPage({ params, searchParams }) {
 
 // Move data fetching functions here
 
-async function fetchSearchItemsFromAPI(userInput,color,page) {
+async function fetchSearchItemsFromAPI(userInput,color,gender,page) {
   console.log("fetchSearchItemsFromAPI",userInput,color,page)
-  const apiUrl = `http://localhost:8080/api/products/searchByNameColorCategory?userInput=${userInput}&color=${color}&limit=12&page=${page}`;
+  const apiUrl = `http://localhost:8080/api/products/searchByNameColorCategory?userInput=${userInput}&color=${color}&gender=${gender}&limit=12&page=${page}`;
   console.log("apiUrl",apiUrl)
   const response = await makeGetAPIcall(apiUrl);
   console.log("response",response.data)
