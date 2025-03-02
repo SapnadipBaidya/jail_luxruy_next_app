@@ -67,6 +67,7 @@ const FilterTitle = styled(Typography)(({ theme }) => ({
   fontWeight: "bold",
   textTransform: "uppercase",
   fontSize: theme.typography.pxToRem(16),
+  color:theme.custom.primaryButtonFontColor
 }));
 
 const FilterSection = styled(Box)(({ theme }) => ({
@@ -109,7 +110,7 @@ const FilterDrawerMobile = ({ onApplyFilters, onClearFilters, selectedFilters, s
           {/* ✅ Header */}
           <FilterHeader>
             <FilterTitle>Filters</FilterTitle>
-            <IconButton onClick={() => setShowFilters(false)}>
+            <IconButton onClick={() => setShowFilters(false)} sx={{  color:theme.custom.primaryButtonFontColor}}>
               <CloseIcon />
             </IconButton>
           </FilterHeader>
@@ -122,6 +123,7 @@ const FilterDrawerMobile = ({ onApplyFilters, onClearFilters, selectedFilters, s
               <RadioGroup
                 value={selectedFilters?.gender}
                 onChange={(e) => handleRadioChange("gender", e.target.value)}
+                sx={{  color:theme.custom.primaryButtonFontColor}}
               >
                 {["MEN", "WOMEN"].map((gender) => (
                   <FormControlLabel
@@ -130,7 +132,7 @@ const FilterDrawerMobile = ({ onApplyFilters, onClearFilters, selectedFilters, s
                     control={
                       <Radio
                         sx={{
-                          color: theme.palette.ascentColor.main,
+                       color:theme.custom.primaryButtonFontColor,
                           "&.Mui-checked": {
                             color: theme.palette.ascentColor.main,
                           },
@@ -171,13 +173,13 @@ const FilterDrawerMobile = ({ onApplyFilters, onClearFilters, selectedFilters, s
                 onChange={handlePriceChange}
                 valueLabelDisplay="auto"
                 min={0}
-                max={1000000}
+                max={10000}
                 sx={{
                   color: theme.palette.ascentColor.main,
                   maxWidth: "90%",
                 }}
               />
-              <Typography>
+              <Typography sx={{  color:theme.custom.primaryButtonFontColor}}>
                 ₹{selectedFilters?.price[0]} - ₹{selectedFilters?.price[1]}
               </Typography>
             </FilterSection>
@@ -190,6 +192,7 @@ const FilterDrawerMobile = ({ onApplyFilters, onClearFilters, selectedFilters, s
               btnText="Clear Filters"
               executableFunction={onClearFilters}
               fullWidth
+              minWidth={"100%"}
             />
             <Button
               variant="contained"

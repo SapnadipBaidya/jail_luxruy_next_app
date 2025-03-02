@@ -75,6 +75,7 @@ const FilterTitle = styled(Typography)(({ theme }) => ({
   fontWeight: "bold",
   textTransform: "uppercase",
   fontSize: theme.typography.pxToRem(16),
+  
 }));
 
 const FilterSection = styled(Box)(({ theme }) => ({
@@ -193,13 +194,13 @@ function FilterWrapper({
           onChange={handlePriceChange}
           valueLabelDisplay="auto"
           min={0}
-          max={1000000}
+          max={10000}
           sx={{
             color: theme.palette.ascentColor.main,
             maxWidth: "90%",
           }}
         />
-        <Typography>
+        <Typography sx={{  color:theme.custom.primaryButtonFontColor}}>
           ₹{selectedFilters?.price[0]} - ₹{selectedFilters?.price[1]}
         </Typography>
       </FilterSection>

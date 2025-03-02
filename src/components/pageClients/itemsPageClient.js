@@ -145,7 +145,7 @@ export default function ItemsPageClient({
       gender: "",
       size: [],
       color: [],
-      price: [0, 1000000],
+      price: [0, 10000],
     };
     setSelectedFilters(clearedFilters);
     setPage(1);

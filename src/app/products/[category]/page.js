@@ -14,6 +14,7 @@ async function ItemsPageContent({ params, searchParams }) {
   const size = waitedSearchParams?.size || "";
   const gender = waitedSearchParams?.gender || "";
   const sortOrder = waitedSearchParams?.sortOrder || "";
+  const price = waitedSearchParams?.price || ""
   const sortConfigArr = [
     { label: "None", value: "Sort By" },
     { label: "Price: Low to High", value: "Price: Low to High" , dbValue:"product_price_local" , dbSort : "ASC" },
@@ -25,7 +26,7 @@ async function ItemsPageContent({ params, searchParams }) {
   console.log("searchParams", page, color, size, gender, "params", category);
   // Fetch data in parallel where possible
   const [ItemsData, allSizesPerCategory, allColors] = await Promise.all([
-    fetchItemsFromAPI(category, page, color, size, gender,sortBy,sortOrder),
+    fetchItemsFromAPI(category, page, color, size,price, gender,sortBy,sortOrder),
     fetchSizeFilterByCategoryName(category),
     fetchAllColors(),
   ]);
@@ -40,7 +41,7 @@ async function ItemsPageContent({ params, searchParams }) {
       : [],
     price: waitedSearchParams.price
       ? waitedSearchParams.price.split(",").map(Number)
-      : [0, 1000000],
+      : [0, 10000],
   };
 
 
@@ -73,8 +74,8 @@ export default async function ItemsPage({ params, searchParams }) {
 }
 
 // Move data fetching functions here
-async function fetchItemsFromAPI(category, page, colors, sizes, gender,sortBy,sortOrder) {
-  const apiUrl = `http://localhost:8080/api/products/findProductsByCategoryName?categoryName=${category}&colorFilter=${colors}&sizeFilter=${sizes}&gender=${gender}&sortBy=${sortBy}&sortOrder=${sortOrder}&limit=12&page=${page}`;
+async function fetchItemsFromAPI(category, page, colors, sizes,price, gender,sortBy,sortOrder) {
+  const apiUrl = `http://localhost:8080/api/products/findProductsByCategoryName?categoryName=${category}&colorFilter=${colors}&sizeFilter=${sizes}&gender=${gender}&sortBy=${sortBy}&sortOrder=${sortOrder}&price=${price}&limit=12&page=${page}`;
   console.log("apiUrl for fetchItemsFromAPI", apiUrl);
   const response = await makeGetAPIcall(apiUrl);
   return { loading: false, data: response?.data || [] };

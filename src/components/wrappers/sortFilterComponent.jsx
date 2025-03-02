@@ -98,8 +98,9 @@ function SortFilterComponent({ setShowFilters, showFilters,setSortDetail,handleS
             onClick={() => handleClose(item.value , item?.dbValue , item?.dbSort)}
             sx={{
               fontSize: theme.typography.pxToRem(
-                ismobile ? 12 : isTablet ? 12 : 14
+                ismobile ? 12 : isTablet ? 12 : 14,
               ), // ✅ Adjust font size dynamically
+              color: theme?.custom.primaryButtonFontColor,
               padding: ismobile ? "0.5vh" : "1vh", // ✅ Adjust padding dynamically
               "&:hover": {
               backgroundColor: theme.palette.ascentColor.main,

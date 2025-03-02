@@ -12,7 +12,7 @@ async function SearchPageContent({ params, searchParams }) {
 
   // Fetch data in parallel where possible
   const [ItemsData, allColors] = await Promise.all([
-    fetchSearchItemsFromAPI(waitedSearchParams?.userInput,waitedSearchParams?.color,waitedSearchParams?.gender,waitedSearchParams?.page),
+    fetchSearchItemsFromAPI(waitedSearchParams?.userInput,waitedSearchParams?.color,waitedSearchParams?.gender,waitedSearchParams?.sortBy,waitedSearchParams?.sortOrder,waitedSearchParams?.page,waitedSearchParams?.price),
     fetchAllColors(),
 ]);
 const sortOrder = waitedSearchParams?.sortOrder || "";
@@ -28,7 +28,7 @@ const sortBy = sortConfig?.value
   const initialFilters = {
     gender: waitedSearchParams.gender || "",
     color:  waitedSearchParams.color ? waitedSearchParams.color.split(',').map(Number) : [],
-    price:  waitedSearchParams.price ? waitedSearchParams.price.split(',').map(Number) : [0, 1000000]
+    price:  waitedSearchParams.price ? waitedSearchParams.price.split(',').map(Number) : [0, 10000]
   };
 
   return (
@@ -69,9 +69,9 @@ export default async function ItemsPage({ params, searchParams }) {
 
 // Move data fetching functions here
 
-async function fetchSearchItemsFromAPI(userInput,color,gender,page=1) {
-  console.log("fetchSearchItemsFromAPI",userInput,color,page)
-  const apiUrl = `http://localhost:8080/api/products/searchByNameColorCategory?userInput=${userInput}&color=${color}&gender=${gender}&limit=12&page=${page}`;
+async function fetchSearchItemsFromAPI(userInput,color,gender,sortBy,sortOrder,page=1,price) {
+  console.log("fetchSearchItemsFromAPI",userInput,color,page,sortBy,sortOrder)
+  const apiUrl = `http://localhost:8080/api/products/searchByNameColorCategory?userInput=${userInput}&color=${color}&gender=${gender}&sortBy=${sortBy}&sortOrder=${sortOrder}&price=${price}&limit=12&page=${page}`;
   console.log("apiUrl",apiUrl)
   const response = await makeGetAPIcall(apiUrl);
   console.log("response",response.data)

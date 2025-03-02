@@ -96,8 +96,10 @@ const SortFilterComponentMobile = ({
       >
         <DrawerContent>
           <DrawerHeader>
-            <Typography variant="h6">Sort Options</Typography>
-            <IconButton onClick={handleCloseDrawer}>
+            <Typography variant="h6" sx={{
+              color:theme.custom.primaryButtonFontColor
+            }}>Sort Options</Typography>
+            <IconButton onClick={handleCloseDrawer} sx={{  color:theme.custom.primaryButtonFontColor}}>
               <CloseIcon />
             </IconButton>
           </DrawerHeader>
@@ -112,7 +114,8 @@ const SortFilterComponentMobile = ({
                 sx={{
                   '&:hover': {
                     backgroundColor: theme.palette.action.hover,
-                  }
+                  },
+                  color:theme.custom.primaryButtonFontColor
                 }}
               >
                 <ListItemText 

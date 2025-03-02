@@ -3,8 +3,6 @@ import { Button, useTheme, useMediaQuery, styled } from '@mui/material';
 
 function GenericBtns({ type, btnText, defaultText = "default", executableFunction, minWidth = "10vw" , disabled=false}) {
   const theme = useTheme();
-  const isTablet = useMediaQuery(theme.breakpoints.down("md")); // ✅ Detect Tablet View
-  const ismobile = useMediaQuery(theme.breakpoints.down("sm")); // ✅ Detect Mobile View
 
   // ✅ Adjust Button Size for Different Screens
   const buttonMinWidth = minWidth;
