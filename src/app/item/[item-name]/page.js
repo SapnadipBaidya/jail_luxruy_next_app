@@ -4,21 +4,19 @@ import ProductPageClient from "@/components/pageClients/productPageClient";
 import { makeGetAPIcall } from "@/utils/API_vendor";
 import { Suspense } from "react";
 
-// Function to fetch product data
+// Function to fetch product data with cache disabled
 async function fetchProductFromAPI(productName, pid, pdid) {
   const apiUrl = `http://localhost:8080/api/products/findProductsById?productName=${productName}&pid=${pid}&pdid=${pdid}`;
-  console.log("API URL:", apiUrl);
-  const response = await makeGetAPIcall(apiUrl);
+  const response = await makeGetAPIcall(apiUrl, { cache: 'no-store' }); // Disable caching
   return response?.data || {};
 }
 
 // Product Detail Page Component
 async function ProductDetailPage({ params, searchParams }) {
-  const waitedSearchParams = await searchParams;
-  const waitedParams = await params;
-  const pid = waitedSearchParams?.pid;
-  const pdid = waitedSearchParams?.pdid;
-  const productName = waitedParams?.["item-name"];
+  // Access parameters directly without await
+  const pid = searchParams?.pid;
+  const pdid = searchParams?.pdid;
+  const productName = params?.["item-name"];
 
   const data = await fetchProductFromAPI(productName, pid, pdid);
   const success = data.status;
@@ -27,19 +25,18 @@ async function ProductDetailPage({ params, searchParams }) {
     return <div>Failed to load product details.</div>;
   }
 
-  return (
-    <> 
-    <ProductPageClient data={data.responseData}  />
-    </>
-    
-  );
+  return <ProductPageClient data={data.responseData} />;
 }
 
 // Main Product Page Component
-export default function ProductPage({ params, searchParams }) {
+export default async function ProductPage({ params, searchParams }) {
+  const s= await searchParams;
+  const p= await params;
+  const key = `${p["item-name"]}-${s.pid}-${s.pdid}`;
+
   return (
-    <Suspense fallback={<LoadingAnimation />}>
-      <ProductDetailPage params={params} searchParams={searchParams} />
+    <Suspense key={key} fallback={<LoadingAnimation />}>
+      <ProductDetailPage params={p} searchParams={s} />
     </Suspense>
   );
 }
