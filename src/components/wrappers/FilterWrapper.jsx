@@ -163,7 +163,7 @@ function FilterWrapper({
 
       {/* Size Filter (Checkbox - Multiple Selections) */}
       
-      {sizeFilterArr ? <FilterSection>
+      {sizeFilterArr?.data?.length >0 ? <FilterSection>
         <FilterContent>
           <FilterSizeComponent
             sizeArr={sizeFilterArr}

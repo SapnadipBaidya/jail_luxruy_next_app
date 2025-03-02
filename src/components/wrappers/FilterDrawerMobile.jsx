@@ -144,14 +144,14 @@ const FilterDrawerMobile = ({ onApplyFilters, onClearFilters, selectedFilters, s
             </FilterSection>
 
             {/* Size Filter (Checkbox - Multiple Selections) */}
-            <FilterSection>
+            {sizeFilterArr?.data?.length >0 ? <FilterSection>
               <FilterSizeComponent
                 sizeArr={sizeFilterArr}
                 sizeLoading={false}
                 selectedFilters={selectedFilters}
                 handleCheckboxChange={handleCheckboxChange}
               />
-            </FilterSection>
+            </FilterSection> : null}
 
             {/* Color Filter */}
             <FilterSection>
