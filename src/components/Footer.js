@@ -114,7 +114,7 @@ const Footer = () => {
           Copyright © 2025 Jail Luxury. All rights reserved.
         </Typography>
         <Typography variant="body2" color={theme.palette.text.secondary.main}>
-          Designed and Devoloped by <a href="https://www.jail.luxury" target="_blank" >Sands Technology Solution</a>
+          Designed and Devoloped by <a href="https://sandstechnologysolutions.com/" target="_blank" >Sands Technology Solution</a>
         </Typography>
       </Box>
     </FooterContainer>

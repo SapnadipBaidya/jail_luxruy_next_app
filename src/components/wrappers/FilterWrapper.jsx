@@ -162,7 +162,8 @@ function FilterWrapper({
       </FilterSection>
 
       {/* Size Filter (Checkbox - Multiple Selections) */}
-      <FilterSection>
+      
+      {sizeFilterArr ? <FilterSection>
         <FilterContent>
           <FilterSizeComponent
             sizeArr={sizeFilterArr}
@@ -171,7 +172,7 @@ function FilterWrapper({
             handleCheckboxChange={handleCheckboxChange}
           />
         </FilterContent>
-      </FilterSection>
+      </FilterSection>:null}
 
       <FilterSection>
         <FilterContent>

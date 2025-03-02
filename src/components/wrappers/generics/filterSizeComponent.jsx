@@ -1,5 +1,5 @@
 import { Chip, styled, Typography } from "@mui/material";
-import React from "react";
+import React, { useCallback } from "react";
 
 const FilterTitle = styled(Typography)(({ theme }) => ({
     fontWeight: "bold",
@@ -41,22 +41,27 @@ const StyledChip = styled(Chip)(({ theme }) => ({
 }));
 
 
-function FilterSizeComponent({ sizeArr, selectedFilters, handleCheckboxChange }) {
+const FilterSizeComponent = React.memo(({ sizeArr = [], selectedFilters = {}, handleCheckboxChange }) => {
+    const handleClick = useCallback((sizeId) => {
+        handleCheckboxChange("size", sizeId);
+    }, [handleCheckboxChange]);
+
     return (
         <>
             <FilterTitle>Size</FilterTitle>
             <FilterWrapper>
-                {sizeArr?.data?.map((size) => (
+                {sizeArr.data.map((size) => (
                     <StyledChip
                         key={size.pk_size_id}
                         label={size.size_name}
-                        onClick={() => handleCheckboxChange("size", size.pk_size_id)}
-                        className={selectedFilters?.size?.includes(size.pk_size_id) ? "Mui-selected" : ""}
+                        onClick={() => handleClick(size.pk_size_id)}
+                        className={selectedFilters.size?.includes(size.pk_size_id) ? "Mui-selected" : ""}
                     />
                 ))}
             </FilterWrapper>
         </>
     );
-}
+});
+
 
 export default FilterSizeComponent;

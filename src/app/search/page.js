@@ -8,11 +8,11 @@ import { Suspense } from 'react'
 async function SearchPageContent({ params, searchParams }) {
 
   const waitedSearchParams = await searchParams
+  console.log("waitedSearchParams",waitedSearchParams)
 
   // Fetch data in parallel where possible
-  const [ItemsData, allSizesPerCategory, allColors] = await Promise.all([
-    fetchSearchItemsFromAPI(waitedSearchParams?.userInput,waitedSearchParams?.page),
-    fetchSizeFilterByCategoryName(waitedSearchParams?.userInput),
+  const [ItemsData, allColors] = await Promise.all([
+    fetchSearchItemsFromAPI(waitedSearchParams?.userInput,waitedSearchParams?.color,waitedSearchParams?.page),
     fetchAllColors(),
 ]);
 const sortOrder = waitedSearchParams?.sortOrder || "";
@@ -27,7 +27,6 @@ const sortBy = sortConfig?.value
 
   const initialFilters = {
     gender: waitedSearchParams.gender || "",
-    size:   waitedSearchParams.size ? waitedSearchParams.size.split(',').map(Number) : [],
     color:  waitedSearchParams.color ? waitedSearchParams.color.split(',').map(Number) : [],
     price:  waitedSearchParams.price ? waitedSearchParams.price.split(',').map(Number) : [0, 1000000]
   };
@@ -38,7 +37,6 @@ const sortBy = sortConfig?.value
       initialFilters={initialFilters}
       initialPage={waitedSearchParams?.page}
       category={waitedSearchParams?.category}
-      sizeFilterArr={allSizesPerCategory}
       allColors={allColors}
       userInput={waitedSearchParams?.userInput}
       initialSortBy={sortBy}
@@ -71,9 +69,9 @@ export default async function ItemsPage({ params, searchParams }) {
 
 // Move data fetching functions here
 
-async function fetchSearchItemsFromAPI(userInput,page) {
-  console.log("fetchSearchItemsFromAPI",userInput,page)
-  const apiUrl = `http://localhost:8080/api/products/searchByNameColorCategory?userInput=${userInput}&limit=12&page=${page}`;
+async function fetchSearchItemsFromAPI(userInput,color,page) {
+  console.log("fetchSearchItemsFromAPI",userInput,color,page)
+  const apiUrl = `http://localhost:8080/api/products/searchByNameColorCategory?userInput=${userInput}&color=${color}&limit=12&page=${page}`;
   console.log("apiUrl",apiUrl)
   const response = await makeGetAPIcall(apiUrl);
   console.log("response",response.data)
@@ -85,11 +83,4 @@ async function fetchAllColors() {
   const apiUrl = `http://localhost:8080/api/filters/getAllColors`;
   const response = await makeGetAPIcall(apiUrl);
   return response.data || [];
-}
-
-async function fetchSizeFilterByCategoryName(categoryName) {
-  const apiUrl = `http://localhost:8080/api/filters/getSizeFilterByCatagory`;
-  const payload = { categoryName  };
-  const response = await makePostAPIcall(apiUrl, payload||"");
-  return response?.data || [];
 }
