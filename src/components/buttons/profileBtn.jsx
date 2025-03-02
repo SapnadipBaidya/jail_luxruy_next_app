@@ -21,7 +21,7 @@ const StyledButton = styled("button")(({ theme }) => ({
   color: theme.palette.text.primary, // Use theme text color
   textDecoration: "none",
   fontWeight: 600,
-  fontSize: "20px",
+  fontSize: theme.typography.pxToRem(20),
   fontFamily:"Abyssinica SIL",
   backgroundColor: "transparent",
   cursor: "pointer",
@@ -32,7 +32,7 @@ const StyledButton = styled("button")(({ theme }) => ({
     left: `-${theme.typography.pxToRem(2)}`,
     width: "calc(100% + 4px)",
     height: "calc(100% - 12px)",
-    backgroundColor: theme.palette.background.default, // Use theme background color
+    backgroundColor: theme.palette.navbac.main, // Use theme background color
     transition: "transform 0.2s ease-in-out",
     transform: "scaleY(1)",
   },
@@ -46,7 +46,7 @@ const StyledButton = styled("button")(({ theme }) => ({
     top: `-${theme.typography.pxToRem(2)}`,
     height: "calc(100% + 4px)",
     width: "calc(100% - 12px)",
-    backgroundColor: theme.palette.background.default, // Use theme background color
+    backgroundColor: theme.palette.navbac.main, // Use theme background color
     transition: "transform 0.2s ease-in-out",
     transform: "scaleX(1)",
     transitionDelay: "0.3s",
