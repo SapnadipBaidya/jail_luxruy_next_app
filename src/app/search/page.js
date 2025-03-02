@@ -69,7 +69,7 @@ export default async function ItemsPage({ params, searchParams }) {
 
 // Move data fetching functions here
 
-async function fetchSearchItemsFromAPI(userInput,color,gender,page) {
+async function fetchSearchItemsFromAPI(userInput,color,gender,page=1) {
   console.log("fetchSearchItemsFromAPI",userInput,color,page)
   const apiUrl = `http://localhost:8080/api/products/searchByNameColorCategory?userInput=${userInput}&color=${color}&gender=${gender}&limit=12&page=${page}`;
   console.log("apiUrl",apiUrl)
