@@ -20,14 +20,49 @@ const ColorCircle = styled(Box)(({ bgcolor, selected, theme }) => ({
   transform: selected ? "scale(1.3)" : "scale(1)",
 }));
 
-const SizeButton = styled(Button)(({ selected }) => ({
+const SizeButton = styled(Button)(({ selected, disabled,theme }) => ({
   borderRadius: "8px",
   minWidth: "50px",
   backgroundColor: selected ? "#888" : "transparent",
-  color: selected ? "#fff" : "#000",
-  border: selected ? "2px solid black" : "1px solid #ccc",
-  transition: "background 0.2s ease-in-out",
+  color: selected ? "#fff" : disabled ? "#aaa" : "#000", // Gray text for disabled
+  border: selected
+    ? "2px solid black"
+    : disabled
+    ? "1px solid #ddd" // Light border for disabled
+    : "1px solid #ccc",
+  transition: "background 0.2s ease-in-out, color 0.2s ease-in-out",
+  cursor: disabled ? "not-allowed" : "pointer", // Not-allowed cursor for disabled
+  opacity: disabled ? 0.7 : 1, // Reduce opacity for disabled
+  position: "relative", // Required for pseudo-element positioning
+  overflow: "hidden", // Hide overflow for the cross-strip effect
+  "&:hover": {
+    backgroundColor: disabled
+      ? "transparent" // No hover effect for disabled
+      : selected
+      ? "#888"
+      : "#f0f0f0", // Light hover effect for enabled
+  },
+  // Cross-strip design for disabled buttons
+  "&::before": disabled
+    ? {
+        content: '""',
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        background: `repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 5px,
+          white 5px,
+          black 10px
+        )`, // Red cross-strip pattern
+        pointerEvents: "none", // Ensure the pseudo-element doesn't block clicks
+      }
+    : {},
 }));
+
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
   color: theme.typography.color,
