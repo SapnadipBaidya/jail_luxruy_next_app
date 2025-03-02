@@ -46,7 +46,7 @@ const Title = styled(Typography)(({ theme }) => ({
 const Subtitle = styled(Typography)(({ theme }) => ({
   fontSize: "1.2rem",
   textAlign: "center",
-  color: theme.palette.text.secondary,
+  color: theme.typography.color,
   marginBottom: theme.spacing(4),
   [theme.breakpoints.down("sm")]: {
     fontSize: "1rem", // Responsive font size

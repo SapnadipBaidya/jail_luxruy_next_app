@@ -1,3 +1,5 @@
+
+
 "use client";
 
 import {
@@ -61,30 +63,29 @@ const ProductImage = styled(Box)(({ theme }) => ({
 
 const SizeBox = styled(Box)(({ theme }) => ({
   width: 60,
-  
   border: "1px solid #ddd",
   borderRadius: 4,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   backgroundColor: "#fff",
+  overflow: "hidden", // Prevents content from overflowing
+  whiteSpace: "nowrap", // Prevents text from wrapping
+  textOverflow: "ellipsis", // Adds ellipsis if text overflows
+  padding: theme.spacing(0.5), // Adds padding to ensure content doesn't touch the edges
   [theme.breakpoints.down("sm")]: {
-    width: 20,
-    
-    marginLeft:"2rem",
+    width: 40, 
+    marginLeft: "2rem",
   },
   [theme.breakpoints.down("lg")]: {
-    width: 40,
-    
-    marginLeft:"2rem",
+    width: 50, 
+    marginLeft: "2rem",
   },
   [theme.breakpoints.down("md")]: {
-    width: 20,
-    
-    marginLeft:"2rem",
+    width: 40, 
+    marginLeft: "2rem",
   },
 }));
-
 
 
 const HeaderText = styled(Typography)(({ theme }) => ({
