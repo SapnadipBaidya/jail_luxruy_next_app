@@ -14,6 +14,7 @@ import {
   styled
 } from "@mui/material";
 import ChevronDownIcon from "@mui/icons-material/ExpandMore";
+import ChevronUpIcon from "@mui/icons-material/ExpandLess";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import LuggageIcon from "@mui/icons-material/Luggage";
@@ -139,14 +140,14 @@ const CategoryDropdown = () => {
       {isTouchDevice ? (
         <StyledAccordion expanded={expanded} onChange={handleAccordionToggle}>
           <StyledAccordionSummary
-            expandIcon={<ChevronDownIcon />}
+            expandIcon={expanded ? <ChevronUpIcon /> : <ChevronDownIcon />} 
             aria-controls="categories-content"
           >
-            <StyledButton >
-              Categories 
+            <StyledButton>
+              Categories
             </StyledButton>
           </StyledAccordionSummary>
-          
+
           <AccordionDetailsStyled>
             {categoryItems?.map((category, index) => {
               const icon = iconMap[category.category_mapping] || <ShoppingBagIcon sx={{ fontSize: "24px" }} />;
@@ -167,8 +168,10 @@ const CategoryDropdown = () => {
       ) : (
         <>
           <StyledButton onClick={handleOpen}>
-            Categories           </StyledButton>
-          
+            Categories
+            {anchorEl ? <ChevronUpIcon sx={{ ml: 0 }} /> : <ChevronDownIcon sx={{ ml: 0 }} />} {/* Toggle between up and down arrow */}
+          </StyledButton>
+
           <MenuContainer
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}

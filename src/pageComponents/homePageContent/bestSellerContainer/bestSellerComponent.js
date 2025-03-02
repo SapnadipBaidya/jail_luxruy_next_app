@@ -34,7 +34,7 @@ export default function BestSellerComponent() {
     <BestSellerContainer>
       <StyledText
         variant={ismobile ? "h5" : "h4"} // Larger title for mobile
-        sx={{ textAlign: "center", padding: "2vh", fontWeight: 600 }}
+        sx={{ textAlign: "center", padding: "2vh", fontWeight: 600,}}
       >
         BEST SELLERS
       </StyledText>
