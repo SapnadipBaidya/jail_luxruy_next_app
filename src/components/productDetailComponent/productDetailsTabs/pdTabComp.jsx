@@ -67,8 +67,8 @@ export default function PdTabComp({ moreDetails = "" }) {
   return (
     <StyledBox>
       <StyledTabs value={value} onChange={handleChange} aria-label="basic tabs example">
-  <Tab label="More Details" {...a11yProps(0)} sx={{ color: 'secondary.main' }} />
-  <Tab label="Customer Reviews" {...a11yProps(1)} sx={{ color: 'secondary.main' }} />
+  <Tab label="More Details" {...a11yProps(0)} sx={{ color: 'primary.main' }} />
+  <Tab label="Customer Reviews" {...a11yProps(1)} sx={{ color: 'primary.main' }} />
 </StyledTabs>
       <CustomTabPanel value={value} index={0}>
         {moreDetails}

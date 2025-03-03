@@ -31,12 +31,22 @@ const Section = styled(Box)(({ theme }) => ({
 const Title = styled(Typography)(({ theme }) => ({
   fontWeight: 'bold',
   marginBottom: '10px',
-  color: theme.palette.primary.main,
+  color: theme.typography.color,
 }));
 
 const InfoText = styled(Typography)(({ theme }) => ({
   marginBottom: '10px',
-  color: theme.palette.text.primary,
+  color: theme.typography.color,
+}));
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  
+  '& .MuiInputLabel-root': {
+    color: theme.palette.primary.main, 
+  },
+  
+  '& .Mui-focused': {
+    color: theme.palette.secondary.main,
+  },
 }));
 
 const Form = styled(Box)(({ theme }) => ({
@@ -73,19 +83,21 @@ export default  function Contact() {
       <Section>
         <Title variant="h6">Got Any Questions?</Title>
         <Form>
-          <TextField 
+          <StyledTextField  
             label="Name" 
+            
             variant="outlined" 
             fullWidth 
             InputProps={{ style: { borderRadius: '20px' } }}
           />
-          <TextField 
-            label="Email" 
+          <StyledTextField 
+            label="Email"
+
             variant="outlined" 
             fullWidth 
             InputProps={{ style: { borderRadius: '20px' } }}
           />
-          <TextField 
+          <StyledTextField 
             label="Comment or Message" 
             variant="outlined" 
             multiline

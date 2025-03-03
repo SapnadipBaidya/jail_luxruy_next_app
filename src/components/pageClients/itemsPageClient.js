@@ -52,7 +52,7 @@ const MainContent = styled("div")(({ theme }) => ({
   width: "100%",
   flexGrow: 1,
   gap: theme.spacing(2),
-  borderTop: `1px solid ${theme.palette.divider}`,
+  borderTop: `1px solid ${theme.palette.secondary.main}`,
 }));
 
 export default function ItemsPageClient({

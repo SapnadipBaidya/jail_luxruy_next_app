@@ -17,16 +17,16 @@ import FilterColorComponent from "./generics/filterColorComponent";
 import { hover } from "framer-motion";
 import { transform } from "lodash";
 const FilterWrapperComponent = styled(Box)(({ theme }) => ({
-  minWidth: theme.typography.pxToRem(300),
+minWidth: theme.typography.pxToRem(300),
   maxWidth: theme.typography.pxToRem(300),
-  borderRight: `2px solid ${theme.palette.divider}`,
+  borderRight: `2px solid ${theme.palette.secondary.main}`,
   overflow: "auto",
   padding: theme.spacing(2),
   display: "flex",
   flexDirection: "column",
   position: "sticky",
   top: 0, // Ensures it sticks at the top
-  backgroundColor: theme.custom?.cardBg, // Ensures visibility over content
+  backgroundColor: "theme.custom?.cardBg", // Ensures visibility over content
   zIndex: 1000, // Keeps it above other elements
   overflow: "visible",
   [theme.breakpoints.down("md")]: {
@@ -36,17 +36,21 @@ const FilterWrapperComponent = styled(Box)(({ theme }) => ({
     maxHeight: "80vh",
     padding: theme.spacing(1),
   },
-  borderRadius:"1vh"
+  borderRadius:"1vh",
+  borderTop: `solid ${theme.typography.pxToRem(1)} ${
+    theme.palette.secondary.main
+  }`,
 }));
 
 const FilterHeader = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  paddingBottom: theme.spacing(2),
+  paddingBottom: theme.spacing(4),
   borderBottom: `solid ${theme.typography.pxToRem(1)} ${
     theme.palette.secondary.main
   }`,
+  
 }));
 
 const FilterContent = styled(Box)(({ theme }) => ({
@@ -68,6 +72,7 @@ const FilterFooter = styled(Box)(({ theme }) => ({
   borderTop: `solid ${theme.typography.pxToRem(1)} ${
     theme.palette.secondary.main
   }`,
+  
 }));
 
 const FilterTitle = styled(Typography)(({ theme }) => ({
@@ -196,7 +201,7 @@ function FilterWrapper({
           min={0}
           max={10000}
           sx={{
-            color: theme.palette.ascentColor.main,
+            variant:"contained",
             maxWidth: "90%",
           }}
         />

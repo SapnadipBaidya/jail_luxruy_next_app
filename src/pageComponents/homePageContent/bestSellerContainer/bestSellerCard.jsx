@@ -16,14 +16,10 @@ const BestSellerComp = styled(Card)(({ theme }) => ({
   maxWidth: theme.typography.pxToRem(600),
   margin: "2vw",
   borderRadius: "10px",
-  backgroundColor: theme.palette.background.default,
+  background: "transparent", 
   boxShadow:"none",
   textAlign: "center",
-  transition: "transform 0.3s ease-in-out, box-shadow 0.3s",
-  "&:hover": {
-    transform: "scale(1.03)",
-   
-  },
+ 
   [theme.breakpoints.down("sm")]: {
     width: "95vw", // Makes it bigger on mobile
     maxWidth: "none",
@@ -35,6 +31,7 @@ const StyledImg = styled("img")(({ theme }) => ({
   width: "100%",
   height: "auto",
   objectFit: "cover",
+  
   transition: "transform 0.3s ease-in-out",
   "&:hover": {
     transform: "scale(1.05)",

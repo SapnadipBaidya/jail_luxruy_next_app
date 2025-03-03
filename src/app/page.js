@@ -35,8 +35,8 @@ export default async function HomePage() {
         <CategoryCarousel/>
      
       
-      <Box >
-        <BestSellerComponent/>
+      <Box  >
+        <BestSellerComponent />
       </Box>
       <Box >
       <LocalVideoPlayer videoSrc="JailLuxuryPromovid.mp4"/>
