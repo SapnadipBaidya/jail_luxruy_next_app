@@ -41,11 +41,12 @@ const InfoText = styled(Typography)(({ theme }) => ({
 const StyledTextField = styled(TextField)(({ theme }) => ({
   
   '& .MuiInputLabel-root': {
-    color: theme.palette.primary.main, 
+    color: theme.typography.color,
   },
   
   '& .Mui-focused': {
-    color: theme.palette.secondary.main,
+    
+    color: theme.typography.color,
   },
 }));
 
@@ -117,4 +118,3 @@ export default  function Contact() {
     </Container>
   );
 }
-
