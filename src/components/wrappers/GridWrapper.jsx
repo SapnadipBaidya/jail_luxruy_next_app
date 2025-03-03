@@ -8,12 +8,12 @@ import NoDataComponent from "./noDataComponent";
 
 const GridWrapperComponent = styled("div")(({ theme }) => ({
   minWidth:"70vw",
-  padding: "1rem",
+  padding: "1rem 1rem 1rem 1rem",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-evenly",
   alignItems:"flex-start",
-  borderTop: `1px solid `, // oporer border
+   // oporer border
   [theme.breakpoints.down("xl")]: {
    
     
