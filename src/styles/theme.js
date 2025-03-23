@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material/styles";
-import { Sanchez, Roboto, Poppins } from "@next/font/google";
+import { Sanchez, Roboto, Poppins } from "next/font/google";
 
 // Load Google Fonts
 const sanchez = Sanchez({
