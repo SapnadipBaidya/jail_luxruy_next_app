@@ -71,7 +71,7 @@ export default async function ItemsPage({ params, searchParams }) {
 
 async function fetchSearchItemsFromAPI(userInput,color,gender,sortBy,sortOrder,page=1,price) {
   console.log("fetchSearchItemsFromAPI",userInput,color,page,sortBy,sortOrder)
-  const apiUrl = `http://localhost:8080/api/products/searchByNameColorCategory?userInput=${userInput}&color=${color}&gender=${gender}&sortBy=${sortBy}&sortOrder=${sortOrder}&price=${price}&limit=12&page=${page}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/products/searchByNameColorCategory?userInput=${userInput}&color=${color}&gender=${gender}&sortBy=${sortBy}&sortOrder=${sortOrder}&price=${price}&limit=12&page=${page}`;
   console.log("apiUrl",apiUrl)
   const response = await makeGetAPIcall(apiUrl);
   console.log("response",response.data)
@@ -80,7 +80,7 @@ async function fetchSearchItemsFromAPI(userInput,color,gender,sortBy,sortOrder,p
 
 
 async function fetchAllColors() {
-  const apiUrl = `http://localhost:8080/api/filters/getAllColors`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/filters/getAllColors`;
   const response = await makeGetAPIcall(apiUrl);
   return response.data || [];
 }

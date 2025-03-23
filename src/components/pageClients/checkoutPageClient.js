@@ -5,6 +5,7 @@ import Script from 'next/script';
 import ThreeDotLoader from '../loaders/threeDotLoader';
 import { AppContext } from '@/context/applicationContext';
 import { useRouter } from 'next/navigation';
+const razorpayId  =  "rzp_test_bpnhkN3Uh0mT0L"
 
 function CheckoutPageClient({ onClose , amount}) {
   const { user } = useContext(AppContext);
@@ -21,7 +22,7 @@ function CheckoutPageClient({ onClose , amount}) {
 
       console.log("user",user)
       const options = {
-        key: "rzp_test_bpnhkN3Uh0mT0L",
+        key: razorpayId,
         amount: data.amount,
         currency: "INR",
         name: `JAIL LUXURY`,

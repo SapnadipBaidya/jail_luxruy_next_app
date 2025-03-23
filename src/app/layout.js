@@ -17,7 +17,7 @@ async  function  getSuccessData() {
 
 const getCarouselImages = cache(async () => {
   try {
-    const res = await fetch("http://localhost:8080/api/items/getAllCategories", {
+    const res = await fetch(process.env.NEXT_PUBLIC_API_URL+"/api/items/getAllCategories", {
       cache: "force-cache", // ✅ Statically caches the API response (No re-fetch on every request)
       next: { revalidate: 3600 }, // ✅ Refreshes API data every 1 hour (3600 seconds)
     });

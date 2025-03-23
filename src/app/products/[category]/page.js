@@ -75,20 +75,20 @@ export default async function ItemsPage({ params, searchParams }) {
 
 // Move data fetching functions here
 async function fetchItemsFromAPI(category, page, colors, sizes,price, gender,sortBy,sortOrder) {
-  const apiUrl = `http://localhost:8080/api/products/findProductsByCategoryName?categoryName=${category}&colorFilter=${colors}&sizeFilter=${sizes}&gender=${gender}&sortBy=${sortBy}&sortOrder=${sortOrder}&price=${price}&limit=12&page=${page}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/products/findProductsByCategoryName?categoryName=${category}&colorFilter=${colors}&sizeFilter=${sizes}&gender=${gender}&sortBy=${sortBy}&sortOrder=${sortOrder}&price=${price}&limit=12&page=${page}`;
   console.log("apiUrl for fetchItemsFromAPI", apiUrl);
   const response = await makeGetAPIcall(apiUrl);
   return { loading: false, data: response?.data || [] };
 }
 
 async function fetchAllColors() {
-  const apiUrl = `http://localhost:8080/api/filters/getAllColors`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/filters/getAllColors`;
   const response = await makeGetAPIcall(apiUrl);
   return response.data || [];
 }
 
 async function fetchSizeFilterByCategoryName(categoryName) {
-  const apiUrl = `http://localhost:8080/api/filters/getSizeFilterByCatagory`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/filters/getSizeFilterByCatagory`;
   const payload = { categoryName };
   const response = await makePostAPIcall(apiUrl, payload);
   return response?.data || [];

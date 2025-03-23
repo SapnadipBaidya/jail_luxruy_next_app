@@ -21,7 +21,7 @@ export default async function BestSellerPage({ params, searchParams }) {
 }
 
 async function fetchItemsFromAPI(gender) {
-  const apiUrl = `http://localhost:8080/api/products/findBestSellerByGender?gender=${gender}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/products/findBestSellerByGender?gender=${gender}`;
   console.log("apiUrl for fetchItemsFromAPI", apiUrl);
   const response = await makeGetAPIcall(apiUrl);
   return { loading: false, data: response?.data || [] };

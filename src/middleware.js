@@ -14,7 +14,7 @@ const protectedRoutes = [
 const greyList = ["/products", "/item", "/"];
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL:process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true, // Ensure cookies are included in requests
 });
 

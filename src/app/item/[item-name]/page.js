@@ -6,7 +6,7 @@ import { Suspense } from "react";
 
 // Function to fetch product data with cache disabled
 async function fetchProductFromAPI(productName, pid, pdid) {
-  const apiUrl = `http://localhost:8080/api/products/findProductsById?productName=${productName}&pid=${pid}&pdid=${pdid}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/products/findProductsById?productName=${productName}&pid=${pid}&pdid=${pdid}`;
   const response = await makeGetAPIcall(apiUrl, { cache: 'no-store' }); // Disable caching
   return response?.data || {};
 }

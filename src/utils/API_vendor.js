@@ -2,7 +2,7 @@ import axios from "axios";
 import { cookies } from "next/headers";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true, // Ensure cookies are included in requests
 });
 
@@ -36,6 +36,6 @@ export async function makeGetAPIcall (url){
 }
 
 
-const API = axios.create({ baseURL: "http://localhost:8080",withCredentials: true });
+const API = axios.create({ baseURL:process.env.NEXT_PUBLIC_API_URL,withCredentials: true });
 export const googleLogin = () => API.get("/auth/google");
 export const refreshToken = () => API.get("/auth/refresh");
